@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "692156944361",
+    "firebase_url": "https://makinghistory-ff980.firebaseio.com",
+    "project_id": "makinghistory-ff980",
+    "storage_bucket": "makinghistory-ff980.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:692156944361:android:100a00b8c49ff39e",
+        "android_client_info": {
+          "package_name": "nyc.c4q.helenchan.makinghistory"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "692156944361-6ef7o2btnnbecb434vblnpveqc9hltlg.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "nyc.c4q.helenchan.makinghistory",
+            "certificate_hash": "571cfac49c40099629130dfde24a175ad16dfd2e"
+          }
+        },
+        {
+          "client_id": "692156944361-lr9mpuuploce12ol2ocpqgsm9pp6issq.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD-x6PU1cupjlJY0Exqzrpkpk3ORpKRo3I"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "692156944361-lr9mpuuploce12ol2ocpqgsm9pp6issq.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
