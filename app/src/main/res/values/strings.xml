@@ -1,4 +1,5 @@
 <resources>
     <string name="app_name">MakingHistory</string>
     <string name="current_location">Current Location</string>
+    <string name="sign_out">Sign Out</string>
 </resources>
