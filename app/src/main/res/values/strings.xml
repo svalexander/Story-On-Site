@@ -4,4 +4,5 @@
     <string name="take_picture">Take Picture</string>
     <string name="add_text">Add Text</string>
     <string name="add_video">Add Video</string>
+    <string name="sign_out">Sign Out</string>
 </resources>
