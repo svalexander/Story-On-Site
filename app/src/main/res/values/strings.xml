@@ -1,4 +1,15 @@
 <resources>
     <string name="app_name">MakingHistory</string>
     <string name="current_location">Current Location</string>
+    <string name="take_picture">Take Picture</string>
+    <string name="add_text">Add Text</string>
+    <string name="add_video">Add Video</string>
+    <string name="samuel_ipsum">The path of the righteous man is beset on all sides by the iniquities of the selfish and the tyranny of evil men. Blessed is he who, in the name of charity and good will, shepherds the weak through the valley of darkness, for he is truly his brother\'s keeper and the finder of lost children. And I will strike down upon thee with great vengeance and furious anger those who would attempt to poison and destroy My brothers. And you will know My name is the Lord when I lay My vengeance upon thee.</string>
+    <string name="skip">Skip</string>
+    <string name="hello">Hello</string>
+    <string name="login">Login</string>
+    <string name="place_holder">This is a PlaceHolder for the View to Come</string>
+    <string name="explore_btn_text">Explore More</string>
+    <string name="create_btn_state">Create Your Own Story</string>
+    <string name="sign_out">Sign Out</string>
 </resources>
