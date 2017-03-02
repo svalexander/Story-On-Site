@@ -32,11 +32,13 @@
             android:text="@string/samuel_ipsum" />
     </android.support.v7.widget.CardView>
 
+    
     <Button
         android:id="@+id/skipBtn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom"
         android:text="@string/skip" />
+
 
 </LinearLayout>
