@@ -1,10 +1,13 @@
 package nyc.c4q.helenchan.makinghistory;
 
+import android.content.pm.PackageManager;
 import android.location.Address;
 import android.location.Geocoder;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
@@ -91,7 +94,17 @@ public class ExploreMoreActivity extends AppCompatActivity implements OnMapReady
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
+
         mMap = googleMap;
+
+        if(checkPermissions()){
+            mMap.setMyLocationEnabled(true);
+        } else if (requestPermissions()){
+            mMap.setMyLocationEnabled(true);
+        } else {
+            Toast.makeText(getApplicationContext(), "To view your location, please visit settings and change location permissions", Toast.LENGTH_LONG).show();
+        }
+
         LatLng googleHQ = new LatLng(40.741815, -74.004230);
         mMap.addMarker(new MarkerOptions().position(googleHQ).title("Marker at Google HQ"));
         mMap.moveCamera(CameraUpdateFactory.newLatLng(googleHQ));
@@ -139,6 +152,16 @@ public class ExploreMoreActivity extends AppCompatActivity implements OnMapReady
     @Override
     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
         Toast.makeText(this, "Map not connected!!", Toast.LENGTH_SHORT).show();
+    }
+
+    private boolean checkPermissions() {
+        return (ContextCompat.checkSelfPermission(getApplicationContext(), android.Manifest.permission.ACCESS_FINE_LOCATION)
+                == PackageManager.PERMISSION_GRANTED);
+    }
+
+    private boolean requestPermissions() {
+        ActivityCompat.requestPermissions(this, new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION,}, 1);
+        return checkPermissions();
     }
 
 }
