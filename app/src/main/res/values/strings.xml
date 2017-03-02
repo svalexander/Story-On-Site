@@ -12,4 +12,5 @@
     <string name="explore_btn_text">Explore More</string>
     <string name="create_btn_state">Create Your Own Story</string>
     <string name="sign_out">Sign Out</string>
+    <string name="location_label">Location:</string>
 </resources>
