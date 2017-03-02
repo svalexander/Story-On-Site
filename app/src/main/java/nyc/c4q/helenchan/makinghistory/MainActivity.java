@@ -10,7 +10,7 @@ import android.widget.TextView;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
-private TextView skipBtn;
+    private TextView skipBtn;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -20,19 +20,21 @@ private TextView skipBtn;
         setListeners();
     }
 
-    private void initViews(){
+    private void initViews() {
         skipBtn = (Button) findViewById(R.id.skipBtn);
     }
 
-    private void setListeners(){
+    private void setListeners() {
         skipBtn.setOnClickListener(this);
     }
+
     @Override
     public void onClick(View view) {
-        switch (view.getId()){
+        switch (view.getId()) {
             case R.id.skipBtn:
                 Intent skipIntent = new Intent(MainActivity.this, PointOfInterestActivity.class);
                 startActivity(skipIntent);
         }
     }
+
 }
