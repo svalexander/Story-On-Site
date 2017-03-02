@@ -11,4 +11,5 @@
     <string name="place_holder">This is a PlaceHolder for the View to Come</string>
     <string name="explore_btn_text">Explore More</string>
     <string name="create_btn_state">Create Your Own Story</string>
+    <string name="sign_out">Sign Out</string>
 </resources>
