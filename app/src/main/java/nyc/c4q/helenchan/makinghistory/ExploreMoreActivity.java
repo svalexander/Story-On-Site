@@ -9,6 +9,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
@@ -24,13 +25,24 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class ExploreMoreActivity extends AppCompatActivity implements OnMapReadyCallback, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
+
+    private DatabaseReference mFirebaseDatabase;
 
     private static final String TAG = "Main Activity";
     private final static int PLAY_SERVICES_RESOLUTION_REQUEST = 9000;
@@ -40,6 +52,7 @@ public class ExploreMoreActivity extends AppCompatActivity implements OnMapReady
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
 
         if (checkPlayServices()) {
@@ -104,6 +117,35 @@ public class ExploreMoreActivity extends AppCompatActivity implements OnMapReady
         } else {
             Toast.makeText(getApplicationContext(), "To view your location, please visit settings and change location permissions", Toast.LENGTH_LONG).show();
         }
+
+        mFirebaseDatabase = FirebaseDatabase.getInstance().getReference();
+        mFirebaseDatabase.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                Map timestampMap = dataSnapshot.getChildren();
+                String timestamp2 = dataSnapshot.getChildren().child("timestamp").getValue().toString();
+                Log.d("got a timestamp", timestamp2);
+
+//                String timestamp = (String) data.get("timestamp");
+//
+//                Map mCoordinate = (HashMap) data.get("location");
+//                double latitude = (double) (mCoordinate.get("latitude"));
+//                double longitude = (double) (mCoordinate.get("longitude"));
+//                LatLng mLatlng = new LatLng(latitude, longitude);
+//                MarkerOptions mMarkerOption = new MarkerOptions()
+//                        .position(mLatlng)
+//                        .title(timestamp)
+//                        .icon(BitmapDescriptorFactory.defaultMarker());
+//                Marker mMarker = mMap.addMarker(mMarkerOption);
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
 
         LatLng googleHQ = new LatLng(40.741815, -74.004230);
         mMap.addMarker(new MarkerOptions().position(googleHQ).title("Marker at Google HQ"));
