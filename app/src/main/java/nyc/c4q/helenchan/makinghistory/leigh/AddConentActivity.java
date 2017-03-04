@@ -24,19 +24,11 @@ import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.FusedLocationProviderApi;
 import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.location.LocationServices;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.TimeZone;
-
 import nyc.c4q.helenchan.makinghistory.R;
+import nyc.c4q.helenchan.makinghistory.models.Coordinate;
 
 public class AddConentActivity extends AppCompatActivity implements View.OnClickListener, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, LocationListener {
     static int REQUEST_IMAGE_CAPTURE = 1;
@@ -45,12 +37,11 @@ public class AddConentActivity extends AppCompatActivity implements View.OnClick
     private DatabaseReference mFirebaseDatabase;
 
     private Button takePhoto;
-    private Button addText;
+    private Button addLocation;
     private Button takeVideo;
     private ImageView imagePreview;
     private VideoView videoView;
-
-    private String currentUid;
+    private boolean isConnected = false;
     private FusedLocationProviderApi fusedLocationProviderApi = LocationServices.FusedLocationApi;
     private GoogleApiClient mGoogleApiClient;
 
@@ -59,7 +50,6 @@ public class AddConentActivity extends AppCompatActivity implements View.OnClick
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_addcontent);
         mFirebaseDatabase = FirebaseDatabase.getInstance().getReference();
-        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
 
         mGoogleApiClient = new GoogleApiClient.Builder(this)
                 .addConnectionCallbacks(this)
@@ -78,7 +68,8 @@ public class AddConentActivity extends AppCompatActivity implements View.OnClick
         imagePreview = (ImageView) findViewById(R.id.display_image);
         takePhoto = (Button) findViewById(R.id.bttn_takePic);
         takePhoto.setOnClickListener(this);
-        addText = (Button) findViewById(R.id.bttn_addText);
+        addLocation = (Button) findViewById(R.id.bttn_addLatLng);
+        addLocation.setOnClickListener(this);
         takeVideo = (Button) findViewById(R.id.bttn_takeVideo);
         takeVideo.setOnClickListener(this);
     }
@@ -90,23 +81,12 @@ public class AddConentActivity extends AppCompatActivity implements View.OnClick
             Bundle extras = data.getExtras();
             Bitmap imageBitmap = (Bitmap) extras.get("data");
             imagePreview.setImageBitmap(imageBitmap);
-
         }
     }
 
     private void saveToFirebase(Location lastLocation) {
-        Map mLocations = new HashMap();
-        DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
-        dateFormat.setTimeZone(TimeZone.getTimeZone("EST"));
-        Date date = new Date();
-        String mLastUpdateTime = dateFormat.format(date).toString();
-        Toast.makeText(getApplicationContext(), "save firebase method evoked", Toast.LENGTH_LONG).show();
-        mLocations.put("timestamp", mLastUpdateTime);
-        Map mCoordinate = new HashMap();
-        mCoordinate.put("latitude", lastLocation.getLatitude());
-        mCoordinate.put("longitude", lastLocation.getLongitude());
-        mLocations.put("location", mCoordinate);
-        mFirebaseDatabase.push().setValue(mLocations);
+        Coordinate currLocation = new Coordinate(lastLocation.getLatitude(),lastLocation.getLongitude());
+        mFirebaseDatabase.child("locations").push().setValue(currLocation);
     }
 
     @Override
@@ -131,7 +111,13 @@ public class AddConentActivity extends AppCompatActivity implements View.OnClick
                     Toast.makeText(getApplicationContext(), "Permission denied by user", Toast.LENGTH_LONG).show();
                 }
                 break;
-
+            case R.id.bttn_addLatLng:
+                if(isConnected) {
+                    Log.d("success", "successful connection");
+                    Toast.makeText(getApplicationContext(), "location connected made", Toast.LENGTH_LONG);
+                    Location mLastLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
+                    saveToFirebase(mLastLocation);
+                }
             default:
         }
     }
@@ -161,33 +147,24 @@ public class AddConentActivity extends AppCompatActivity implements View.OnClick
         startActivityForResult(openVideoCapture, REQUEST_VIDEO_CAPTURE);
     }
 
-
-    private void writeNewUser(String userId, String name, String message) {
-        User user = new User(name, message);
-        mFirebaseDatabase.child("users").child(userId).setValue(user);
-    }
-
     @Override
     public void onConnected(@Nullable Bundle bundle) {
-        Log.d("success", "successful connection");
-        Toast.makeText(getApplicationContext(), "location connected made", Toast.LENGTH_LONG);
-        Location mLastLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
-        saveToFirebase(mLastLocation);
+       isConnected = true;
     }
 
     @Override
     public void onConnectionSuspended(int i) {
-
+        isConnected = false;
     }
 
     @Override
     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
-
+        isConnected = false;
     }
 
     @Override
     public void onLocationChanged(Location location) {
-
+        isConnected = true;
     }
 
     @Override

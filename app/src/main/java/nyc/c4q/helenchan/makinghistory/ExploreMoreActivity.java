@@ -25,9 +25,7 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
-import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -36,9 +34,9 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.io.IOException;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
+
+import nyc.c4q.helenchan.makinghistory.models.Coordinate;
 
 public class ExploreMoreActivity extends AppCompatActivity implements OnMapReadyCallback, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
 
@@ -110,9 +108,9 @@ public class ExploreMoreActivity extends AppCompatActivity implements OnMapReady
 
         mMap = googleMap;
 
-        if(checkPermissions()){
+        if (checkPermissions()) {
             mMap.setMyLocationEnabled(true);
-        } else if (requestPermissions()){
+        } else if (requestPermissions()) {
             mMap.setMyLocationEnabled(true);
         } else {
             Toast.makeText(getApplicationContext(), "To view your location, please visit settings and change location permissions", Toast.LENGTH_LONG).show();
@@ -122,21 +120,12 @@ public class ExploreMoreActivity extends AppCompatActivity implements OnMapReady
         mFirebaseDatabase.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                Map timestampMap = dataSnapshot.getChildren();
-                String timestamp2 = dataSnapshot.getChildren().child("timestamp").getValue().toString();
-                Log.d("got a timestamp", timestamp2);
-
-//                String timestamp = (String) data.get("timestamp");
-//
-//                Map mCoordinate = (HashMap) data.get("location");
-//                double latitude = (double) (mCoordinate.get("latitude"));
-//                double longitude = (double) (mCoordinate.get("longitude"));
-//                LatLng mLatlng = new LatLng(latitude, longitude);
-//                MarkerOptions mMarkerOption = new MarkerOptions()
-//                        .position(mLatlng)
-//                        .title(timestamp)
-//                        .icon(BitmapDescriptorFactory.defaultMarker());
-//                Marker mMarker = mMap.addMarker(mMarkerOption);
+                Log.d(TAG, "onDataChange: ");
+                Coordinate location = dataSnapshot.child("location").getValue(Coordinate.class);
+                Log.d("Latitude", String.valueOf(location.getLatitude()));
+                LatLng currentLocation = location.toLatLng();
+                mMap.addMarker(new MarkerOptions().position(currentLocation).title("first location"));
+                mMap.moveCamera(CameraUpdateFactory.newLatLng(currentLocation));
 
             }
 
@@ -145,14 +134,6 @@ public class ExploreMoreActivity extends AppCompatActivity implements OnMapReady
 
             }
         });
-
-
-        LatLng googleHQ = new LatLng(40.741815, -74.004230);
-        mMap.addMarker(new MarkerOptions().position(googleHQ).title("Marker at Google HQ"));
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(googleHQ));
-
-        mMap.getUiSettings().setZoomControlsEnabled(true);
-        mMap.animateCamera(CameraUpdateFactory.zoomTo(zoomLevel), 5000, null);
     }
 
 

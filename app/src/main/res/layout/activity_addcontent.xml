@@ -11,10 +11,10 @@
         android:text="@string/take_picture" />
 
     <Button
-        android:id="@+id/bttn_addText"
+        android:id="@+id/bttn_addLatLng"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/add_text" />
+        android:text="add location to database" />
 
     <Button
         android:id="@+id/bttn_takeVideo"
