@@ -9,6 +9,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
@@ -26,11 +27,20 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.io.IOException;
 import java.util.List;
 
+import nyc.c4q.helenchan.makinghistory.models.Coordinate;
+
 public class ExploreMoreActivity extends AppCompatActivity implements OnMapReadyCallback, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
+
+    private DatabaseReference mFirebaseDatabase;
 
     private static final String TAG = "Main Activity";
     private final static int PLAY_SERVICES_RESOLUTION_REQUEST = 9000;
@@ -40,6 +50,7 @@ public class ExploreMoreActivity extends AppCompatActivity implements OnMapReady
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
 
         if (checkPlayServices()) {
@@ -97,20 +108,32 @@ public class ExploreMoreActivity extends AppCompatActivity implements OnMapReady
 
         mMap = googleMap;
 
-        if(checkPermissions()){
+        if (checkPermissions()) {
             mMap.setMyLocationEnabled(true);
-        } else if (requestPermissions()){
+        } else if (requestPermissions()) {
             mMap.setMyLocationEnabled(true);
         } else {
             Toast.makeText(getApplicationContext(), "To view your location, please visit settings and change location permissions", Toast.LENGTH_LONG).show();
         }
 
-        LatLng googleHQ = new LatLng(40.741815, -74.004230);
-        mMap.addMarker(new MarkerOptions().position(googleHQ).title("Marker at Google HQ"));
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(googleHQ));
+        mFirebaseDatabase = FirebaseDatabase.getInstance().getReference();
+        mFirebaseDatabase.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                Log.d(TAG, "onDataChange: ");
+                Coordinate location = dataSnapshot.child("location").getValue(Coordinate.class);
+                Log.d("Latitude", String.valueOf(location.getLatitude()));
+                LatLng currentLocation = location.toLatLng();
+                mMap.addMarker(new MarkerOptions().position(currentLocation).title("first location"));
+                mMap.moveCamera(CameraUpdateFactory.newLatLng(currentLocation));
 
-        mMap.getUiSettings().setZoomControlsEnabled(true);
-        mMap.animateCamera(CameraUpdateFactory.zoomTo(zoomLevel), 5000, null);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
     }
 
 
