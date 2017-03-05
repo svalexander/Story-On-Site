@@ -1,13 +1,17 @@
 package nyc.c4q.helenchan.makinghistory;
 
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.widget.FrameLayout;
 
-public class PointOfInterestActivity extends AppCompatActivity {
+public class PointOfInterestActivity extends BaseActivity {
+
+    private FrameLayout baseLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_point_of_interest);
+
+        baseLayout = (FrameLayout) findViewById(R.id.base_frame_Layout);
+        getLayoutInflater().inflate(R.layout.activity_point_of_interest, baseLayout);
     }
 }

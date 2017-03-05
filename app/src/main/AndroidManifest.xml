@@ -35,7 +35,8 @@
         <activity android:name=".ExploreMoreActivity" />
         <activity android:name=".leigh.AddConentActivity" />
         <activity android:name=".LandingPageActivity" />
-        <activity android:name=".PointOfInterestActivity"></activity>
+        <activity android:name=".PointOfInterestActivity" />
+        <activity android:name=".BaseActivity"></activity>
     </application>
 
 </manifest>
