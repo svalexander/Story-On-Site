@@ -43,5 +43,6 @@ dependencies {
     compile 'com.firebaseui:firebase-ui-auth:1.2.0'
     compile 'com.google.android.gms:play-services-location:10.2.0'
     compile 'com.google.android.gms:play-services-maps:10.2.0'
+    compile 'me.anwarshahriar:calligrapher:1.0'
 }
 apply plugin: 'com.google.gms.google-services'

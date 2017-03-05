@@ -20,6 +20,7 @@ import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.Arrays;
 
+import me.anwarshahriar.calligrapher.Calligrapher;
 import nyc.c4q.helenchan.makinghistory.leigh.AddConentActivity;
 
 public class LandingPageActivity extends AppCompatActivity implements View.OnClickListener {
@@ -35,6 +36,7 @@ public class LandingPageActivity extends AppCompatActivity implements View.OnCli
     private FrameLayout pntOfInterestLayout;
     private FrameLayout exploreLayout;
     private FrameLayout createLayout;
+    private FrameLayout loginLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,14 +48,23 @@ public class LandingPageActivity extends AppCompatActivity implements View.OnCli
         setAuthenticationListener();
         initViews();
         setListeners();
+        setFontType();
+        
 
     }
 
+
+    private void setFontType(){
+        Calligrapher calligrapher = new Calligrapher(this);
+        calligrapher.setFont(this, "ArimaMadurai-Bold.ttf", true);
+        calligrapher.setFont(findViewById(R.id.loginFrameLayout), "Raleway-Regular.ttf");
+    }
 
     private void initViews() {
         pntOfInterestLayout = (FrameLayout) findViewById(R.id.point_interest_layout);
         exploreLayout = (FrameLayout) findViewById(R.id.explore_layout);
         createLayout = (FrameLayout) findViewById(R.id.create_layout);
+        loginLayout = (FrameLayout) findViewById(R.id.loginFrameLayout);
         loginBtn = (Button) findViewById(R.id.login_Btn);
         welcomeText = (TextView) findViewById(R.id.HelloTV);
     }

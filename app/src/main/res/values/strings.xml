@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">MakingHistory</string>
+    <string name="app_name">Story on Site</string>
     <string name="current_location">Current Location</string>
     <string name="take_picture">Take Picture</string>
     <string name="add_text">Add Text</string>
