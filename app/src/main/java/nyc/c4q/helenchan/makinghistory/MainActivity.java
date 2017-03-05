@@ -63,7 +63,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.skipBtn:
-                Intent skipIntent = new Intent(MainActivity.this, PointOfInterestActivity.class);
+                Intent skipIntent = new Intent(MainActivity.this, LandingPageActivity.class);
                 startActivity(skipIntent);
         }
     }

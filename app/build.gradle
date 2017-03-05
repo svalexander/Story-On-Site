@@ -18,6 +18,11 @@ android {
         }
     }
 
+    defaultConfig{
+
+        buildConfigField("String", "NYT_RESEARCH_API_KEY", NYTIMESRESEARCHAPIKEY)
+    }
+
     aaptOptions {
         noCompress "json"
     }
@@ -42,6 +47,7 @@ dependencies {
     compile 'com.firebaseui:firebase-ui-auth:1.2.0'
     compile 'com.google.android.gms:play-services-location:10.2.0'
     compile 'com.google.android.gms:play-services-maps:10.2.0'
+    compile 'me.anwarshahriar:calligrapher:1.0'
     compile 'com.google.code.gson:gson:2.8.0'
 }
 apply plugin: 'com.google.gms.google-services'

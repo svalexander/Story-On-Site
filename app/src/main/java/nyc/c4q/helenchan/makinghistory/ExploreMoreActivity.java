@@ -8,11 +8,12 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
-import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.FrameLayout;
 import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
@@ -26,25 +27,38 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.io.IOException;
 import java.util.List;
 
-public class ExploreMoreActivity extends AppCompatActivity implements OnMapReadyCallback, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
+import nyc.c4q.helenchan.makinghistory.models.Coordinate;
+
+public class ExploreMoreActivity extends BaseActivity implements OnMapReadyCallback, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
+
+    private DatabaseReference mFirebaseDatabase;
 
     private static final String TAG = "Main Activity";
     private final static int PLAY_SERVICES_RESOLUTION_REQUEST = 9000;
     private GoogleApiClient mLocationClient;
     GoogleMap mMap;
     private float zoomLevel = 15;
+    private Button searchAddressBtn;
+    private FrameLayout baseLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_map);
+
+        baseLayout = (FrameLayout) findViewById(R.id.base_frame_Layout);
+        getLayoutInflater().inflate(R.layout.activity_map, baseLayout);
 
         if (checkPlayServices()) {
-
 
             SupportMapFragment mapFragment =
                     (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
@@ -59,7 +73,7 @@ public class ExploreMoreActivity extends AppCompatActivity implements OnMapReady
             mLocationClient.connect();
         }
 
-        Button searchAddressBtn = (Button) findViewById(R.id.location_search_btn);
+        searchAddressBtn = (Button) findViewById(R.id.location_search_btn);
         searchAddressBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -98,20 +112,42 @@ public class ExploreMoreActivity extends AppCompatActivity implements OnMapReady
 
         mMap = googleMap;
 
-        if(checkPermissions()){
+        if (checkPermissions()) {
+            if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                // TODO: Consider calling
+                //    ActivityCompat#requestPermissions
+                // here to request the missing permissions, and then overriding
+                //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+                //                                          int[] grantResults)
+                // to handle the case where the user grants the permission. See the documentation
+                // for ActivityCompat#requestPermissions for more details.
+                return;
+            }
             mMap.setMyLocationEnabled(true);
-        } else if (requestPermissions()){
+        } else if (requestPermissions()) {
             mMap.setMyLocationEnabled(true);
         } else {
             Toast.makeText(getApplicationContext(), "To view your location, please visit settings and change location permissions", Toast.LENGTH_LONG).show();
         }
 
-        LatLng googleHQ = new LatLng(40.741815, -74.004230);
-        mMap.addMarker(new MarkerOptions().position(googleHQ).title("Marker at Google HQ"));
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(googleHQ));
+        mFirebaseDatabase = FirebaseDatabase.getInstance().getReference();
+        mFirebaseDatabase.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                Log.d(TAG, "onDataChange: ");
+                Coordinate location = dataSnapshot.child("location").getValue(Coordinate.class);
+                Log.d("Latitude", String.valueOf(location.getLatitude()));
+                LatLng currentLocation = location.toLatLng();
+                mMap.addMarker(new MarkerOptions().position(currentLocation).title("first location"));
+                mMap.moveCamera(CameraUpdateFactory.newLatLng(currentLocation));
 
-        mMap.getUiSettings().setZoomControlsEnabled(true);
-        mMap.animateCamera(CameraUpdateFactory.zoomTo(zoomLevel), 5000, null);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
     }
 
 
