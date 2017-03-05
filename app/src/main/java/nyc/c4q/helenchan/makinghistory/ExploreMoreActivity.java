@@ -8,12 +8,12 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
-import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.FrameLayout;
 import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
@@ -38,7 +38,7 @@ import java.util.List;
 
 import nyc.c4q.helenchan.makinghistory.models.Coordinate;
 
-public class ExploreMoreActivity extends AppCompatActivity implements OnMapReadyCallback, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
+public class ExploreMoreActivity extends BaseActivity implements OnMapReadyCallback, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
 
     private DatabaseReference mFirebaseDatabase;
 
@@ -48,13 +48,15 @@ public class ExploreMoreActivity extends AppCompatActivity implements OnMapReady
     GoogleMap mMap;
     private float zoomLevel = 15;
     private Button searchAddressBtn;
+    private FrameLayout baseLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
 
-        setContentView(R.layout.activity_map);
+        baseLayout = (FrameLayout) findViewById(R.id.base_frame_Layout);
+        getLayoutInflater().inflate(R.layout.activity_map, baseLayout);
 
         if (checkPlayServices()) {
 

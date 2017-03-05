@@ -14,4 +14,7 @@
     <string name="sign_out">Sign Out</string>
     <string name="location_label">Location:</string>
     <string name="points_of_interest">Points of Interest</string>
+    <string name="create">Create</string>
+    <string name="suggested">Suggested</string>
+    <string name="profile">My Profile</string>
 </resources>
