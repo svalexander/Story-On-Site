@@ -8,12 +8,12 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
-import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.FrameLayout;
 import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
@@ -38,7 +38,7 @@ import java.util.List;
 
 import nyc.c4q.helenchan.makinghistory.models.Coordinate;
 
-public class ExploreMoreActivity extends AppCompatActivity implements OnMapReadyCallback, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
+public class ExploreMoreActivity extends BaseActivity implements OnMapReadyCallback, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
 
     private DatabaseReference mFirebaseDatabase;
 
@@ -47,14 +47,18 @@ public class ExploreMoreActivity extends AppCompatActivity implements OnMapReady
     private GoogleApiClient mLocationClient;
     GoogleMap mMap;
     private float zoomLevel = 15;
+    private Button searchAddressBtn;
+    private FrameLayout baseLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
 
+        baseLayout = (FrameLayout) findViewById(R.id.base_frame_Layout);
+        getLayoutInflater().inflate(R.layout.activity_map, baseLayout);
+
         if (checkPlayServices()) {
-            setContentView(R.layout.activity_map);
 
             SupportMapFragment mapFragment =
                     (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
@@ -69,7 +73,7 @@ public class ExploreMoreActivity extends AppCompatActivity implements OnMapReady
             mLocationClient.connect();
         }
 
-        Button searchAddressBtn = (Button) findViewById(R.id.location_search_btn);
+        searchAddressBtn = (Button) findViewById(R.id.location_search_btn);
         searchAddressBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -108,6 +112,16 @@ public class ExploreMoreActivity extends AppCompatActivity implements OnMapReady
         mMap = googleMap;
 
         if (checkPermissions()) {
+            if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                // TODO: Consider calling
+                //    ActivityCompat#requestPermissions
+                // here to request the missing permissions, and then overriding
+                //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+                //                                          int[] grantResults)
+                // to handle the case where the user grants the permission. See the documentation
+                // for ActivityCompat#requestPermissions for more details.
+                return;
+            }
             mMap.setMyLocationEnabled(true);
         } else if (requestPermissions()) {
             mMap.setMyLocationEnabled(true);
