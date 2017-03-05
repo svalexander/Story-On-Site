@@ -15,6 +15,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.Toast;
 import android.widget.VideoView;
@@ -27,10 +28,11 @@ import com.google.android.gms.location.LocationServices;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
+import nyc.c4q.helenchan.makinghistory.BaseActivity;
 import nyc.c4q.helenchan.makinghistory.R;
 import nyc.c4q.helenchan.makinghistory.models.Coordinate;
 
-public class AddConentActivity extends AppCompatActivity implements View.OnClickListener, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, LocationListener {
+public class AddConentActivity extends BaseActivity implements View.OnClickListener, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, LocationListener {
     static int REQUEST_IMAGE_CAPTURE = 1;
     static int REQUEST_VIDEO_CAPTURE = 2;
 
@@ -44,11 +46,15 @@ public class AddConentActivity extends AppCompatActivity implements View.OnClick
     private boolean isConnected = false;
     private FusedLocationProviderApi fusedLocationProviderApi = LocationServices.FusedLocationApi;
     private GoogleApiClient mGoogleApiClient;
+    private FrameLayout baseLayout;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_addcontent);
+
+        baseLayout = (FrameLayout) findViewById(R.id.base_frame_Layout);
+        getLayoutInflater().inflate(R.layout.activity_addcontent, baseLayout);
+
         mFirebaseDatabase = FirebaseDatabase.getInstance().getReference();
 
         mGoogleApiClient = new GoogleApiClient.Builder(this)
@@ -85,7 +91,7 @@ public class AddConentActivity extends AppCompatActivity implements View.OnClick
     }
 
     private void saveToFirebase(Location lastLocation) {
-        Coordinate currLocation = new Coordinate(lastLocation.getLatitude(),lastLocation.getLongitude());
+        Coordinate currLocation = new Coordinate(lastLocation.getLatitude(), lastLocation.getLongitude());
         mFirebaseDatabase.child("locations").push().setValue(currLocation);
     }
 
@@ -112,7 +118,7 @@ public class AddConentActivity extends AppCompatActivity implements View.OnClick
                 }
                 break;
             case R.id.bttn_addLatLng:
-                if(isConnected) {
+                if (isConnected) {
                     Log.d("success", "successful connection");
                     Toast.makeText(getApplicationContext(), "location connected made", Toast.LENGTH_LONG);
                     Location mLastLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
@@ -149,7 +155,7 @@ public class AddConentActivity extends AppCompatActivity implements View.OnClick
 
     @Override
     public void onConnected(@Nullable Bundle bundle) {
-       isConnected = true;
+        isConnected = true;
     }
 
     @Override
