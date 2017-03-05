@@ -1,6 +1,8 @@
 package nyc.c4q.helenchan.makinghistory;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.res.AssetFileDescriptor;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
@@ -11,11 +13,15 @@ import android.widget.TextView;
 
 import com.google.gson.Gson;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+
 import nyc.c4q.helenchan.makinghistory.model.FeatureResponse;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
-    private static final String TAG = "jjjj";
+    private static final String TAG = "Main Activity";
     private TextView skipBtn;
 
     @Override
@@ -24,26 +30,26 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         setContentView(R.layout.activity_main);
         initViews();
         setListeners();
-        parseJSON();
-        
-        
+        parseJSON(this);
 
     }
-    public static void parseJSON(){
 
-        Gson gson = new Gson();
-        FeatureResponse featureResponse = gson.fromJson(String.valueOf(R.raw.map), FeatureResponse.class );
 
-        Log.d(TAG, "parsing" + featureResponse.features.get(0).getType());
+    public void parseJSON(Context context) {
 
-//        InputStream raw = context.getResources().openRawResource(R.raw.map);
-//        Reader rd = new BufferedReader(new InputStreamReader(raw));
-//        Gson gson = new GsonBuilder().create();
-//        Feature obj = gson.fromJson(rd, Feature.class);
-//        FeatureResponse featureParse = gson.fromJson(rd, FeatureResponse.class);
-//        return featureParse;
+        try {
+            AssetFileDescriptor fileDescriptor = context.getAssets().openFd("map.json");
+            final BufferedReader reader = new BufferedReader(new InputStreamReader(fileDescriptor.createInputStream()));
+            Gson gson = new Gson();
+            FeatureResponse featureResponse = gson.fromJson(reader, FeatureResponse.class);
+            Log.d(TAG, "parsing" + " "  + featureResponse.features.size());
+
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
     }
-    
+
 
     private void initViews() {
         skipBtn = (Button) findViewById(R.id.skipBtn);
