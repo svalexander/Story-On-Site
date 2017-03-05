@@ -47,14 +47,16 @@ public class ExploreMoreActivity extends AppCompatActivity implements OnMapReady
     private GoogleApiClient mLocationClient;
     GoogleMap mMap;
     private float zoomLevel = 15;
+    private Button searchAddressBtn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
 
+        setContentView(R.layout.activity_map);
+
         if (checkPlayServices()) {
-            setContentView(R.layout.activity_map);
 
             SupportMapFragment mapFragment =
                     (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
@@ -69,7 +71,7 @@ public class ExploreMoreActivity extends AppCompatActivity implements OnMapReady
             mLocationClient.connect();
         }
 
-        Button searchAddressBtn = (Button) findViewById(R.id.location_search_btn);
+        searchAddressBtn = (Button) findViewById(R.id.location_search_btn);
         searchAddressBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -109,6 +111,16 @@ public class ExploreMoreActivity extends AppCompatActivity implements OnMapReady
         mMap = googleMap;
 
         if (checkPermissions()) {
+            if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                // TODO: Consider calling
+                //    ActivityCompat#requestPermissions
+                // here to request the missing permissions, and then overriding
+                //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+                //                                          int[] grantResults)
+                // to handle the case where the user grants the permission. See the documentation
+                // for ActivityCompat#requestPermissions for more details.
+                return;
+            }
             mMap.setMyLocationEnabled(true);
         } else if (requestPermissions()) {
             mMap.setMyLocationEnabled(true);

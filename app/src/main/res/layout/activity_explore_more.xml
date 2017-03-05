@@ -40,7 +40,7 @@
         </EditText>
 
         <Button
-            android:id="@+id/location_search_btn"
+            android:id="@+id/explore_search_btn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignBaseline="@+id/locationTV"
