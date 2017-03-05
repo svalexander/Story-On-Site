@@ -8,11 +8,13 @@
     tools:context="nyc.c4q.helenchan.makinghistory.LandingPageActivity">
 
     <FrameLayout
+        android:id="@+id/loginFrameLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="end">
 
         <TextView
+            android:gravity="right"
             android:id="@+id/HelloTV"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -36,7 +38,7 @@
             android:layout_height="match_parent">
 
         <FrameLayout
-            android:background="@color/primary"
+            android:background="@color/divider"
             android:id="@+id/point_interest_layout"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
@@ -68,7 +70,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
         <FrameLayout
-            android:background="@color/primary"
+            android:background="@color/divider"
             android:id="@+id/explore_layout"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
@@ -99,7 +101,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
         <FrameLayout
-            android:background="@color/primary"
+            android:background="@color/divider"
             android:id="@+id/create_layout"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
