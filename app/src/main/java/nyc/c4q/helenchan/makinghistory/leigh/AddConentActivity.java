@@ -119,8 +119,8 @@ public class AddConentActivity extends AppCompatActivity implements View.OnClick
                     Log.d("success", "successful connection");
                     Toast.makeText(getApplicationContext(), "location connected made", Toast.LENGTH_LONG);
                     Location mLastLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
-                    saveToFirebase(mLastLocation);
-                    //addContentToDatabase();
+                    //saveToFirebase(mLastLocation);
+                    addContentToDatabase();
                 }
             default:
         }
