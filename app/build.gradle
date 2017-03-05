@@ -17,6 +17,11 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+
+    defaultConfig{
+
+        buildConfigField("String", "NYT_RESEARCH_API_KEY", NYTIMESRESEARCHAPIKEY)
+    }
 }
 
 dependencies {

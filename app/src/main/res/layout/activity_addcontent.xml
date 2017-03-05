@@ -11,10 +11,10 @@
         android:text="@string/take_picture" />
 
     <Button
-        android:id="@+id/bttn_addText"
+        android:id="@+id/bttn_addLatLng"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/add_text" />
+        android:text="add location to database" />
 
     <Button
         android:id="@+id/bttn_takeVideo"
@@ -31,10 +31,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
 
-        <VideoView
-            android:id="@+id/display_video"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+
 
     </RelativeLayout>
 </LinearLayout>
