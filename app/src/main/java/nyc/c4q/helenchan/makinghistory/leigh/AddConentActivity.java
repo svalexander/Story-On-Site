@@ -5,12 +5,14 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.location.Location;
+import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.content.FileProvider;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
@@ -24,8 +26,14 @@ import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.FusedLocationProviderApi;
 import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
+
+import java.io.ByteArrayOutputStream;
 
 import nyc.c4q.helenchan.makinghistory.R;
 import nyc.c4q.helenchan.makinghistory.models.Coordinate;
@@ -35,6 +43,9 @@ public class AddConentActivity extends AppCompatActivity implements View.OnClick
     static int REQUEST_VIDEO_CAPTURE = 2;
 
     private DatabaseReference mFirebaseDatabase;
+    private FirebaseStorage mFirebaseStorage;
+    private StorageReference myStorageRef;
+    private Uri downloadUri;
 
     private Button takePhoto;
     private Button addLocation;
@@ -50,6 +61,8 @@ public class AddConentActivity extends AppCompatActivity implements View.OnClick
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_addcontent);
         mFirebaseDatabase = FirebaseDatabase.getInstance().getReference();
+        mFirebaseStorage = FirebaseStorage.getInstance();
+        myStorageRef = mFirebaseStorage.getReference();
 
         mGoogleApiClient = new GoogleApiClient.Builder(this)
                 .addConnectionCallbacks(this)
@@ -81,6 +94,30 @@ public class AddConentActivity extends AppCompatActivity implements View.OnClick
             Bundle extras = data.getExtras();
             Bitmap imageBitmap = (Bitmap) extras.get("data");
             imagePreview.setImageBitmap(imageBitmap);
+
+            StorageReference photoStorageReference = myStorageRef.child("photos").child("uploads");
+            ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+            imageBitmap.compress(Bitmap.CompressFormat.JPEG, 100, byteArrayOutputStream);
+            byte[] photoByteArray = byteArrayOutputStream.toByteArray();
+
+
+            UploadTask uploadTask = photoStorageReference.putBytes(photoByteArray);
+            uploadTask.addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                @Override
+                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                    Toast.makeText(getApplicationContext(), "Uploaded", Toast.LENGTH_SHORT).show();
+                    downloadUri = taskSnapshot.getDownloadUrl();
+                }
+            });
+
+//            Uri uri = data.getData();
+//            StorageReference photoStorageReference = myStorageRef.child("photos").child(uri.getLastPathSegment());
+//            photoStorageReference.putFile(uri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+//                @Override
+//                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+//                     Toast.makeText(getApplicationContext(), "Uploaded", Toast.LENGTH_SHORT).show();
+//                }
+//            });
         }
     }
 
