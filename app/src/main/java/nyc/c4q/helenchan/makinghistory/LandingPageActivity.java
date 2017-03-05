@@ -3,7 +3,6 @@ package nyc.c4q.helenchan.makinghistory;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -23,7 +22,7 @@ import java.util.Arrays;
 import me.anwarshahriar.calligrapher.Calligrapher;
 import nyc.c4q.helenchan.makinghistory.leigh.AddConentActivity;
 
-public class LandingPageActivity extends AppCompatActivity implements View.OnClickListener {
+public class LandingPageActivity extends BaseActivity implements View.OnClickListener {
 
     private static final String ANONYMOUS = "ANONYMOUS";
     private static final int RC_SIGN_IN = 1;
@@ -37,11 +36,15 @@ public class LandingPageActivity extends AppCompatActivity implements View.OnCli
     private FrameLayout exploreLayout;
     private FrameLayout createLayout;
     private FrameLayout loginLayout;
+    private FrameLayout baseLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_landing_page);
+
+        baseLayout = (FrameLayout) findViewById(R.id.base_frame_Layout);
+        getLayoutInflater().inflate(R.layout.activity_landing_page, baseLayout);
+
         mFirebaseDatabase = FirebaseDatabase.getInstance();
         mFirebaseAuth = FirebaseAuth.getInstance();
         mUsername = ANONYMOUS;
@@ -49,12 +52,12 @@ public class LandingPageActivity extends AppCompatActivity implements View.OnCli
         initViews();
         setListeners();
         setFontType();
-        
+
 
     }
 
 
-    private void setFontType(){
+    private void setFontType() {
         Calligrapher calligrapher = new Calligrapher(this);
         calligrapher.setFont(this, "ArimaMadurai-Bold.ttf", true);
         calligrapher.setFont(findViewById(R.id.loginFrameLayout), "Raleway-Regular.ttf");
