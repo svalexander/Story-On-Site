@@ -1,6 +1,7 @@
 package nyc.c4q.helenchan.makinghistory.leigh;
 
 import android.Manifest;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
@@ -19,6 +20,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 import android.widget.VideoView;
 
@@ -49,11 +51,10 @@ public class AddConentActivity extends BaseActivity implements View.OnClickListe
     static int REQUEST_VIDEO_CAPTURE = 2;
 
     private DatabaseReference mFirebaseDatabase;
-    private DatabaseReference mFirebaseDatabase2;
-
     private FirebaseStorage mFirebaseStorage;
     private StorageReference myStorageRef;
     private Uri downloadUri;
+    private ProgressDialog mProgressDialog;
 
     private Button takePhoto;
     private Button addLocation;
@@ -93,6 +94,7 @@ public class AddConentActivity extends BaseActivity implements View.OnClickListe
         addLocation.setOnClickListener(this);
         takeVideo = (Button) findViewById(R.id.bttn_takeVideo);
         takeVideo.setOnClickListener(this);
+        mProgressDialog = new ProgressDialog(this);
     }
 
     @Override
@@ -103,16 +105,19 @@ public class AddConentActivity extends BaseActivity implements View.OnClickListe
             Bitmap imageBitmap = (Bitmap) extras.get("data");
             imagePreview.setImageBitmap(imageBitmap);
 
-            StorageReference photoStorageReference = myStorageRef.child("photos").child("uploads");
+            mProgressDialog.setMessage("Uploading Image");
+            mProgressDialog.show();
+            String randomID = java.util.UUID.randomUUID().toString();
+            StorageReference photoStorageReference = myStorageRef.child("photos").child(randomID);
             ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
             imageBitmap.compress(Bitmap.CompressFormat.JPEG, 100, byteArrayOutputStream);
             byte[] photoByteArray = byteArrayOutputStream.toByteArray();
-
 
             UploadTask uploadTask = photoStorageReference.putBytes(photoByteArray);
             uploadTask.addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                 @Override
                 public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                    mProgressDialog.dismiss();
                     Toast.makeText(getApplicationContext(), "Uploaded", Toast.LENGTH_SHORT).show();
                     downloadUri = taskSnapshot.getDownloadUrl();
                 }
