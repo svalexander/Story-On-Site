@@ -37,6 +37,7 @@
         <activity android:name=".LandingPageActivity" />
         <activity android:name=".PointOfInterestActivity" />
         <activity android:name=".BaseActivity"></activity>
+        <activity android:name=".ViewContentActivity"/>
     </application>
 
 </manifest>

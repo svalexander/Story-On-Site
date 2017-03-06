@@ -1,8 +1,15 @@
 package nyc.c4q.helenchan.makinghistory;
 
+import android.*;
+import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.content.res.AssetFileDescriptor;
 import android.location.Address;
+import android.location.Criteria;
 import android.location.Geocoder;
+import android.location.Location;
+import android.location.LocationManager;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -25,23 +32,36 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.gson.Gson;
 
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
+import nyc.c4q.helenchan.makinghistory.model.Feature;
+import nyc.c4q.helenchan.makinghistory.model.FeatureResponse;
+import nyc.c4q.helenchan.makinghistory.models.Content;
 import nyc.c4q.helenchan.makinghistory.models.Coordinate;
+import nyc.c4q.helenchan.makinghistory.models.MapPoint;
 
-public class ExploreMoreActivity extends BaseActivity implements OnMapReadyCallback, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
+public class ExploreMoreActivity extends BaseActivity implements OnMapReadyCallback, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, GoogleMap.OnMarkerClickListener, MapListener {
 
     private DatabaseReference mFirebaseDatabase;
+    private DatabaseReference mFirebaseDatabase2;
 
+    private MapListener mapListener;
     private static final String TAG = "Main Activity";
     private final static int PLAY_SERVICES_RESOLUTION_REQUEST = 9000;
     private GoogleApiClient mLocationClient;
@@ -54,7 +74,7 @@ public class ExploreMoreActivity extends BaseActivity implements OnMapReadyCallb
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
-
+        mapListener = this;
         baseLayout = (FrameLayout) findViewById(R.id.base_frame_Layout);
         getLayoutInflater().inflate(R.layout.activity_map, baseLayout);
 
@@ -72,6 +92,7 @@ public class ExploreMoreActivity extends BaseActivity implements OnMapReadyCallb
 
             mLocationClient.connect();
         }
+        mFirebaseDatabase2 = FirebaseDatabase.getInstance().getReference();
 
         searchAddressBtn = (Button) findViewById(R.id.location_search_btn);
         searchAddressBtn.setOnClickListener(new View.OnClickListener() {
@@ -111,45 +132,48 @@ public class ExploreMoreActivity extends BaseActivity implements OnMapReadyCallb
 
         mMap = googleMap;
 
-        if (checkPermissions()) {
-            if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-                // TODO: Consider calling
-                //    ActivityCompat#requestPermissions
-                // here to request the missing permissions, and then overriding
-                //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-                //                                          int[] grantResults)
-                // to handle the case where the user grants the permission. See the documentation
-                // for ActivityCompat#requestPermissions for more details.
-                return;
-            }
-            mMap.setMyLocationEnabled(true);
-        } else if (requestPermissions()) {
+//        if (checkPermissions()) {
+//            if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+//                // TODO: Consider calling
+//                //    ActivityCompat#requestPermissions
+//                // here to request the missing permissions, and then overriding
+//                //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+//                //                                          int[] grantResults)
+//                // to handle the case where the user grants the permission. See the documentation
+//                // for ActivityCompat#requestPermissions for more details.
+//                return;
+//            }
+//            mMap.setMyLocationEnabled(true);
+//        } else if (requestPermissions()) {
+//            mMap.setMyLocationEnabled(true);
+//        } else {
+//            Toast.makeText(getApplicationContext(), "To view your location, please visit settings and change location permissions", Toast.LENGTH_LONG).show();
+//        }
+
+        if (ContextCompat.checkSelfPermission(getApplicationContext(), android.Manifest.permission.ACCESS_FINE_LOCATION)
+                == PackageManager.PERMISSION_GRANTED) {
             mMap.setMyLocationEnabled(true);
         } else {
-            Toast.makeText(getApplicationContext(), "To view your location, please visit settings and change location permissions", Toast.LENGTH_LONG).show();
+            ActivityCompat.requestPermissions(this, new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION}, 1);
+            if (ContextCompat.checkSelfPermission(getApplicationContext(), android.Manifest.permission.ACCESS_FINE_LOCATION)
+                    == PackageManager.PERMISSION_GRANTED) {
+                mMap.setMyLocationEnabled(true);
+            }
         }
 
-        mFirebaseDatabase = FirebaseDatabase.getInstance().getReference().child("locations");
-        mFirebaseDatabase.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                Log.d(TAG, "onDataChange: ");
-                for (DataSnapshot ds : dataSnapshot.getChildren()) {
-                    Log.d("this worked", ds.getValue(Coordinate.class).toString());
-                    Coordinate coord = ds.getValue(Coordinate.class);
-                    LatLng currentLocation = coord.toLatLng();
-                    mMap.addMarker(new MarkerOptions().position(currentLocation).title("first location"));
+        // TODO: update later
+        // centers map on current user location, stack overflow solution. will update later
+        LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+        Criteria criteria = new Criteria();
+        Location location = locationManager.getLastKnownLocation(locationManager.getBestProvider(criteria, false));
+        if (location != null) {
+            CameraPosition cameraPosition = new CameraPosition.Builder().target(new LatLng(location.getLatitude(), location.getLongitude())).zoom(12).build();
+            googleMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
+        }
 
-                }
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });
+        parseJSON(this);
+        mMap.setOnMarkerClickListener(this);
     }
-
 
     private void hideSoftKeyboard(View v) {
         InputMethodManager imm = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
@@ -201,4 +225,70 @@ public class ExploreMoreActivity extends BaseActivity implements OnMapReadyCallb
         return checkPermissions();
     }
 
+    @Override
+    public boolean onMarkerClick(Marker marker) {
+        Feature feature = (Feature) marker.getTag();
+        feature.getGeometry().getCoordinates();
+        double lat = 0;
+        double lng = 0;
+        double[] coordinates = feature.getGeometry().getCoordinates();
+        for (int i = 0; i < coordinates.length; i++) {
+            if (i == 0) {
+                lng = coordinates[i];
+            }
+            if (i == 1) {
+                lat = coordinates[i];
+            }
+
+        }
+        Intent intent = new Intent(getApplicationContext(), ViewContentActivity.class);
+        intent.putExtra("Latitude", lat);
+        intent.putExtra("Longitude", lng);
+        startActivity(intent);
+        return true;
+    }
+
+
+    public void parseJSON(Context context) {
+
+        try {
+            AssetFileDescriptor fileDescriptor = context.getAssets().openFd("map.json");
+            final BufferedReader reader = new BufferedReader(new InputStreamReader(fileDescriptor.createInputStream()));
+            Gson gson = new Gson();
+            FeatureResponse featureResponse = gson.fromJson(reader, FeatureResponse.class);
+            Log.d(TAG, "parsing" + " " + featureResponse.features.size());
+            mapListener.updateMarkers(mMap, featureResponse.features);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
+    }
+
+    @Override
+    public void updateMarkers(GoogleMap map, List<Feature> featuresList) {
+        mFirebaseDatabase = FirebaseDatabase.getInstance().getReference().child("MapPoint");
+        double latitude = 0;
+        double longitude = 0;
+        for (Feature feature : featuresList) {
+            double[] coordinates = feature.getGeometry().getCoordinates();
+            for (int i = 0; i < coordinates.length; i++) {
+                if (i == 0) {
+                    longitude = coordinates[i];
+                }
+                if (i == 1) {
+                    latitude = coordinates[i];
+                }
+            }
+
+            LatLng currLatLng = new LatLng(latitude, longitude);
+            map.addMarker(new MarkerOptions().position(currLatLng).title(feature.getProperties().getName())).setTag(feature);
+
+        }
+
+    }
 }
+
+
+
+
+

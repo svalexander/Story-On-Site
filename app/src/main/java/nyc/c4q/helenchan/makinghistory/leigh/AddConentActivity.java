@@ -11,7 +11,6 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
-import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -30,6 +29,7 @@ import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.ArrayList;
 import java.util.List;
+
 import nyc.c4q.helenchan.makinghistory.BaseActivity;
 import nyc.c4q.helenchan.makinghistory.R;
 import nyc.c4q.helenchan.makinghistory.models.Content;
@@ -125,7 +125,7 @@ public class AddConentActivity extends BaseActivity implements View.OnClickListe
                     Toast.makeText(getApplicationContext(), "location connected made", Toast.LENGTH_LONG);
                     Location mLastLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
                     //saveToFirebase(mLastLocation);
-                    addContentToDatabase();
+                    //addContentToDatabase();
                 }
             default:
         }
@@ -189,7 +189,7 @@ public class AddConentActivity extends BaseActivity implements View.OnClickListe
         super.onStop();
     }
 
-    private void buildGoogleApi(){
+    private void buildGoogleApi() {
         mGoogleApiClient = new GoogleApiClient.Builder(this)
                 .addConnectionCallbacks(this)
                 .addOnConnectionFailedListener(this)
@@ -197,20 +197,20 @@ public class AddConentActivity extends BaseActivity implements View.OnClickListe
                 .build();
     }
 
-    private void addContentToDatabase(){
-        List<Content> highlineImages = new ArrayList<>();
-        highlineImages.add(new Content("Highline", "Historical", "This was the highline a long time ago", "HighLine", "http://oldnyc-assets.nypl.org/600px/707997f-a.jpg", "1920"));
-        highlineImages.add(new Content("Highline", "Historical", "This was the highline a long time ago", "HighLine", "http://oldnyc-assets.nypl.org/600px/712105f-a.jpg", "1920"));
-        highlineImages.add(new Content("Highline", "Historical", "This was the highline a long time ago", "HighLine", "http://oldnyc-assets.nypl.org/600px/708690f-a.jpg", "1920"));
-        MapPoint highline = new MapPoint(new Coordinate(-74.005452, 40.720398), highlineImages);
-        List<Content> washingtonSqImages = new ArrayList<>();
-        washingtonSqImages.add(new Content("Washington Sq", "Historical", "This was the washsq a long time ago", "wash sq", "http://oldnyc-assets.nypl.org/600px/707997f-a.jpg", "1920"));
-        washingtonSqImages.add(new Content("Washington Sq", "Historical", "This was the washsq a long time ago", "wash sq", "http://oldnyc-assets.nypl.org/600px/707997f-a.jpg", "1920"));
-        washingtonSqImages.add(new Content("Washington Sq", "Historical", "This was the washsq a long time ago", "wash sq", "http://oldnyc-assets.nypl.org/600px/707997f-a.jpg", "1920"));
-        MapPoint washSq = new MapPoint(new Coordinate(-73.9352932, 40.7417145), washingtonSqImages);
+    private void addContentToDatabase() {
 
-        mFirebaseDatabase.child("locations").child("Location1").setValue(highline);
-        mFirebaseDatabase.child("locations").child("Location2").setValue(washSq);
+        //first line adds a coordinate, second location adds content to list at that location
+        mFirebaseDatabase.child("MapPoint").child("Location3").setValue(new Coordinate(40.720398, -74.025452));
+        mFirebaseDatabase.child("MapPoint").child("Location3").child("ContentList").push().setValue(new Content("Highline", "Historical", "This was the highline a long time ago", "HighLine", "http://oldnyc-assets.nypl.org/600px/712105f-a.jpg", "1920"));
+        mFirebaseDatabase.child("MapPoint").child("Location3").child("ContentList").push().setValue(new Content("Highline", "Historical", "This was the highline a long time ago", "HighLine", "http://oldnyc-assets.nypl.org/600px/712105f-a.jpg", "1920"));
+        mFirebaseDatabase.child("MapPoint").child("Location3").child("ContentList").push().setValue(new Content("Highline", "Historical", "This was the highline a long time ago", "HighLine", "http://oldnyc-assets.nypl.org/600px/712105f-a.jpg", "1920"));
+        mFirebaseDatabase.child("MapPoint").child("Location3").child("ContentList").push().setValue(new Content("Highline", "Historical", "This was the highline a long time ago", "HighLine", "http://oldnyc-assets.nypl.org/600px/712105f-a.jpg", "1920"));
+
+
+//        these two lines of code are super important. this is how you push new contents into the list of data at a point
+//        mFirebaseDatabase.child("MapPoint").child("Location2").child("Content").push().setValue(new Content("Washington Sq", "Historical", "This was the washsq a long time ago", "wash sq", "http://oldnyc-assets.nypl.org/600px/707997f-a.jpg", "1920"));
+//        mFirebaseDatabase.child("MapPoint").child("Location2").child("Content").push().setValue(new Content("Washington Sq", "Historical", "This was the washsq a long time ago", "wash sq22", "http://oldnyc-assets.nypl.org/600px/707997f-a.jpg", "1920"));
+
     }
 
 }

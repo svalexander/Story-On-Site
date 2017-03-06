@@ -30,23 +30,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         setContentView(R.layout.activity_main);
         initViews();
         setListeners();
-        parseJSON(this);
-
-    }
-
-
-    public void parseJSON(Context context) {
-
-        try {
-            AssetFileDescriptor fileDescriptor = context.getAssets().openFd("map.json");
-            final BufferedReader reader = new BufferedReader(new InputStreamReader(fileDescriptor.createInputStream()));
-            Gson gson = new Gson();
-            FeatureResponse featureResponse = gson.fromJson(reader, FeatureResponse.class);
-            Log.d(TAG, "parsing" + " "  + featureResponse.features.size());
-
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
 
     }
 
