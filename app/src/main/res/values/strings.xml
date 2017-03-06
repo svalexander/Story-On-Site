@@ -17,4 +17,8 @@
     <string name="create">Create</string>
     <string name="suggested">Suggested</string>
     <string name="profile">My Profile</string>
+    <string name="preview_your_story_here">Preview Your Story Here</string>
+    <string name="create_your_own_story">Create Your Own Story</string>
+    <string name="create_prompt">Help create our collective history by leaving your personal story/experience with this space here. Write a thoughtful story, snap a pic or take a video. The add to the database for others to experience.</string>
+    <string name="save">SAVE</string>
 </resources>
