@@ -1,37 +1,47 @@
 package nyc.c4q.helenchan.makinghistory.models;
 
-import java.util.List;
+import java.util.HashMap;
 
 /**
  * Created by leighdouglas on 3/4/17.
  */
 
 public class MapPoint {
-    Coordinate coordinate;
-    List<Content> contentList;
+    private double latitude;
+    private double longitude;
+    private HashMap<String, Content> ContentList;
 
     public MapPoint() {
 
     }
 
-    public MapPoint(Coordinate coordinate, List<Content> contentList) {
-        this.coordinate = coordinate;
-        this.contentList = contentList;
+    public MapPoint(double latitude, double longitude, HashMap<String, Content> ContentList) {
+        this.latitude = latitude;
+        this.longitude = longitude;
+        this.ContentList = ContentList;
     }
 
-    public Coordinate getCoordinate() {
-        return coordinate;
+    public double getLatitude() {
+        return latitude;
     }
 
-    public void setCoordinate(Coordinate coordinate) {
-        this.coordinate = coordinate;
+    public void setLatitude(double latitude) {
+        this.latitude = latitude;
     }
 
-    public List<Content> getContentList() {
-        return contentList;
+    public double getLongitude() {
+        return longitude;
     }
 
-    public void setContentList(List<Content> contentList) {
-        this.contentList = contentList;
+    public void setLongitude(double longitude) {
+        this.longitude = longitude;
+    }
+
+    public HashMap<String, Content> getContentList() {
+        return ContentList;
+    }
+
+    public void setContentList(HashMap<String, Content> ContentList) {
+        this.ContentList = ContentList;
     }
 }

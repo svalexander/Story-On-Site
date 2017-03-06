@@ -2,7 +2,7 @@ package nyc.c4q.helenchan.makinghistory.backend;
 
 import java.util.List;
 
-import nyc.c4q.helenchan.makinghistory.model.Feature;
+import nyc.c4q.helenchan.makinghistory.models.nypl.Feature;
 import retrofit2.Call;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;

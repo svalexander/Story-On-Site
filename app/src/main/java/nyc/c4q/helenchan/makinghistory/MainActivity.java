@@ -17,7 +17,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
-import nyc.c4q.helenchan.makinghistory.model.FeatureResponse;
+import nyc.c4q.helenchan.makinghistory.models.nypl.FeatureResponse;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -30,23 +30,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         setContentView(R.layout.activity_main);
         initViews();
         setListeners();
-        parseJSON(this);
-
-    }
-
-
-    public void parseJSON(Context context) {
-
-        try {
-            AssetFileDescriptor fileDescriptor = context.getAssets().openFd("map.json");
-            final BufferedReader reader = new BufferedReader(new InputStreamReader(fileDescriptor.createInputStream()));
-            Gson gson = new Gson();
-            FeatureResponse featureResponse = gson.fromJson(reader, FeatureResponse.class);
-            Log.d(TAG, "parsing" + " "  + featureResponse.features.size());
-
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
 
     }
 

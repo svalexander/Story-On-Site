@@ -1,4 +1,4 @@
-package nyc.c4q.helenchan.makinghistory.model;
+package nyc.c4q.helenchan.makinghistory.models.nypl;
 
 /**
  * Created by akashaarcher on 3/4/17.
@@ -21,6 +21,7 @@ public class Properties {
 //        this.validSince = validSince;
 //        this.validUntil = validUntil;
 //    }
+
 
     public String getId() {
         return id;
