@@ -50,11 +50,11 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-import nyc.c4q.helenchan.makinghistory.model.Feature;
-import nyc.c4q.helenchan.makinghistory.model.FeatureResponse;
 import nyc.c4q.helenchan.makinghistory.models.Content;
 import nyc.c4q.helenchan.makinghistory.models.Coordinate;
 import nyc.c4q.helenchan.makinghistory.models.MapPoint;
+import nyc.c4q.helenchan.makinghistory.models.nypl.Feature;
+import nyc.c4q.helenchan.makinghistory.models.nypl.FeatureResponse;
 
 public class ExploreMoreActivity extends BaseActivity implements OnMapReadyCallback, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, GoogleMap.OnMarkerClickListener, MapListener {
 

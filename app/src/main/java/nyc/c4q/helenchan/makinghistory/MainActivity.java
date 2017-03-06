@@ -17,7 +17,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
-import nyc.c4q.helenchan.makinghistory.model.FeatureResponse;
+import nyc.c4q.helenchan.makinghistory.models.nypl.FeatureResponse;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 

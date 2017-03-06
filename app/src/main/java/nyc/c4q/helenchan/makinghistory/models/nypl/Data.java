@@ -1,4 +1,4 @@
-package nyc.c4q.helenchan.makinghistory.model;
+package nyc.c4q.helenchan.makinghistory.models.nypl;
 
 /**
  * Created by akashaarcher on 3/4/17.

@@ -74,6 +74,6 @@ public class ViewContentActivity extends AppCompatActivity {
             public void onCancelled(DatabaseError databaseError) {
 
             }
-        });a
+        });
     }
 }
