@@ -1,22 +1,14 @@
 package nyc.c4q.helenchan.makinghistory;
 
+import android.support.v7.app.AppCompatActivity;
+
 import java.util.List;
 
 /**
  * Created by leighdouglas on 3/4/17.
  */
 
-public class DatabaseHelper<K> {
-    List<K> json;
+public class DatabaseHelper extends AppCompatActivity{
 
-    public void sortList(List<K> k){
-        for (K item : k){
-            //create new object
-            //push into database;
-           // pushToDatabase(new object);
-        }
-    }
-    public void pushToDatabase(){
-        //push item into database at appropriate location
-    }
+
 }
