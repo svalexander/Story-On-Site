@@ -5,4 +5,5 @@
     <dimen name="main_picture">175dp</dimen>
     <dimen name="main_pic_margin">4dp</dimen>
     <dimen name="button_margin">1dp</dimen>
+    <dimen name="content_img_space_below">8dp</dimen>
 </resources>
