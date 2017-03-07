@@ -22,6 +22,7 @@ public class Properties {
 //        this.validUntil = validUntil;
 //    }
 
+
     public String getId() {
         return id;
     }

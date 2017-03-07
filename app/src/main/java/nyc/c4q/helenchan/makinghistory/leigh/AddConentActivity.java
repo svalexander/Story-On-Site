@@ -1,6 +1,7 @@
 package nyc.c4q.helenchan.makinghistory.leigh;
 
 import android.Manifest;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
@@ -19,10 +20,11 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.TextView;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 import android.widget.VideoView;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -52,11 +54,10 @@ public class AddConentActivity extends BaseActivity implements View.OnClickListe
     static int REQUEST_VIDEO_CAPTURE = 2;
 
     private DatabaseReference mFirebaseDatabase;
-    private DatabaseReference mFirebaseDatabase2;
-
     private FirebaseStorage mFirebaseStorage;
     private StorageReference myStorageRef;
     private Uri downloadUri;
+    private ProgressDialog mProgressDialog;
 
     private Button takePhoto;
     private Button addLocation;
@@ -103,6 +104,7 @@ public class AddConentActivity extends BaseActivity implements View.OnClickListe
         addLocation.setOnClickListener(this);
         takeVideo = (Button) findViewById(R.id.bttn_takeVideo);
         takeVideo.setOnClickListener(this);
+        mProgressDialog = new ProgressDialog(this);
     }
 
     private void setFontType() {
@@ -120,16 +122,19 @@ public class AddConentActivity extends BaseActivity implements View.OnClickListe
             Bitmap imageBitmap = (Bitmap) extras.get("data");
             imagePreview.setImageBitmap(imageBitmap);
 
-            StorageReference photoStorageReference = myStorageRef.child("photos").child("uploads");
+            mProgressDialog.setMessage("Uploading Image");
+            mProgressDialog.show();
+            String randomID = java.util.UUID.randomUUID().toString();
+            StorageReference photoStorageReference = myStorageRef.child("photos").child(randomID);
             ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
             imageBitmap.compress(Bitmap.CompressFormat.JPEG, 100, byteArrayOutputStream);
             byte[] photoByteArray = byteArrayOutputStream.toByteArray();
-
 
             UploadTask uploadTask = photoStorageReference.putBytes(photoByteArray);
             uploadTask.addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                 @Override
                 public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                    mProgressDialog.dismiss();
                     Toast.makeText(getApplicationContext(), "Uploaded", Toast.LENGTH_SHORT).show();
                     downloadUri = taskSnapshot.getDownloadUrl();
                 }
@@ -171,7 +176,7 @@ public class AddConentActivity extends BaseActivity implements View.OnClickListe
                     Toast.makeText(getApplicationContext(), "location connected made", Toast.LENGTH_LONG);
                     Location mLastLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
                     //saveToFirebase(mLastLocation);
-                    addContentToDatabase();
+                    //addContentToDatabase();
                 }
             default:
         }
@@ -243,20 +248,20 @@ public class AddConentActivity extends BaseActivity implements View.OnClickListe
                 .build();
     }
 
-    private void addContentToDatabase(){
-        List<Content> highlineImages = new ArrayList<>();
-        highlineImages.add(new Content("Highline", "Historical", "This was the highline a long time ago", "HighLine", "http://oldnyc-assets.nypl.org/600px/707997f-a.jpg", "1920"));
-        highlineImages.add(new Content("Highline", "Historical", "This was the highline a long time ago", "HighLine", "http://oldnyc-assets.nypl.org/600px/712105f-a.jpg", "1920"));
-        highlineImages.add(new Content("Highline", "Historical", "This was the highline a long time ago", "HighLine", "http://oldnyc-assets.nypl.org/600px/708690f-a.jpg", "1920"));
-        MapPoint highline = new MapPoint(new Coordinate(-74.005452, 40.720398), highlineImages);
-        List<Content> washingtonSqImages = new ArrayList<>();
-        washingtonSqImages.add(new Content("Washington Sq", "Historical", "This was the washsq a long time ago", "wash sq", "http://oldnyc-assets.nypl.org/600px/707997f-a.jpg", "1920"));
-        washingtonSqImages.add(new Content("Washington Sq", "Historical", "This was the washsq a long time ago", "wash sq", "http://oldnyc-assets.nypl.org/600px/707997f-a.jpg", "1920"));
-        washingtonSqImages.add(new Content("Washington Sq", "Historical", "This was the washsq a long time ago", "wash sq", "http://oldnyc-assets.nypl.org/600px/707997f-a.jpg", "1920"));
-        MapPoint washSq = new MapPoint(new Coordinate(-73.9352932, 40.7417145), washingtonSqImages);
+    private void addContentToDatabase() {
 
-        mFirebaseDatabase.child("locations").child("Location1").setValue(highline);
-        mFirebaseDatabase.child("locations").child("Location2").setValue(washSq);
+        //first line adds a coordinate, second location adds content to list at that location
+        mFirebaseDatabase.child("MapPoint").child("Location3").setValue(new Coordinate(40.720398, -74.025452));
+        mFirebaseDatabase.child("MapPoint").child("Location3").child("ContentList").push().setValue(new Content("Highline", "Historical", "This was the highline a long time ago", "HighLine", "http://oldnyc-assets.nypl.org/600px/712105f-a.jpg", "1920"));
+        mFirebaseDatabase.child("MapPoint").child("Location3").child("ContentList").push().setValue(new Content("Highline", "Historical", "This was the highline a long time ago", "HighLine", "http://oldnyc-assets.nypl.org/600px/712105f-a.jpg", "1920"));
+        mFirebaseDatabase.child("MapPoint").child("Location3").child("ContentList").push().setValue(new Content("Highline", "Historical", "This was the highline a long time ago", "HighLine", "http://oldnyc-assets.nypl.org/600px/712105f-a.jpg", "1920"));
+        mFirebaseDatabase.child("MapPoint").child("Location3").child("ContentList").push().setValue(new Content("Highline", "Historical", "This was the highline a long time ago", "HighLine", "http://oldnyc-assets.nypl.org/600px/712105f-a.jpg", "1920"));
+
+
+//        these two lines of code are super important. this is how you push new contents into the list of data at a point
+//        mFirebaseDatabase.child("MapPoint").child("Location2").child("Content").push().setValue(new Content("Washington Sq", "Historical", "This was the washsq a long time ago", "wash sq", "http://oldnyc-assets.nypl.org/600px/707997f-a.jpg", "1920"));
+//        mFirebaseDatabase.child("MapPoint").child("Location2").child("Content").push().setValue(new Content("Washington Sq", "Historical", "This was the washsq a long time ago", "wash sq22", "http://oldnyc-assets.nypl.org/600px/707997f-a.jpg", "1920"));
+
     }
 
 }
