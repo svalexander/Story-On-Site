@@ -48,7 +48,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         switch (view.getId()) {
             case R.id.skipBtn:
                 fadeOutAnimation = AnimationUtils.loadAnimation(MainActivity.this, R.anim.fade_out);
-                Intent skipIntent = new Intent(MainActivity.this, ExploreMoreActivity.class);
+                Intent skipIntent = new Intent(MainActivity.this, BaseActivity.class);
                 startActivity(skipIntent);
                //     overridePendingTransition(fadeOutAnimation,fadeInAnimation );
         }

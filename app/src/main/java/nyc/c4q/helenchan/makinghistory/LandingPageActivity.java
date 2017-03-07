@@ -36,7 +36,7 @@ public class LandingPageActivity extends BaseActivity implements View.OnClickLis
     }
 
     private void initViews() {
-        pntOfInterestLayout = (FrameLayout) findViewById(R.id.point_interest_layout);
+       // pntOfInterestLayout = (FrameLayout) findViewById(R.id.point_interest_layout);
         exploreLayout = (FrameLayout) findViewById(R.id.explore_layout);
         createLayout = (FrameLayout) findViewById(R.id.create_layout);
         loginLayout = (FrameLayout) findViewById(R.id.loginFrameLayout);
@@ -61,9 +61,9 @@ public class LandingPageActivity extends BaseActivity implements View.OnClickLis
                 startActivity(createIntent);
                 break;
             case R.id.point_interest_layout:
-                Intent pntInterestIntent = new Intent(LandingPageActivity.this, PointOfInterestActivity.class);
-                startActivity(pntInterestIntent);
-                break;
+//                Intent pntInterestIntent = new Intent(LandingPageActivity.this, PointOfInterestActivity.class);
+//                startActivity(pntInterestIntent);
+//                break;
 
         }
     }

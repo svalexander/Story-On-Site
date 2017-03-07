@@ -21,7 +21,7 @@ public class SuggestedFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-    View root = inflater.inflate(R.layout.activity_point_of_interest, container, false);
+    View root = inflater.inflate(R.layout.suggested_fragment, container, false);
         return root;
     }
 }

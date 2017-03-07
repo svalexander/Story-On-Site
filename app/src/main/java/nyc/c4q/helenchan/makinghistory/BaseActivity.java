@@ -1,6 +1,5 @@
 package nyc.c4q.helenchan.makinghistory;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
@@ -27,6 +26,7 @@ public class BaseActivity extends AppCompatActivity implements BottomNavigationV
 
     CreateYourStoryFragment createYourStoryFragment = new CreateYourStoryFragment();
     SuggestedFragment suggestedFragment = new SuggestedFragment();
+    ExploreMoreFragment exploreMoreFragment = new ExploreMoreFragment();
     private FrameLayout baseLayout;
 
     @Override
@@ -38,11 +38,19 @@ public class BaseActivity extends AppCompatActivity implements BottomNavigationV
         initViews();
         setListeners();
         setFontType();
+        inflateDefaultView();
     }
 
     private void initViews(){
         bottomNav = (BottomNavigationView) findViewById(R.id.bottom_nav_view);
         baseLayout = (FrameLayout) findViewById(R.id.base_frame_Layout);
+
+    }
+
+    private void inflateDefaultView(){
+        FragmentTransaction exploreFragTransaction = getSupportFragmentManager().beginTransaction();
+        exploreFragTransaction.replace(R.id.base_frame_Layout,exploreMoreFragment);
+        exploreFragTransaction.commit();
     }
 
     private void setListeners(){
@@ -75,8 +83,7 @@ public class BaseActivity extends AppCompatActivity implements BottomNavigationV
                createFragTransaction.commit();
                break;
            case R.id.exploreIcon:
-               Intent exploreIntent = new Intent(getBaseContext(), ExploreMoreActivity.class);
-               startActivity(exploreIntent);
+               inflateDefaultView();
        }
         return true;
     }
@@ -88,7 +95,6 @@ public class BaseActivity extends AppCompatActivity implements BottomNavigationV
         inflater.inflate(R.menu.main_menu, menu);
         return true;
     }
-
 
 
     @Override
