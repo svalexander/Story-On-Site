@@ -1,6 +1,5 @@
 package nyc.c4q.helenchan.makinghistory;
 
-import android.*;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -16,13 +15,18 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.FrameLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import com.firebase.ui.auth.AuthUI;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -36,23 +40,18 @@ import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 import com.google.gson.Gson;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.Arrays;
 import java.util.List;
 
-import nyc.c4q.helenchan.makinghistory.models.Content;
-import nyc.c4q.helenchan.makinghistory.models.Coordinate;
-import nyc.c4q.helenchan.makinghistory.models.MapPoint;
 import nyc.c4q.helenchan.makinghistory.models.nypl.Feature;
 import nyc.c4q.helenchan.makinghistory.models.nypl.FeatureResponse;
 
@@ -60,6 +59,14 @@ public class ExploreMoreActivity extends BaseActivity implements OnMapReadyCallb
 
     private DatabaseReference mFirebaseDatabase;
     private DatabaseReference mFirebaseDatabase2;
+    private static final String ANONYMOUS = "ANONYMOUS";
+    private static final int RC_SIGN_IN = 1;
+    private FirebaseDatabase loginFirebaseDatabase;
+    private FirebaseAuth mFirebaseAuth;
+    private FirebaseAuth.AuthStateListener mAuthStateListener;
+    private String mUsername;
+    private TextView signInTV;
+    private TextView welcomeTV;
 
     private MapListener mapListener;
     private static final String TAG = "Main Activity";
@@ -77,6 +84,18 @@ public class ExploreMoreActivity extends BaseActivity implements OnMapReadyCallb
         mapListener = this;
         baseLayout = (FrameLayout) findViewById(R.id.base_frame_Layout);
         getLayoutInflater().inflate(R.layout.activity_map, baseLayout);
+        loginFirebaseDatabase = FirebaseDatabase.getInstance();
+        mFirebaseAuth = FirebaseAuth.getInstance();
+        mUsername = ANONYMOUS;
+        setAuthenticationListener();
+        signInTV = (TextView) findViewById(R.id.sign_in_tv);
+        signInTV.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getLoginScreen();
+            }
+        });
+        welcomeTV = (TextView) findViewById(R.id.welcome_tv);
 
         if (checkPlayServices()) {
 
@@ -285,6 +304,83 @@ public class ExploreMoreActivity extends BaseActivity implements OnMapReadyCallb
 
         }
 
+    }
+
+
+    private void setAuthenticationListener() {
+        mAuthStateListener = new FirebaseAuth.AuthStateListener() {
+            @Override
+            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
+                FirebaseUser user = firebaseAuth.getCurrentUser();
+                if (user != null) {
+                    mUsername = user.getDisplayName();
+                    welcomeTV.setVisibility(View.VISIBLE);
+                    welcomeTV.setText("Hello " + mUsername);
+                    signInTV.setVisibility(View.GONE);
+
+                } else {
+                    welcomeTV.setVisibility(View.GONE);
+                    signInTV.setVisibility(View.VISIBLE);
+                }
+            }
+        };
+    }
+
+    private void getLoginScreen() {
+        startActivityForResult(
+                AuthUI.getInstance()
+                        .createSignInIntentBuilder()
+                        .setIsSmartLockEnabled(false)
+                        .setProviders(Arrays.asList(new AuthUI.IdpConfig.Builder(AuthUI.EMAIL_PROVIDER).build(),
+                                new AuthUI.IdpConfig.Builder(AuthUI.GOOGLE_PROVIDER).build()))
+                        .build(),
+                RC_SIGN_IN);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == RC_SIGN_IN) {
+            if (resultCode == RESULT_OK) {
+                Toast.makeText(ExploreMoreActivity.this, "Welcome", Toast.LENGTH_SHORT).show();
+            } else if (resultCode == RESULT_CANCELED) {
+                Toast.makeText(ExploreMoreActivity.this, "Canceled", Toast.LENGTH_SHORT).show();
+                finish();
+            }
+        }
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.main_menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.sign_out_menu:
+                AuthUI.getInstance().signOut(this);
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+
+        }
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        if (mAuthStateListener != null) {
+            mFirebaseAuth.removeAuthStateListener(mAuthStateListener);
+        }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        mFirebaseAuth.addAuthStateListener(mAuthStateListener);
     }
 }
 
