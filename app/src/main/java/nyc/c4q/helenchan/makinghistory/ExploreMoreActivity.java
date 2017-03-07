@@ -106,7 +106,6 @@ public class ExploreMoreActivity extends BaseActivity implements OnMapReadyCallb
         mMap.moveCamera(update);
     }
 
-
     @Override
     public void onMapReady(GoogleMap googleMap) {
 
@@ -130,17 +129,18 @@ public class ExploreMoreActivity extends BaseActivity implements OnMapReadyCallb
             Toast.makeText(getApplicationContext(), "To view your location, please visit settings and change location permissions", Toast.LENGTH_LONG).show();
         }
 
-        mFirebaseDatabase = FirebaseDatabase.getInstance().getReference();
+        mFirebaseDatabase = FirebaseDatabase.getInstance().getReference().child("locations");
         mFirebaseDatabase.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 Log.d(TAG, "onDataChange: ");
-                Coordinate location = dataSnapshot.child("location").getValue(Coordinate.class);
-                Log.d("Latitude", String.valueOf(location.getLatitude()));
-                LatLng currentLocation = location.toLatLng();
-                mMap.addMarker(new MarkerOptions().position(currentLocation).title("first location"));
-                mMap.moveCamera(CameraUpdateFactory.newLatLng(currentLocation));
+                for (DataSnapshot ds : dataSnapshot.getChildren()) {
+                    Log.d("this worked", ds.getValue(Coordinate.class).toString());
+                    Coordinate coord = ds.getValue(Coordinate.class);
+                    LatLng currentLocation = coord.toLatLng();
+                    mMap.addMarker(new MarkerOptions().position(currentLocation).title("first location"));
 
+                }
             }
 
             @Override

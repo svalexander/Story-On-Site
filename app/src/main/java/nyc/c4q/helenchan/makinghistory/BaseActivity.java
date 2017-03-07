@@ -14,9 +14,6 @@ import nyc.c4q.helenchan.makinghistory.leigh.AddConentActivity;
 public class BaseActivity extends AppCompatActivity implements BottomNavigationView.OnNavigationItemSelectedListener {
 
     private BottomNavigationView bottomNav;
-    private Icon suggested;
-    private Icon explore;
-    private Icon create;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

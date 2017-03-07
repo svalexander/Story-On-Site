@@ -5,12 +5,14 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.location.Location;
+import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.content.FileProvider;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
@@ -27,19 +29,34 @@ import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.FusedLocationProviderApi;
 import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 
+import java.io.ByteArrayOutputStream;
+
+import java.util.ArrayList;
+import java.util.List;
 import me.anwarshahriar.calligrapher.Calligrapher;
 import nyc.c4q.helenchan.makinghistory.BaseActivity;
 import nyc.c4q.helenchan.makinghistory.R;
+import nyc.c4q.helenchan.makinghistory.models.Content;
 import nyc.c4q.helenchan.makinghistory.models.Coordinate;
+import nyc.c4q.helenchan.makinghistory.models.MapPoint;
 
 public class AddConentActivity extends BaseActivity implements View.OnClickListener, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, LocationListener {
     static int REQUEST_IMAGE_CAPTURE = 1;
     static int REQUEST_VIDEO_CAPTURE = 2;
 
     private DatabaseReference mFirebaseDatabase;
+    private DatabaseReference mFirebaseDatabase2;
+
+    private FirebaseStorage mFirebaseStorage;
+    private StorageReference myStorageRef;
+    private Uri downloadUri;
 
     private Button takePhoto;
     private Button addLocation;
@@ -62,12 +79,10 @@ public class AddConentActivity extends BaseActivity implements View.OnClickListe
         getLayoutInflater().inflate(R.layout.activity_addcontent, baseLayout);
 
         mFirebaseDatabase = FirebaseDatabase.getInstance().getReference();
+        mFirebaseStorage = FirebaseStorage.getInstance();
+        myStorageRef = mFirebaseStorage.getReference();
 
-        mGoogleApiClient = new GoogleApiClient.Builder(this)
-                .addConnectionCallbacks(this)
-                .addOnConnectionFailedListener(this)
-                .addApi(LocationServices.API)
-                .build();
+        buildGoogleApi();
 
         initViews();
         setFontType();
@@ -104,6 +119,22 @@ public class AddConentActivity extends BaseActivity implements View.OnClickListe
             Bundle extras = data.getExtras();
             Bitmap imageBitmap = (Bitmap) extras.get("data");
             imagePreview.setImageBitmap(imageBitmap);
+
+            StorageReference photoStorageReference = myStorageRef.child("photos").child("uploads");
+            ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+            imageBitmap.compress(Bitmap.CompressFormat.JPEG, 100, byteArrayOutputStream);
+            byte[] photoByteArray = byteArrayOutputStream.toByteArray();
+
+
+            UploadTask uploadTask = photoStorageReference.putBytes(photoByteArray);
+            uploadTask.addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                @Override
+                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                    Toast.makeText(getApplicationContext(), "Uploaded", Toast.LENGTH_SHORT).show();
+                    downloadUri = taskSnapshot.getDownloadUrl();
+                }
+            });
+
         }
     }
 
@@ -139,7 +170,8 @@ public class AddConentActivity extends BaseActivity implements View.OnClickListe
                     Log.d("success", "successful connection");
                     Toast.makeText(getApplicationContext(), "location connected made", Toast.LENGTH_LONG);
                     Location mLastLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
-                    saveToFirebase(mLastLocation);
+                    //saveToFirebase(mLastLocation);
+                    addContentToDatabase();
                 }
             default:
         }
@@ -202,4 +234,29 @@ public class AddConentActivity extends BaseActivity implements View.OnClickListe
         mGoogleApiClient.disconnect();
         super.onStop();
     }
+
+    private void buildGoogleApi(){
+        mGoogleApiClient = new GoogleApiClient.Builder(this)
+                .addConnectionCallbacks(this)
+                .addOnConnectionFailedListener(this)
+                .addApi(LocationServices.API)
+                .build();
+    }
+
+    private void addContentToDatabase(){
+        List<Content> highlineImages = new ArrayList<>();
+        highlineImages.add(new Content("Highline", "Historical", "This was the highline a long time ago", "HighLine", "http://oldnyc-assets.nypl.org/600px/707997f-a.jpg", "1920"));
+        highlineImages.add(new Content("Highline", "Historical", "This was the highline a long time ago", "HighLine", "http://oldnyc-assets.nypl.org/600px/712105f-a.jpg", "1920"));
+        highlineImages.add(new Content("Highline", "Historical", "This was the highline a long time ago", "HighLine", "http://oldnyc-assets.nypl.org/600px/708690f-a.jpg", "1920"));
+        MapPoint highline = new MapPoint(new Coordinate(-74.005452, 40.720398), highlineImages);
+        List<Content> washingtonSqImages = new ArrayList<>();
+        washingtonSqImages.add(new Content("Washington Sq", "Historical", "This was the washsq a long time ago", "wash sq", "http://oldnyc-assets.nypl.org/600px/707997f-a.jpg", "1920"));
+        washingtonSqImages.add(new Content("Washington Sq", "Historical", "This was the washsq a long time ago", "wash sq", "http://oldnyc-assets.nypl.org/600px/707997f-a.jpg", "1920"));
+        washingtonSqImages.add(new Content("Washington Sq", "Historical", "This was the washsq a long time ago", "wash sq", "http://oldnyc-assets.nypl.org/600px/707997f-a.jpg", "1920"));
+        MapPoint washSq = new MapPoint(new Coordinate(-73.9352932, 40.7417145), washingtonSqImages);
+
+        mFirebaseDatabase.child("locations").child("Location1").setValue(highline);
+        mFirebaseDatabase.child("locations").child("Location2").setValue(washSq);
+    }
+
 }
