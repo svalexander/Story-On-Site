@@ -23,6 +23,8 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 import android.widget.VideoView;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -40,6 +42,7 @@ import java.io.ByteArrayOutputStream;
 
 import java.util.ArrayList;
 import java.util.List;
+import me.anwarshahriar.calligrapher.Calligrapher;
 import nyc.c4q.helenchan.makinghistory.BaseActivity;
 import nyc.c4q.helenchan.makinghistory.R;
 import nyc.c4q.helenchan.makinghistory.models.Content;
@@ -65,6 +68,9 @@ public class AddConentActivity extends BaseActivity implements View.OnClickListe
     private FusedLocationProviderApi fusedLocationProviderApi = LocationServices.FusedLocationApi;
     private GoogleApiClient mGoogleApiClient;
     private FrameLayout baseLayout;
+    private TextView titleTV;
+    private LinearLayout btnLayout;
+    private FrameLayout userPreviewLayout;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -80,6 +86,7 @@ public class AddConentActivity extends BaseActivity implements View.OnClickListe
         buildGoogleApi();
 
         initViews();
+        setFontType();
 
         if (!checkPermissions()) {
             requestPermissions();
@@ -87,6 +94,9 @@ public class AddConentActivity extends BaseActivity implements View.OnClickListe
     }
 
     private void initViews() {
+        userPreviewLayout = (FrameLayout) findViewById(R.id.user_preview_layout);
+        titleTV = (TextView) findViewById(R.id.create_title_tv);
+        btnLayout = (LinearLayout) findViewById(R.id.user_actions_layout);
         imagePreview = (ImageView) findViewById(R.id.display_image);
         takePhoto = (Button) findViewById(R.id.bttn_takePic);
         takePhoto.setOnClickListener(this);
@@ -95,6 +105,13 @@ public class AddConentActivity extends BaseActivity implements View.OnClickListe
         takeVideo = (Button) findViewById(R.id.bttn_takeVideo);
         takeVideo.setOnClickListener(this);
         mProgressDialog = new ProgressDialog(this);
+    }
+
+    private void setFontType() {
+        Calligrapher calligrapher = new Calligrapher(this);
+        calligrapher.setFont(this, "ArimaMadurai-Bold.ttf", true);
+        calligrapher.setFont(findViewById(R.id.user_actions_layout), "Raleway-Regular.ttf");
+        calligrapher.setFont(findViewById(R.id.user_preview_layout), "Raleway-Regular.ttf");
     }
 
     @Override
