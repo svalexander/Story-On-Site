@@ -8,5 +8,13 @@
         android:title="@string/sign_out"
         android:visible="true"
         app:showAsAction="never" />
+
+    <item
+        android:id="@+id/user_profile"
+        android:title="@string/user_profile_menu"
+        android:visible="true"
+        app:showAsAction="never" />
+
+
 </menu>
 
