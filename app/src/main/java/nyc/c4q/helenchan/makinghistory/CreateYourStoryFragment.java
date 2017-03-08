@@ -105,16 +105,19 @@ public class CreateYourStoryFragment extends Fragment implements View.OnClickLis
         saveContent = (Button) root.findViewById(R.id.saveBtn);
         saveContent.setOnClickListener(this);
 
-
+        setActionBarTitle(root);
         setFontType(root);
         return root;
     }
 
     private void setFontType(View view) {
         Calligrapher calligrapher = new Calligrapher(getActivity());
-        calligrapher.setFont(getActivity(), "ArimaMadurai-Bold.ttf", true);
         calligrapher.setFont(view.findViewById(R.id.user_actions_layout), "Raleway-Regular.ttf");
         calligrapher.setFont(view.findViewById(R.id.user_preview_layout), "Raleway-Regular.ttf");
+    }
+
+    private void setActionBarTitle(View v) {
+        ((BaseActivity) v.getContext()).getSupportActionBar().setTitle(R.string.share_story);
     }
 
     @Override
@@ -271,7 +274,7 @@ public class CreateYourStoryFragment extends Fragment implements View.OnClickLis
 
 //    private void addContentToDatabase() {
 
-        //first line adds a coordinate, second location adds content to list at that location
+    //first line adds a coordinate, second location adds content to list at that location
 //        mFirebaseDatabase.child("MapPoint").child("Location3").setValue(new Coordinate(40.720398, -74.025452));
 //        mFirebaseDatabase.child("MapPoint").child("Location3").child("ContentList").push().setValue(new Content("Highline", "Historical", "This was the highline a long time ago", "HighLine", "http://oldnyc-assets.nypl.org/600px/712105f-a.jpg", "1920"));
 //        mFirebaseDatabase.child("MapPoint").child("Location3").child("ContentList").push().setValue(new Content("Highline", "Historical", "This was the highline a long time ago", "HighLine", "http://oldnyc-assets.nypl.org/600px/712105f-a.jpg", "1920"));
