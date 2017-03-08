@@ -46,6 +46,7 @@
             android:layout_alignBaseline="@+id/locationTV"
             android:layout_alignParentEnd="true"
             android:layout_alignParentRight="true"
+            android:background="@color/teal_accent"
             android:text="Search"/>
     </RelativeLayout>
 
