@@ -1,5 +1,6 @@
 package nyc.c4q.helenchan.makinghistory;
 
+import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
@@ -34,6 +35,7 @@ public class ViewContentActivity extends AppCompatActivity {
     private double lat;
     private double lng;
     private ViewContentAdapter viewContentAdapter;
+    private ProgressDialog mProgressDialog;
     private TextView titleTV;
 
     @Override
@@ -50,6 +52,7 @@ public class ViewContentActivity extends AppCompatActivity {
         Log.d("lat", String.valueOf(lat));
         titleTV = (TextView) findViewById(R.id.content_title);
         setFontType();
+        mProgressDialog = new ProgressDialog(this);
 
     }
 
@@ -72,7 +75,6 @@ public class ViewContentActivity extends AppCompatActivity {
                 }
 
                 viewContentAdapter.setMapContent(tempList);
-
             }
 
             @Override
