@@ -143,7 +143,12 @@ public class ExploreMoreFragment extends Fragment implements OnMapReadyCallback,
             }
         });
 
+        setActionBarTitle(root);
         return root;
+    }
+
+    private void setActionBarTitle(View v) {
+        ((BaseActivity) v.getContext()).getSupportActionBar().setTitle(R.string.explore_btn_text);
     }
 
     private boolean checkPlayServices() {

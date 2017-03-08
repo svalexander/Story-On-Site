@@ -1,15 +1,12 @@
 package nyc.c4q.helenchan.makinghistory;
 
-import android.*;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
-import android.location.Location;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
-import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
@@ -26,11 +23,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.VideoView;
 
-import com.google.android.gms.common.ConnectionResult;
-import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.gms.location.FusedLocationProviderApi;
-import com.google.android.gms.location.LocationListener;
-import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
@@ -42,7 +34,6 @@ import java.io.ByteArrayOutputStream;
 
 import me.anwarshahriar.calligrapher.Calligrapher;
 import nyc.c4q.helenchan.makinghistory.models.Content;
-import nyc.c4q.helenchan.makinghistory.models.Coordinate;
 
 import static android.app.Activity.RESULT_OK;
 import static com.facebook.FacebookSdk.getApplicationContext;
@@ -103,16 +94,19 @@ public class CreateYourStoryFragment extends Fragment implements View.OnClickLis
         saveContent = (Button) root.findViewById(R.id.saveBtn);
         saveContent.setOnClickListener(this);
 
-
+        setActionBarTitle(root);
         setFontType(root);
         return root;
     }
 
     private void setFontType(View view) {
         Calligrapher calligrapher = new Calligrapher(getActivity());
-        calligrapher.setFont(getActivity(), "ArimaMadurai-Bold.ttf", true);
         calligrapher.setFont(view.findViewById(R.id.user_actions_layout), "Raleway-Regular.ttf");
         calligrapher.setFont(view.findViewById(R.id.user_preview_layout), "Raleway-Regular.ttf");
+    }
+
+    private void setActionBarTitle(View v) {
+        ((BaseActivity) v.getContext()).getSupportActionBar().setTitle(R.string.share_story);
     }
 
     @Override
@@ -231,7 +225,7 @@ public class CreateYourStoryFragment extends Fragment implements View.OnClickLis
 
 //    private void addContentToDatabase() {
 
-        //first line adds a coordinate, second location adds content to list at that location
+    //first line adds a coordinate, second location adds content to list at that location
 //        mFirebaseDatabase.child("MapPoint").child("Location3").setValue(new Coordinate(40.720398, -74.025452));
 //        mFirebaseDatabase.child("MapPoint").child("Location3").child("ContentList").push().setValue(new Content("Highline", "Historical", "This was the highline a long time ago", "HighLine", "http://oldnyc-assets.nypl.org/600px/712105f-a.jpg", "1920"));
 //        mFirebaseDatabase.child("MapPoint").child("Location3").child("ContentList").push().setValue(new Content("Highline", "Historical", "This was the highline a long time ago", "HighLine", "http://oldnyc-assets.nypl.org/600px/712105f-a.jpg", "1920"));
