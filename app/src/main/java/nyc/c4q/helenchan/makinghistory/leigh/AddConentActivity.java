@@ -92,8 +92,6 @@ public class AddConentActivity extends BaseActivity implements View.OnClickListe
         imagePreview = (ImageView) findViewById(R.id.display_image);
         takePhoto = (Button) findViewById(R.id.bttn_takePic);
         takePhoto.setOnClickListener(this);
-        addLocation = (Button) findViewById(R.id.bttn_addLatLng);
-        addLocation.setOnClickListener(this);
         takeVideo = (Button) findViewById(R.id.bttn_takeVideo);
         takeVideo.setOnClickListener(this);
         mProgressDialog = new ProgressDialog(this);
@@ -164,9 +162,6 @@ public class AddConentActivity extends BaseActivity implements View.OnClickListe
                 } else {
                     Toast.makeText(this, "Please take a photo!", Toast.LENGTH_LONG).show();
                 }
-                break;
-            case R.id.bttn_addLatLng:
-                //grabUserLocation();
                 break;
             default:
         }

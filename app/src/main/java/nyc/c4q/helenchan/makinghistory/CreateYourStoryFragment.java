@@ -97,8 +97,6 @@ public class CreateYourStoryFragment extends Fragment implements View.OnClickLis
         imagePreview = (ImageView) root.findViewById(R.id.display_image);
         takePhoto = (Button) root.findViewById(R.id.bttn_takePic);
         takePhoto.setOnClickListener(this);
-        addLocation = (Button) root.findViewById(R.id.bttn_addLatLng);
-        addLocation.setOnClickListener(this);
         takeVideo = (Button) root.findViewById(R.id.bttn_takeVideo);
         takeVideo.setOnClickListener(this);
         mProgressDialog = new ProgressDialog(getActivity());

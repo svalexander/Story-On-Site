@@ -22,6 +22,8 @@
 
         <TextView
             android:id="@+id/welcome_tv"
+            android:textColor="@color/teal_accent"
+            android:textSize="16sp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:visibility="invisible"/>
@@ -58,6 +60,8 @@
         </EditText>
 
         <Button
+            android:background="@color/teal_accent"
+            android:textColor="@color/white_text"
             android:id="@+id/location_search_btn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
