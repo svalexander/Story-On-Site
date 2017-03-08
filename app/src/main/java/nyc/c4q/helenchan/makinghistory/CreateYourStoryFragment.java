@@ -51,7 +51,7 @@ import static com.facebook.FacebookSdk.getApplicationContext;
  * Created by shannonalexander-navarro on 3/6/17.
  */
 
-public class CreateYourStoryFragment extends Fragment implements View.OnClickListener, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, LocationListener {
+public class CreateYourStoryFragment extends Fragment implements View.OnClickListener, FindLocation.NearLocationListener {
     static int REQUEST_IMAGE_CAPTURE = 1;
     static int REQUEST_VIDEO_CAPTURE = 2;
 
@@ -66,13 +66,13 @@ public class CreateYourStoryFragment extends Fragment implements View.OnClickLis
     private Button takeVideo;
     private ImageView imagePreview;
     private VideoView videoView;
-    private boolean isConnected = false;
-    private FusedLocationProviderApi fusedLocationProviderApi = LocationServices.FusedLocationApi;
-    private GoogleApiClient mGoogleApiClient;
     private FrameLayout baseLayout;
     private TextView titleTV;
     private LinearLayout btnLayout;
     private FrameLayout userPreviewLayout;
+    private Bitmap imageBitmap;
+    private Button saveContent;
+    private String userLocationKey;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -81,8 +81,6 @@ public class CreateYourStoryFragment extends Fragment implements View.OnClickLis
         mFirebaseDatabase = FirebaseDatabase.getInstance().getReference();
         mFirebaseStorage = FirebaseStorage.getInstance();
         myStorageRef = mFirebaseStorage.getReference();
-
-        buildGoogleApi();
 
         if (!checkPermissions()) {
             requestPermissions();
@@ -104,6 +102,9 @@ public class CreateYourStoryFragment extends Fragment implements View.OnClickLis
         takeVideo = (Button) root.findViewById(R.id.bttn_takeVideo);
         takeVideo.setOnClickListener(this);
         mProgressDialog = new ProgressDialog(getActivity());
+        saveContent = (Button) root.findViewById(R.id.saveBtn);
+        saveContent.setOnClickListener(this);
+
 
         setFontType(root);
         return root;
@@ -121,46 +122,24 @@ public class CreateYourStoryFragment extends Fragment implements View.OnClickLis
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
             Bundle extras = data.getExtras();
-            Bitmap imageBitmap = (Bitmap) extras.get("data");
+            imageBitmap = (Bitmap) extras.get("data");
             imagePreview.setImageBitmap(imageBitmap);
 
-            mProgressDialog.setMessage("Uploading Image");
-            mProgressDialog.show();
-            String randomID = java.util.UUID.randomUUID().toString();
-            StorageReference photoStorageReference = myStorageRef.child("photos").child(randomID);
-            ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-            imageBitmap.compress(Bitmap.CompressFormat.JPEG, 100, byteArrayOutputStream);
-            byte[] photoByteArray = byteArrayOutputStream.toByteArray();
-
-            UploadTask uploadTask = photoStorageReference.putBytes(photoByteArray);
-            uploadTask.addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                @Override
-                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                    mProgressDialog.dismiss();
-                    Toast.makeText(getActivity(), "Uploaded", Toast.LENGTH_SHORT).show();
-                    downloadUri = taskSnapshot.getDownloadUrl();
-                }
-            });
-
         }
-    }
-
-    private void saveToFirebase(Location lastLocation) {
-        Coordinate currLocation = new Coordinate(lastLocation.getLatitude(), lastLocation.getLongitude());
-        mFirebaseDatabase.child("locations").push().setValue(currLocation);
     }
 
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
+
             case R.id.bttn_takePic:
-                if (checkPermissions()) {
-                    openCamera();
-                } else if (requestPermissions()) {
-                    openCamera();
-                } else {
-                    Toast.makeText(getApplicationContext(), "Permission denied by user", Toast.LENGTH_LONG).show();
-                }
+                mProgressDialog.setMessage("Checking user location");
+                mProgressDialog.show();
+
+                FindLocation findLocation = new FindLocation(getApplicationContext(), this);
+                findLocation.buildGoogleApiClient();
+                findLocation.connectApiClient();
+
                 break;
 
             case R.id.bttn_takeVideo:
@@ -172,16 +151,38 @@ public class CreateYourStoryFragment extends Fragment implements View.OnClickLis
                     Toast.makeText(getApplicationContext(), "Permission denied by user", Toast.LENGTH_LONG).show();
                 }
                 break;
-            case R.id.bttn_addLatLng:
-                if (isConnected) {
-                    Log.d("success", "successful connection");
-                    Toast.makeText(getApplicationContext(), "location connected made", Toast.LENGTH_LONG);
-                    Location mLastLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
-                    //saveToFirebase(mLastLocation);
-                    //addContentToDatabase();
+            case R.id.saveBtn:
+                if (imageBitmap != null) {
+                    mProgressDialog.setMessage("Uploading Image");
+                    mProgressDialog.show();
+                    String randomID = java.util.UUID.randomUUID().toString();
+                    StorageReference photoStorageReference = myStorageRef.child("photos").child(randomID);
+                    ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+                    imageBitmap.compress(Bitmap.CompressFormat.JPEG, 100, byteArrayOutputStream);
+                    byte[] photoByteArray = byteArrayOutputStream.toByteArray();
+
+                    UploadTask uploadTask = photoStorageReference.putBytes(photoByteArray);
+                    uploadTask.addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                        @Override
+                        public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                            mProgressDialog.dismiss();
+                            Toast.makeText(getApplicationContext(), "Uploaded", Toast.LENGTH_SHORT).show();
+                            downloadUri = taskSnapshot.getDownloadUrl();
+                            Log.d("location key", userLocationKey);
+                            addUserContentToDatabase(userLocationKey, downloadUri.toString());
+
+                        }
+                    });
+                } else {
+                    Toast.makeText(getApplicationContext(), "Please take a photo!", Toast.LENGTH_LONG).show();
                 }
+                break;
             default:
         }
+    }
+
+    private void addUserContentToDatabase(String userLocationKey, String url) {
+        mFirebaseDatabase.child("MapPoint").child(userLocationKey).child("ContentList").push().setValue(new Content(" ", "UserIdGoesHere", " ", "wash sq", url, "2017"));
     }
 
     private boolean checkPermissions() {
@@ -210,60 +211,54 @@ public class CreateYourStoryFragment extends Fragment implements View.OnClickLis
     }
 
     @Override
-    public void onConnected(@Nullable Bundle bundle) {
-        isConnected = true;
+    public void foundLocation(String userLocationkey, boolean foundLocation) {
+        this.userLocationKey = userLocationkey;
+        mProgressDialog.cancel();
+        clickedButton(foundLocation);
     }
 
-    @Override
-    public void onConnectionSuspended(int i) {
-        isConnected = false;
+    private void clickedButton(boolean foundLocation) {
+        Log.d("nearby", String.valueOf(foundLocation));
+        if (!foundLocation) {
+            Toast.makeText(getApplicationContext(), "Sorry, you're currently not near a location", Toast.LENGTH_LONG).show();
+        } else if (foundLocation && checkPermissions()) {
+            openCamera();
+        } else if (foundLocation && requestPermissions()) {
+            openCamera();
+        } else {
+            Toast.makeText(getApplicationContext(), "Permission denied by user", Toast.LENGTH_LONG).show();
+        }
     }
 
-    @Override
-    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
-        isConnected = false;
-    }
 
-    @Override
-    public void onLocationChanged(Location location) {
-        isConnected = true;
-    }
-
-    @Override
-    public void onStart() {
-        mGoogleApiClient.connect();
-        super.onStart();
-
-    }
-
-    @Override
-    public void onStop() {
-        mGoogleApiClient.disconnect();
-        super.onStop();
-    }
-
-    private void buildGoogleApi(){
-        mGoogleApiClient = new GoogleApiClient.Builder(getActivity())
-                .addConnectionCallbacks(this)
-                .addOnConnectionFailedListener(this)
-                .addApi(LocationServices.API)
-                .build();
-    }
-
-    private void addContentToDatabase() {
+//    private void addContentToDatabase() {
 
         //first line adds a coordinate, second location adds content to list at that location
-        mFirebaseDatabase.child("MapPoint").child("Location3").setValue(new Coordinate(40.720398, -74.025452));
-        mFirebaseDatabase.child("MapPoint").child("Location3").child("ContentList").push().setValue(new Content("Highline", "Historical", "This was the highline a long time ago", "HighLine", "http://oldnyc-assets.nypl.org/600px/712105f-a.jpg", "1920"));
-        mFirebaseDatabase.child("MapPoint").child("Location3").child("ContentList").push().setValue(new Content("Highline", "Historical", "This was the highline a long time ago", "HighLine", "http://oldnyc-assets.nypl.org/600px/712105f-a.jpg", "1920"));
-        mFirebaseDatabase.child("MapPoint").child("Location3").child("ContentList").push().setValue(new Content("Highline", "Historical", "This was the highline a long time ago", "HighLine", "http://oldnyc-assets.nypl.org/600px/712105f-a.jpg", "1920"));
-        mFirebaseDatabase.child("MapPoint").child("Location3").child("ContentList").push().setValue(new Content("Highline", "Historical", "This was the highline a long time ago", "HighLine", "http://oldnyc-assets.nypl.org/600px/712105f-a.jpg", "1920"));
+//        mFirebaseDatabase.child("MapPoint").child("Location3").setValue(new Coordinate(40.720398, -74.025452));
+//        mFirebaseDatabase.child("MapPoint").child("Location3").child("ContentList").push().setValue(new Content("Highline", "Historical", "This was the highline a long time ago", "HighLine", "http://oldnyc-assets.nypl.org/600px/712105f-a.jpg", "1920"));
+//        mFirebaseDatabase.child("MapPoint").child("Location3").child("ContentList").push().setValue(new Content("Highline", "Historical", "This was the highline a long time ago", "HighLine", "http://oldnyc-assets.nypl.org/600px/712105f-a.jpg", "1920"));
+//        mFirebaseDatabase.child("MapPoint").child("Location3").child("ContentList").push().setValue(new Content("Highline", "Historical", "This was the highline a long time ago", "HighLine", "http://oldnyc-assets.nypl.org/600px/712105f-a.jpg", "1920"));
+//        mFirebaseDatabase.child("MapPoint").child("Location3").child("ContentList").push().setValue(new Content("Highline", "Historical", "This was the highline a long time ago", "HighLine", "http://oldnyc-assets.nypl.org/600px/712105f-a.jpg", "1920"));
 
 
 //        these two lines of code are super important. this is how you push new contents into the list of data at a point
 //        mFirebaseDatabase.child("MapPoint").child("Location2").child("Content").push().setValue(new Content("Washington Sq", "Historical", "This was the washsq a long time ago", "wash sq", "http://oldnyc-assets.nypl.org/600px/707997f-a.jpg", "1920"));
 //        mFirebaseDatabase.child("MapPoint").child("Location2").child("Content").push().setValue(new Content("Washington Sq", "Historical", "This was the washsq a long time ago", "wash sq22", "http://oldnyc-assets.nypl.org/600px/707997f-a.jpg", "1920"));
 
-    }
+//    }
+
+//    private void addImagetomyapartment() {
+//        mFirebaseDatabase.child("MapPoint")
+//                .child("Location101")
+//                .child("ContentList")
+//                .push()
+//                .setValue(new Content("Brooklyn: Broadway between Cornelia and Jefferson Street", "Historical", "Building behind the above ground train", "Broadway between Cornelia and Jefferson Street", "https://3rdeyesolation.files.wordpress.com/2012/02/tumblr_lp3lwpq4ay1qe3h33o1_500.jpg?w=500", "1990"));
+//
+//    }
+
+//    private void saveToFirebase(Location lastLocation) {
+//        Coordinate currLocation = new Coordinate(lastLocation.getLatitude(), lastLocation.getLongitude());
+//        mFirebaseDatabase.child("locations").push().setValue(currLocation);
+//    }
 
 }

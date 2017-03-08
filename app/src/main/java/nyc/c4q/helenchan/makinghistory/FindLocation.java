@@ -71,8 +71,7 @@ public class FindLocation implements GoogleApiClient.ConnectionCallbacks, Google
     }
 
     private Location grabUserLocation() {
-        Location mLastLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
-        return mLastLocation;
+        return LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
     }
 
     private void checkUserLocation(final Location userLocation) {
@@ -85,15 +84,16 @@ public class FindLocation implements GoogleApiClient.ConnectionCallbacks, Google
                 String locationKey = "";
                 for (DataSnapshot ds : dataSnapshot.getChildren()) {
                     MapPoint mp = ds.getValue(MapPoint.class);
-                    locationKey = String.valueOf(ds.getKey());
                     mapLocation.setLatitude(mp.getLatitude());
                     mapLocation.setLongitude(mp.getLongitude());
-                    if(userLocation.distanceTo(mapLocation)<2549.0684){
+                    if(userLocation.distanceTo(mapLocation)<3300.0){
+                        locationKey = String.valueOf(ds.getKey());
                         temp = true;
                         break;
                     }
                     Log.d("distance to:", String.valueOf(userLocation.distanceTo(mapLocation)));
                 }
+
                 if(temp){
                     listener.foundLocation(locationKey, temp);
                 } else {

@@ -118,7 +118,7 @@ public class ExploreMoreFragment extends Fragment implements OnMapReadyCallback,
         if (checkPlayServices()) {
 
             SupportMapFragment mapFragment =
-                    (SupportMapFragment) getActivity().getSupportFragmentManager().findFragmentById(R.id.map);
+                    (SupportMapFragment) this.getChildFragmentManager().findFragmentById(R.id.map);
             mapFragment.getMapAsync(this);
 
             mLocationClient = new GoogleApiClient.Builder(getActivity())

@@ -39,8 +39,6 @@ import nyc.c4q.helenchan.makinghistory.BaseActivity;
 import nyc.c4q.helenchan.makinghistory.FindLocation;
 import nyc.c4q.helenchan.makinghistory.R;
 import nyc.c4q.helenchan.makinghistory.models.Content;
-import nyc.c4q.helenchan.makinghistory.models.Coordinate;
-import nyc.c4q.helenchan.makinghistory.models.MapPoint;
 
 public class AddConentActivity extends BaseActivity implements View.OnClickListener, FindLocation.NearLocationListener {
     static int REQUEST_IMAGE_CAPTURE = 1;
@@ -124,7 +122,6 @@ public class AddConentActivity extends BaseActivity implements View.OnClickListe
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.bttn_takePic:
-
                 mProgressDialog.setMessage("Checking user location");
                 mProgressDialog.show();
 
