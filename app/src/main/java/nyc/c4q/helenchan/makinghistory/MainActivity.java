@@ -1,12 +1,9 @@
 package nyc.c4q.helenchan.makinghistory;
 
-import android.content.Context;
 import android.content.Intent;
-import android.content.res.AssetFileDescriptor;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.Animation.AnimationListener;
@@ -14,14 +11,6 @@ import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-
-import com.google.gson.Gson;
-
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-
-import nyc.c4q.helenchan.makinghistory.models.nypl.FeatureResponse;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener, AnimationListener {
 
@@ -41,7 +30,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     }
 
-
     private void initViews() {
         skipBtn = (Button) findViewById(R.id.skipBtn);
     }
@@ -59,12 +47,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.skipBtn:
-                Intent skipIntent = new Intent(MainActivity.this, ExploreMoreActivity.class);
+                fadeOutAnimation = AnimationUtils.loadAnimation(MainActivity.this, R.anim.fade_out);
+                Intent skipIntent = new Intent(MainActivity.this, BaseActivity.class);
                 startActivity(skipIntent);
-                //    overridePendingTransition(fadeOutAnimation,fadeInAnimation );
-                //fadeOutAnimation = AnimationUtils.loadAnimation(MainActivity.this, R.anim.fade_out);
+               //     overridePendingTransition(fadeOutAnimation,fadeInAnimation );
         }
     }
+
 
     @Override
     public void onAnimationStart(Animation animation) {

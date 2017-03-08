@@ -13,12 +13,13 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.util.Log;
-import android.view.Menu;
-import android.view.MenuInflater;
+import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
@@ -55,7 +56,16 @@ import java.util.List;
 import nyc.c4q.helenchan.makinghistory.models.nypl.Feature;
 import nyc.c4q.helenchan.makinghistory.models.nypl.FeatureResponse;
 
-public class ExploreMoreActivity extends BaseActivity implements OnMapReadyCallback, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, GoogleMap.OnMarkerClickListener, MapListener {
+import static android.app.Activity.RESULT_CANCELED;
+import static android.app.Activity.RESULT_OK;
+import static android.content.Context.INPUT_METHOD_SERVICE;
+import static com.facebook.FacebookSdk.getApplicationContext;
+
+/**
+ * Created by shannonalexander-navarro on 3/7/17.
+ */
+
+public class ExploreMoreFragment extends Fragment implements OnMapReadyCallback, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, GoogleMap.OnMarkerClickListener, MapListener {
 
     private DatabaseReference mFirebaseDatabase;
     private DatabaseReference mFirebaseDatabase2;
@@ -78,32 +88,40 @@ public class ExploreMoreActivity extends BaseActivity implements OnMapReadyCallb
     private FrameLayout baseLayout;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
+
+    }
+
+    @Nullable
+    @Override
+    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+
+        View root = inflater.inflate(R.layout.activity_map, container, false);
         mapListener = this;
-        baseLayout = (FrameLayout) findViewById(R.id.base_frame_Layout);
-        getLayoutInflater().inflate(R.layout.activity_map, baseLayout);
+
         loginFirebaseDatabase = FirebaseDatabase.getInstance();
         mFirebaseAuth = FirebaseAuth.getInstance();
         mUsername = ANONYMOUS;
         setAuthenticationListener();
-        signInTV = (TextView) findViewById(R.id.sign_in_tv);
+
+        signInTV = (TextView) root.findViewById(R.id.sign_in_tv);
         signInTV.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 getLoginScreen();
             }
         });
-        welcomeTV = (TextView) findViewById(R.id.welcome_tv);
+        welcomeTV = (TextView) root.findViewById(R.id.welcome_tv);
 
         if (checkPlayServices()) {
 
             SupportMapFragment mapFragment =
-                    (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
+                    (SupportMapFragment) getActivity().getSupportFragmentManager().findFragmentById(R.id.map);
             mapFragment.getMapAsync(this);
 
-            mLocationClient = new GoogleApiClient.Builder(this)
+            mLocationClient = new GoogleApiClient.Builder(getActivity())
                     .addApi(LocationServices.API)
                     .addConnectionCallbacks(this)
                     .addOnConnectionFailedListener(this)
@@ -113,7 +131,7 @@ public class ExploreMoreActivity extends BaseActivity implements OnMapReadyCallb
         }
         mFirebaseDatabase2 = FirebaseDatabase.getInstance().getReference();
 
-        searchAddressBtn = (Button) findViewById(R.id.location_search_btn);
+        searchAddressBtn = (Button) root.findViewById(R.id.location_search_btn);
         searchAddressBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -124,15 +142,16 @@ public class ExploreMoreActivity extends BaseActivity implements OnMapReadyCallb
                 }
             }
         });
-    }
 
+        return root;
+    }
 
     private boolean checkPlayServices() {
         GoogleApiAvailability googleAPI = GoogleApiAvailability.getInstance();
-        int result = googleAPI.isGooglePlayServicesAvailable(this);
+        int result = googleAPI.isGooglePlayServicesAvailable(getActivity());
         if (result != ConnectionResult.SUCCESS) {
             if (googleAPI.isUserResolvableError(result)) {
-                googleAPI.getErrorDialog(this, result,
+                googleAPI.getErrorDialog(getActivity(), result,
                         PLAY_SERVICES_RESOLUTION_REQUEST).show();
             }
             return false;
@@ -169,11 +188,11 @@ public class ExploreMoreActivity extends BaseActivity implements OnMapReadyCallb
 //            Toast.makeText(getApplicationContext(), "To view your location, please visit settings and change location permissions", Toast.LENGTH_LONG).show();
 //        }
 
-        if (ContextCompat.checkSelfPermission(getApplicationContext(), android.Manifest.permission.ACCESS_FINE_LOCATION)
+        if (ContextCompat.checkSelfPermission(getActivity().getApplicationContext(), android.Manifest.permission.ACCESS_FINE_LOCATION)
                 == PackageManager.PERMISSION_GRANTED) {
             mMap.setMyLocationEnabled(true);
         } else {
-            ActivityCompat.requestPermissions(this, new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION}, 1);
+            ActivityCompat.requestPermissions(getActivity(), new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION}, 1);
             if (ContextCompat.checkSelfPermission(getApplicationContext(), android.Manifest.permission.ACCESS_FINE_LOCATION)
                     == PackageManager.PERMISSION_GRANTED) {
                 mMap.setMyLocationEnabled(true);
@@ -182,7 +201,7 @@ public class ExploreMoreActivity extends BaseActivity implements OnMapReadyCallb
 
         // TODO: update later
         // centers map on current user location, stack overflow solution. will update later
-        LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+        LocationManager locationManager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
         Criteria criteria = new Criteria();
         Location location = locationManager.getLastKnownLocation(locationManager.getBestProvider(criteria, false));
         if (location != null) {
@@ -190,28 +209,28 @@ public class ExploreMoreActivity extends BaseActivity implements OnMapReadyCallb
             googleMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
         }
 
-        parseJSON(this);
+        parseJSON(getActivity());
         mMap.setOnMarkerClickListener(this);
     }
 
     private void hideSoftKeyboard(View v) {
-        InputMethodManager imm = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
+        InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(INPUT_METHOD_SERVICE);
         imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
     }
 
     public void locateFromAddress(View v) throws IOException {
         hideSoftKeyboard(v);
 
-        EditText locationInput = (EditText) findViewById(R.id.location_search_input);
+        EditText locationInput = (EditText) v.findViewById(R.id.location_search_input);
         String searchString = locationInput.getText().toString();
 
-        Geocoder gc = new Geocoder(this);
+        Geocoder gc = new Geocoder(getActivity());
         List<Address> list = gc.getFromLocationName(searchString, 1);
 
         if (list.size() > 0) {
             Address add = list.get(0);
             String locality = add.getLocality();
-            Toast.makeText(this, "Found: " + locality, Toast.LENGTH_SHORT).show();
+            Toast.makeText(getActivity(), "Found: " + locality, Toast.LENGTH_SHORT).show();
 
             double lat = add.getLatitude();
             double lng = add.getLongitude();
@@ -221,17 +240,17 @@ public class ExploreMoreActivity extends BaseActivity implements OnMapReadyCallb
 
     @Override
     public void onConnected(@Nullable Bundle bundle) {
-        Toast.makeText(this, "Map working!!", Toast.LENGTH_SHORT).show();
+        Toast.makeText(getActivity(), "Map working!!", Toast.LENGTH_SHORT).show();
     }
 
     @Override
     public void onConnectionSuspended(int i) {
-        Toast.makeText(this, "Map creation interrupted", Toast.LENGTH_SHORT).show();
+        Toast.makeText(getActivity(), "Map creation interrupted", Toast.LENGTH_SHORT).show();
     }
 
     @Override
     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
-        Toast.makeText(this, "Map not connected!!", Toast.LENGTH_SHORT).show();
+        Toast.makeText(getActivity(), "Map not connected!!", Toast.LENGTH_SHORT).show();
     }
 
     private boolean checkPermissions() {
@@ -240,7 +259,7 @@ public class ExploreMoreActivity extends BaseActivity implements OnMapReadyCallb
     }
 
     private boolean requestPermissions() {
-        ActivityCompat.requestPermissions(this, new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION,}, 1);
+        ActivityCompat.requestPermissions(getActivity(), new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION,}, 1);
         return checkPermissions();
     }
 
@@ -338,30 +357,24 @@ public class ExploreMoreActivity extends BaseActivity implements OnMapReadyCallb
     }
 
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == RC_SIGN_IN) {
             if (resultCode == RESULT_OK) {
-                Toast.makeText(ExploreMoreActivity.this, "Welcome", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getActivity(), "Welcome", Toast.LENGTH_SHORT).show();
             } else if (resultCode == RESULT_CANCELED) {
-                Toast.makeText(ExploreMoreActivity.this, "Canceled", Toast.LENGTH_SHORT).show();
-                finish();
+                Toast.makeText(getActivity(), "Canceled", Toast.LENGTH_SHORT).show();
+                getActivity().finish();
             }
         }
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.main_menu, menu);
-        return true;
-    }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.sign_out_menu:
-                AuthUI.getInstance().signOut(this);
+                AuthUI.getInstance().signOut(getActivity());
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
@@ -370,7 +383,7 @@ public class ExploreMoreActivity extends BaseActivity implements OnMapReadyCallb
     }
 
     @Override
-    protected void onPause() {
+    public void onPause() {
         super.onPause();
         if (mAuthStateListener != null) {
             mFirebaseAuth.removeAuthStateListener(mAuthStateListener);
@@ -378,13 +391,8 @@ public class ExploreMoreActivity extends BaseActivity implements OnMapReadyCallb
     }
 
     @Override
-    protected void onResume() {
+    public void onResume() {
         super.onResume();
         mFirebaseAuth.addAuthStateListener(mAuthStateListener);
     }
 }
-
-
-
-
-

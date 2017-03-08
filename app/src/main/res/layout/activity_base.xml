@@ -8,6 +8,7 @@
     android:orientation="vertical"
     tools:context="nyc.c4q.helenchan.makinghistory.BaseActivity">
 <FrameLayout
+    android:orientation="horizontal"
     android:id="@+id/base_frame_Layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
