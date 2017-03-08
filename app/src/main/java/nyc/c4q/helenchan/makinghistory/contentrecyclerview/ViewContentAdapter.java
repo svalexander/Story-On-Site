@@ -39,4 +39,5 @@ public class ViewContentAdapter extends RecyclerView.Adapter<ContentViewHolder>{
         this.mapContent = mapContent;
         notifyDataSetChanged();
     }
+
 }
