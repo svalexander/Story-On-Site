@@ -25,7 +25,7 @@ public class ContentViewHolder extends RecyclerView.ViewHolder {
     }
 
     public void bind(Content c) {
-        Picasso.with(itemView.getContext()).load(c.getUrl()).resize(1200, 1200).centerInside().into(contentImageView);
+        Picasso.with(itemView.getContext()).load(c.getUrl()).fit().into(contentImageView);
 
         contentTitleTextView.setText(c.getName());
 
