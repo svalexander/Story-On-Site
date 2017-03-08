@@ -76,4 +76,6 @@ public class ViewContentActivity extends AppCompatActivity {
             }
         });
     }
+
+    //TODO: build retrofit call to NYTimes Api here
 }

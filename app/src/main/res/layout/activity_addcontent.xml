@@ -29,7 +29,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/button_margin"
-            android:background="@color/accent"
+            android:background="@color/teal_accent"
             android:text="add location to database"
             android:textColor="@color/white_text" />
 
@@ -44,7 +44,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/button_margin"
-                android:background="@color/accent"
+                android:background="@color/teal_accent"
                 android:text="@string/take_picture"
                 android:textColor="@color/white_text" />
 
@@ -53,7 +53,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/button_margin"
-                android:background="@color/accent"
+                android:background="@color/teal_accent"
                 android:text="@string/add_video"
                 android:textColor="@color/white_text" />
         </LinearLayout>
@@ -62,7 +62,7 @@
             android:id="@+id/saveBtn"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/accent"
+            android:background="@color/teal_accent"
             android:text="@string/save"
             android:textColor="@color/white_text" />
     </LinearLayout>
