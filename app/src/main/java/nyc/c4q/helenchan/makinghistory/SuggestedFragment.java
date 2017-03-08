@@ -21,7 +21,13 @@ public class SuggestedFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-    View root = inflater.inflate(R.layout.suggested_fragment, container, false);
+        View root = inflater.inflate(R.layout.suggested_fragment, container, false);
+
+        setActionBarTitle(root);
         return root;
+    }
+
+    private void setActionBarTitle(View v) {
+        ((BaseActivity) v.getContext()).getSupportActionBar().setTitle(R.string.suggested);
     }
 }
