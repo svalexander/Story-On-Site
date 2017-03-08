@@ -61,6 +61,7 @@ public class BaseActivity extends AppCompatActivity implements BottomNavigationV
         Calligrapher calligrapher = new Calligrapher(this);
         calligrapher.setFont(this, "ArimaMadurai-Bold.ttf", true);
         calligrapher.setFont(findViewById(R.id.bottom_nav_view), "Raleway-Regular.ttf");
+        calligrapher.setFont(findViewById(R.id.base_frame_Layout), "Raleway-Regular.ttf");
     }
 
     private void removeView(){
