@@ -71,8 +71,8 @@ public class CreateYourStoryFragment extends Fragment implements View.OnClickLis
     private Bitmap imageBitmap;
     private Button saveContent;
     private String userLocationKey;
-    String mCurrentPhotoPath;
-    Uri contentUri;
+    private String mCurrentPhotoPath;
+    private Uri contentUri;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -172,11 +172,8 @@ public class CreateYourStoryFragment extends Fragment implements View.OnClickLis
                             downloadUri = taskSnapshot.getDownloadUrl();
                             Log.d("location key", userLocationKey);
                             addUserContentToDatabase(userLocationKey, downloadUri.toString());
-
                         }
                     });
-
-
                 } else {
                     Toast.makeText(getApplicationContext(), "Please take a photo!", Toast.LENGTH_LONG).show();
                 }
