@@ -6,4 +6,6 @@
     <dimen name="main_pic_margin">4dp</dimen>
     <dimen name="button_margin">1dp</dimen>
     <dimen name="content_img_space_below">8dp</dimen>
+    <dimen name="profile_img_wh">90dp</dimen>
+    <dimen name="profile_user_name">18sp</dimen>
 </resources>

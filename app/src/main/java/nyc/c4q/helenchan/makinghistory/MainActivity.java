@@ -12,6 +12,8 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import me.anwarshahriar.calligrapher.Calligrapher;
+
 public class MainActivity extends AppCompatActivity implements View.OnClickListener, AnimationListener {
 
     private static final String TAG = "Main Activity";
@@ -27,11 +29,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         initViews();
         setListeners();
         setAnimations();
+        setFontType();
 
     }
 
     private void initViews() {
         skipBtn = (Button) findViewById(R.id.skipBtn);
+        mainLayout = (LinearLayout) findViewById(R.id.activity_main);
     }
 
     private void setListeners() {
@@ -54,6 +58,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
     }
 
+    private void setFontType() {
+        Calligrapher calligrapher = new Calligrapher(this);
+        calligrapher.setFont(this, "ArimaMadurai-Bold.ttf", true);
+        calligrapher.setFont(findViewById(R.id.activity_main), "Raleway-Regular.ttf");
+       // calligrapher.setFont(findViewById(R.id.main_card), "Raleway-Regular.ttf");
+
+    }
 
     @Override
     public void onAnimationStart(Animation animation) {

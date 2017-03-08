@@ -24,11 +24,11 @@ public class ContentViewHolder extends RecyclerView.ViewHolder {
         contentTitleTextView = (TextView) itemView.findViewById(R.id.content_title);
     }
 
-    public void bind(Content c){
+    public void bind(Content c) {
         Picasso.with(itemView.getContext()).load(c.getUrl()).resize(1200, 1200).centerInside().into(contentImageView);
 
         contentTitleTextView.setText(c.getName());
 
-
     }
+
 }
