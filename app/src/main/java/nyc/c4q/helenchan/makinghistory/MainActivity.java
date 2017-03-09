@@ -9,8 +9,15 @@ import android.view.animation.Animation;
 import android.view.animation.Animation.AnimationListener;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import me.anwarshahriar.calligrapher.Calligrapher;
+import nyc.c4q.helenchan.makinghistory.models.Content;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener, AnimationListener {
 
@@ -19,6 +26,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private Animation fadeOutAnimation;
     private LinearLayout mainLayout;
     private Animation fadeInAnimation;
+    private ImageView mainPicIV;
+
+    List<Content> pics = new ArrayList<>();
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -27,12 +37,20 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         initViews();
         setListeners();
         setAnimations();
+        setFontType();
 
     }
 
     private void initViews() {
         skipBtn = (Button) findViewById(R.id.skipBtn);
+        mainLayout = (LinearLayout) findViewById(R.id.activity_main);
+        mainPicIV = (ImageView) findViewById(R.id.main_pic_iv);
+
+       // Picasso.with(getBaseContext()).load().fit().into(mainPicIV);
+
     }
+
+    //TODO create method to get a random image from the db, load into mainPicIV
 
     private void setListeners() {
         skipBtn.setOnClickListener(this);
@@ -54,6 +72,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
     }
 
+    private void setFontType() {
+        Calligrapher calligrapher = new Calligrapher(this);
+        calligrapher.setFont(this, "ArimaMadurai-Bold.ttf", true);
+        calligrapher.setFont(findViewById(R.id.activity_main), "Raleway-Regular.ttf");
+    }
 
     @Override
     public void onAnimationStart(Animation animation) {

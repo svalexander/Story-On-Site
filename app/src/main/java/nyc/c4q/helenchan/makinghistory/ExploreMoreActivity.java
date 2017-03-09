@@ -363,6 +363,10 @@ public class ExploreMoreActivity extends BaseActivity implements OnMapReadyCallb
             case R.id.sign_out_menu:
                 AuthUI.getInstance().signOut(this);
                 return true;
+            case R.id.user_profile:
+                Intent userprofileIntent = new Intent(ExploreMoreActivity.this, UserProfileActivity.class);
+                startActivity(userprofileIntent);
+                return false;
             default:
                 return super.onOptionsItemSelected(item);
 

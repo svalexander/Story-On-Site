@@ -134,7 +134,24 @@ public class ExploreMoreFragment extends Fragment implements OnMapReadyCallback,
         }
         mFirebaseDatabase2 = FirebaseDatabase.getInstance().getReference();
 
+        searchAddressBtn = (Button) root.findViewById(R.id.location_search_btn);
+        searchAddressBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                try {
+                    locateFromAddress(view);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+
+        setActionBarTitle(root);
         return root;
+    }
+
+    private void setActionBarTitle(View v) {
+        ((BaseActivity) v.getContext()).getSupportActionBar().setTitle(R.string.explore_btn_text);
     }
 
     private boolean checkPlayServices() {
@@ -214,6 +231,31 @@ public class ExploreMoreFragment extends Fragment implements OnMapReadyCallback,
 
         parseJSON(getActivity());
         mMap.setOnMarkerClickListener(this);
+    }
+
+    private void hideSoftKeyboard(View v) {
+        InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
+    }
+
+    public void locateFromAddress(View v) throws IOException {
+        hideSoftKeyboard(v);
+
+        EditText locationInput = (EditText) v.findViewById(R.id.location_search_input);
+        String searchString = locationInput.getText().toString();
+
+        Geocoder gc = new Geocoder(getActivity());
+        List<Address> list = gc.getFromLocationName(searchString, 1);
+
+        if (list.size() > 0) {
+            Address add = list.get(0);
+            String locality = add.getLocality();
+            Toast.makeText(getActivity(), "Found: " + locality, Toast.LENGTH_SHORT).show();
+
+            double lat = add.getLatitude();
+            double lng = add.getLongitude();
+            gotoLocation(lat, lng, zoomLevel);
+        }
     }
 
     @Override

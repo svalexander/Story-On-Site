@@ -7,6 +7,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.widget.TextView;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -18,6 +19,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import me.anwarshahriar.calligrapher.Calligrapher;
 import nyc.c4q.helenchan.makinghistory.contentrecyclerview.ViewContentAdapter;
 import nyc.c4q.helenchan.makinghistory.models.Content;
 import nyc.c4q.helenchan.makinghistory.models.MapPoint;
@@ -34,7 +36,7 @@ public class ViewContentActivity extends AppCompatActivity {
     private double lng;
     private ViewContentAdapter viewContentAdapter;
     private ProgressDialog mProgressDialog;
-
+    private TextView titleTV;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -48,6 +50,8 @@ public class ViewContentActivity extends AppCompatActivity {
         lat = getIntent().getDoubleExtra("Latitude", 0);
         lng = getIntent().getDoubleExtra("Longitude", 0);
         Log.d("lat", String.valueOf(lat));
+        titleTV = (TextView) findViewById(R.id.content_title);
+        setFontType();
         mProgressDialog = new ProgressDialog(this);
 
     }
@@ -79,6 +83,13 @@ public class ViewContentActivity extends AppCompatActivity {
             }
         });
     }
+
+    private void setFontType() {
+        Calligrapher calligrapher = new Calligrapher(this);
+        calligrapher.setFont(this, "ArimaMadurai-Bold.ttf", true);
+        calligrapher.setFont(findViewById(R.id.content_title), "Raleway-Regular.ttf");
+    }
+
 
     //TODO: build retrofit call to NYTimes Api here
 }
