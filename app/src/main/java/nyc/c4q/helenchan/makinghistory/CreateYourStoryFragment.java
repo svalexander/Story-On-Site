@@ -1,5 +1,7 @@
 package nyc.c4q.helenchan.makinghistory;
 
+import android.*;
+import android.Manifest;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -71,8 +73,8 @@ public class CreateYourStoryFragment extends Fragment implements View.OnClickLis
     private Bitmap imageBitmap;
     private Button saveContent;
     private String userLocationKey;
-    String mCurrentPhotoPath;
-    Uri contentUri;
+    private String mCurrentPhotoPath;
+    private Uri contentUri;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -84,9 +86,6 @@ public class CreateYourStoryFragment extends Fragment implements View.OnClickLis
         StrictMode.VmPolicy.Builder builder = new StrictMode.VmPolicy.Builder();
         StrictMode.setVmPolicy(builder.build());
 
-        if (!checkPermissions()) {
-            requestPermissions();
-        }
     }
 
     @Nullable
@@ -172,11 +171,8 @@ public class CreateYourStoryFragment extends Fragment implements View.OnClickLis
                             downloadUri = taskSnapshot.getDownloadUrl();
                             Log.d("location key", userLocationKey);
                             addUserContentToDatabase(userLocationKey, downloadUri.toString());
-
                         }
                     });
-
-
                 } else {
                     Toast.makeText(getApplicationContext(), "Please take a photo!", Toast.LENGTH_LONG).show();
                 }
@@ -262,19 +258,21 @@ public class CreateYourStoryFragment extends Fragment implements View.OnClickLis
         Log.d("nearby", String.valueOf(foundLocation));
         if (!foundLocation) {
             Toast.makeText(getApplicationContext(), "Sorry, you're currently not near a location", Toast.LENGTH_LONG).show();
-        } else if (foundLocation && checkPermissions()) {
-            openCamera();
-        } else if (foundLocation && requestPermissions()) {
+        } else if (foundLocation && ContextCompat.checkSelfPermission(getActivity().getApplicationContext(), Manifest.permission.CAMERA)
+                == PackageManager.PERMISSION_GRANTED) {
             openCamera();
         } else {
-            Toast.makeText(getApplicationContext(), "Permission denied by user", Toast.LENGTH_LONG).show();
+            ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.CAMERA}, 1);
+            if (ContextCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.CAMERA)
+                    == PackageManager.PERMISSION_GRANTED) {
+                openCamera();
+            }
         }
-    }
 
 
 //    private void addContentToDatabase() {
 
-    //first line adds a coordinate, second location adds content to list at that location
+        //first line adds a coordinate, second location adds content to list at that location
 //        mFirebaseDatabase.child("MapPoint").child("Location3").setValue(new Coordinate(40.720398, -74.025452));
 //        mFirebaseDatabase.child("MapPoint").child("Location3").child("ContentList").push().setValue(new Content("Highline", "Historical", "This was the highline a long time ago", "HighLine", "http://oldnyc-assets.nypl.org/600px/712105f-a.jpg", "1920"));
 //        mFirebaseDatabase.child("MapPoint").child("Location3").child("ContentList").push().setValue(new Content("Highline", "Historical", "This was the highline a long time ago", "HighLine", "http://oldnyc-assets.nypl.org/600px/712105f-a.jpg", "1920"));
@@ -302,4 +300,5 @@ public class CreateYourStoryFragment extends Fragment implements View.OnClickLis
 //        mFirebaseDatabase.child("locations").push().setValue(currLocation);
 //    }
 
+    }
 }

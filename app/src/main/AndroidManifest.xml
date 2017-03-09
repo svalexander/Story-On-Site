@@ -44,13 +44,8 @@
 
 
         <activity android:name=".SplashActivity" />
-        <activity android:name=".ExploreMoreActivity" />
-        <activity android:name=".leigh.AddConentActivity" />
-        <activity android:name=".LandingPageActivity" />
-        <activity android:name=".BaseActivity" />
-        <activity
-            android:name=".ViewContentActivity"/>
-
+        <activity android:name=".BaseActivity"></activity>
+        <activity android:name=".ViewContentActivity"/>
     </application>
 
 </manifest>

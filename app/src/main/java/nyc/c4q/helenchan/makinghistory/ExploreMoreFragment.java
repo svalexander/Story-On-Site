@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.res.AssetFileDescriptor;
+import android.content.res.Resources;
 import android.location.Address;
 import android.location.Criteria;
 import android.location.Geocoder;
@@ -17,13 +18,11 @@ import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.FrameLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -31,6 +30,7 @@ import com.firebase.ui.auth.AuthUI;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
 import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -39,6 +39,7 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MapStyleOptions;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.firebase.auth.FirebaseAuth;
@@ -65,13 +66,12 @@ import static com.facebook.FacebookSdk.getApplicationContext;
  * Created by shannonalexander-navarro on 3/7/17.
  */
 
-public class ExploreMoreFragment extends Fragment implements OnMapReadyCallback, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, GoogleMap.OnMarkerClickListener, MapListener {
+public class ExploreMoreFragment extends Fragment implements OnMapReadyCallback, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, GoogleMap.OnMarkerClickListener, LocationListener, MapListener {
 
     private DatabaseReference mFirebaseDatabase;
     private DatabaseReference mFirebaseDatabase2;
     private static final String ANONYMOUS = "ANONYMOUS";
     private static final int RC_SIGN_IN = 1;
-    private FirebaseDatabase loginFirebaseDatabase;
     private FirebaseAuth mFirebaseAuth;
     private FirebaseAuth.AuthStateListener mAuthStateListener;
     private String mUsername;
@@ -85,11 +85,9 @@ public class ExploreMoreFragment extends Fragment implements OnMapReadyCallback,
     GoogleMap mMap;
     private float zoomLevel = 15;
     private Button searchAddressBtn;
-    private FrameLayout baseLayout;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
-
         super.onCreate(savedInstanceState);
 
     }
@@ -101,7 +99,6 @@ public class ExploreMoreFragment extends Fragment implements OnMapReadyCallback,
         View root = inflater.inflate(R.layout.activity_map, container, false);
         mapListener = this;
 
-        loginFirebaseDatabase = FirebaseDatabase.getInstance();
         mFirebaseAuth = FirebaseAuth.getInstance();
         mUsername = ANONYMOUS;
         setAuthenticationListener();
@@ -174,7 +171,19 @@ public class ExploreMoreFragment extends Fragment implements OnMapReadyCallback,
     public void onMapReady(GoogleMap googleMap) {
 
         mMap = googleMap;
+        try {
+            // Customise the styling of the base map using a JSON object defined
+            // in a raw resource file.
+            boolean success = googleMap.setMapStyle(
+                    MapStyleOptions.loadRawResourceStyle(
+                            getApplicationContext(), R.raw.map_style));
 
+            if (!success) {
+                Log.e(TAG, "Style parsing failed.");
+            }
+        } catch (Resources.NotFoundException e) {
+            Log.e(TAG, "Can't find style. Error: ", e);
+        }
 //        if (checkPermissions()) {
 //            if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
 //                // TODO: Consider calling
@@ -186,16 +195,11 @@ public class ExploreMoreFragment extends Fragment implements OnMapReadyCallback,
 //                // for ActivityCompat#requestPermissions for more details.
 //                return;
 //            }
-//            mMap.setMyLocationEnabled(true);
-//        } else if (requestPermissions()) {
-//            mMap.setMyLocationEnabled(true);
-//        } else {
-//            Toast.makeText(getApplicationContext(), "To view your location, please visit settings and change location permissions", Toast.LENGTH_LONG).show();
-//        }
 
         if (ContextCompat.checkSelfPermission(getActivity().getApplicationContext(), android.Manifest.permission.ACCESS_FINE_LOCATION)
                 == PackageManager.PERMISSION_GRANTED) {
             mMap.setMyLocationEnabled(true);
+
         } else {
             ActivityCompat.requestPermissions(getActivity(), new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION}, 1);
             if (ContextCompat.checkSelfPermission(getApplicationContext(), android.Manifest.permission.ACCESS_FINE_LOCATION)
@@ -203,16 +207,10 @@ public class ExploreMoreFragment extends Fragment implements OnMapReadyCallback,
                 mMap.setMyLocationEnabled(true);
             }
         }
-
-        // TODO: update later
         // centers map on current user location, stack overflow solution. will update later
-        LocationManager locationManager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
-        Criteria criteria = new Criteria();
-        Location location = locationManager.getLastKnownLocation(locationManager.getBestProvider(criteria, false));
-        if (location != null) {
-            CameraPosition cameraPosition = new CameraPosition.Builder().target(new LatLng(location.getLatitude(), location.getLongitude())).zoom(12).build();
-            googleMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
-        }
+        CameraPosition cameraPosition = new CameraPosition.Builder().target(new LatLng(40.574933 , -73.98593)).zoom(12).build();
+        googleMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
+
 
         parseJSON(getActivity());
         mMap.setOnMarkerClickListener(this);
@@ -374,19 +372,6 @@ public class ExploreMoreFragment extends Fragment implements OnMapReadyCallback,
         }
     }
 
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.sign_out_menu:
-                AuthUI.getInstance().signOut(getActivity());
-                return true;
-            default:
-                return super.onOptionsItemSelected(item);
-
-        }
-    }
-
     @Override
     public void onPause() {
         super.onPause();
@@ -400,4 +385,10 @@ public class ExploreMoreFragment extends Fragment implements OnMapReadyCallback,
         super.onResume();
         mFirebaseAuth.addAuthStateListener(mAuthStateListener);
     }
+
+    @Override
+    public void onLocationChanged(Location location) {
+
+    }
 }
+
