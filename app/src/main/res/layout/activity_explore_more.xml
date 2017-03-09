@@ -4,52 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:paddingBottom="@dimen/activity_vertical_margin"
-    android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin">
-
-
-    <RelativeLayout
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center_vertical"
-        android:layout_marginBottom="6dp"
-        android:orientation="horizontal">
-
-        <TextView
-            android:id="@+id/locationTV"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/location_label"
-            android:textSize="20sp" />
-
-        <EditText
-            android:id="@+id/location_search_input"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignBaseline="@+id/locationTV"
-            android:layout_toEndOf="@+id/locationTV"
-            android:layout_toLeftOf="@+id/location_search_btn"
-            android:layout_toRightOf="@+id/locationTV"
-            android:layout_toStartOf="@+id/location_search_btn"
-            android:ems="10"
-            android:inputType="textCapWords">
-
-            <requestFocus />
-        </EditText>
-
-        <Button
-            android:id="@+id/explore_search_btn"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignBaseline="@+id/locationTV"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentRight="true"
-            android:background="@color/teal_accent"
-            android:text="Search"/>
-    </RelativeLayout>
-
+    >
 
     <fragment
         android:id="@+id/map"

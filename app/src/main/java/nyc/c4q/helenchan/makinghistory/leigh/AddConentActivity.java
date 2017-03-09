@@ -5,26 +5,30 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
-import android.location.Location;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.provider.MediaStore;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.content.FileProvider;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
-import android.widget.Toast;
-import android.widget.VideoView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
+import android.widget.VideoView;
 
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.FusedLocationProviderApi;
 import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
@@ -32,7 +36,9 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
-import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import me.anwarshahriar.calligrapher.Calligrapher;
 import nyc.c4q.helenchan.makinghistory.BaseActivity;
@@ -43,6 +49,8 @@ import nyc.c4q.helenchan.makinghistory.models.Content;
 public class AddConentActivity extends BaseActivity implements View.OnClickListener, FindLocation.NearLocationListener {
     static int REQUEST_IMAGE_CAPTURE = 1;
     static int REQUEST_VIDEO_CAPTURE = 2;
+    public final String APP_TAG = "Story";
+
 
     private DatabaseReference mFirebaseDatabase;
     private FirebaseStorage mFirebaseStorage;
@@ -65,6 +73,11 @@ public class AddConentActivity extends BaseActivity implements View.OnClickListe
     private Bitmap imageBitmap;
     private Button saveContent;
     private String userLocationKey;
+    public String photoFileName = "photo.jpg";
+
+    Uri takenPhotoUri;
+    Uri fileUri;
+    Bitmap takenImage;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -110,9 +123,21 @@ public class AddConentActivity extends BaseActivity implements View.OnClickListe
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
-            Bundle extras = data.getExtras();
-            imageBitmap = (Bitmap) extras.get("data");
-            imagePreview.setImageBitmap(imageBitmap);
+//            takenPhotoUri = data.getData();
+//            takenImage = BitmapFactory.decodeFile(takenPhotoUri.getPath());
+//            imagePreview.setImageBitmap(takenImage);
+
+//            Bundle intentExtras = data.getExtras();
+//            Bitmap picture = (Bitmap) intentExtras.get("data");
+//            Uri pictureUri = data.getData();
+//            Intent intentCam = new Intent(getApplicationContext(), EditActivity.class);
+//            intentCam.putExtra("CameraPhotoUri", pictureUri.toString());
+//            intentCam.putExtra("BitmapCamera", picture);
+//            intentCam.putExtra("TypeOfPicture", 0);
+//            startActivity(intentCam);
+
+        } else {
+            Toast.makeText(this, "Picture not taken", Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -144,19 +169,37 @@ public class AddConentActivity extends BaseActivity implements View.OnClickListe
                     mProgressDialog.show();
                     String randomID = java.util.UUID.randomUUID().toString();
                     StorageReference photoStorageReference = myStorageRef.child("photos").child(randomID);
-                    ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-                    imageBitmap.compress(Bitmap.CompressFormat.JPEG, 100, byteArrayOutputStream);
-                    byte[] photoByteArray = byteArrayOutputStream.toByteArray();
+//                    ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+//                    takenImage.compress(Bitmap.CompressFormat.PNG, 100, byteArrayOutputStream);
+//                    byte[] photoByteArray = byteArrayOutputStream.toByteArray();
+//
+//                    UploadTask uploadTask = photoStorageReference.putBytes(photoByteArray);
+//                    uploadTask.addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+//                        @Override
+//                        public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+//                            mProgressDialog.dismiss();
+//                            Toast.makeText(getApplicationContext(), "Uploaded", Toast.LENGTH_SHORT).show();
+//                            downloadUri = taskSnapshot.getDownloadUrl();
+//                            addUserContentToDatabase(userLocationKey, downloadUri.toString());
+//
+//                        }
+//                    });
 
-                    UploadTask uploadTask = photoStorageReference.putBytes(photoByteArray);
-                    uploadTask.addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+
+//                    StorageReference riversRef = photoStorageReference.child("images/" + file.getLastPathSegment());
+
+                    UploadTask uploadTask = photoStorageReference.putFile(takenPhotoUri);
+                    uploadTask.addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception exception) {
+                            // Handle unsuccessful uploads
+                        }
+                    }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                         @Override
                         public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
                             mProgressDialog.dismiss();
                             Toast.makeText(getApplicationContext(), "Uploaded", Toast.LENGTH_SHORT).show();
-                            downloadUri = taskSnapshot.getDownloadUrl();
-                            addUserContentToDatabase(userLocationKey, downloadUri.toString());
-
+                            Uri downloadUrl = taskSnapshot.getDownloadUrl();
                         }
                     });
                 } else {
@@ -209,12 +252,36 @@ public class AddConentActivity extends BaseActivity implements View.OnClickListe
 
     private void openCamera() {
         Intent openCamera = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        startActivityForResult(openCamera, REQUEST_IMAGE_CAPTURE);
+        fileUri = getOutputMediaFileUri();
+        openCamera.putExtra(MediaStore.EXTRA_OUTPUT, fileUri);
+        if (openCamera.resolveActivity(getPackageManager()) != null) {
+            startActivityForResult(openCamera, REQUEST_IMAGE_CAPTURE);
+        }
     }
 
     private void openVideo() {
         Intent openVideoCapture = new Intent(MediaStore.ACTION_VIDEO_CAPTURE);
         startActivityForResult(openVideoCapture, REQUEST_VIDEO_CAPTURE);
+    }
+
+    private Uri getOutputMediaFileUri() {
+        return Uri.fromFile(getOutputMediaFile());
+    }
+
+    private File getOutputMediaFile() {
+
+        File mediaStorageDir = new File(
+                Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES), APP_TAG);
+
+        if (!mediaStorageDir.exists()) {
+            if (!mediaStorageDir.mkdir()) {
+                return null;
+            }
+        }
+        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+        File mediaFile = new File(mediaStorageDir.getPath() + File.pathSeparator + "IMG" + timeStamp + ".jpg");
+
+        return mediaFile;
     }
 
     private void addContentToDatabase() {
