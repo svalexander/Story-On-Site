@@ -113,17 +113,17 @@ public class ExploreMoreActivity extends BaseActivity implements OnMapReadyCallb
         }
         mFirebaseDatabase2 = FirebaseDatabase.getInstance().getReference();
 
-        searchAddressBtn = (Button) findViewById(R.id.location_search_btn);
-        searchAddressBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                try {
-                    locateFromAddress(view);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-        });
+//        searchAddressBtn = (Button) findViewById(R.id.location_search_btn);
+//        searchAddressBtn.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                try {
+//                    locateFromAddress(view);
+//                } catch (IOException e) {
+//                    e.printStackTrace();
+//                }
+//            }
+//        });
     }
 
 
@@ -199,25 +199,25 @@ public class ExploreMoreActivity extends BaseActivity implements OnMapReadyCallb
         imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
     }
 
-    public void locateFromAddress(View v) throws IOException {
-        hideSoftKeyboard(v);
-
-        EditText locationInput = (EditText) findViewById(R.id.location_search_input);
-        String searchString = locationInput.getText().toString();
-
-        Geocoder gc = new Geocoder(this);
-        List<Address> list = gc.getFromLocationName(searchString, 1);
-
-        if (list.size() > 0) {
-            Address add = list.get(0);
-            String locality = add.getLocality();
-            Toast.makeText(this, "Found: " + locality, Toast.LENGTH_SHORT).show();
-
-            double lat = add.getLatitude();
-            double lng = add.getLongitude();
-            gotoLocation(lat, lng, zoomLevel);
-        }
-    }
+//    public void locateFromAddress(View v) throws IOException {
+//        hideSoftKeyboard(v);
+//
+//        EditText locationInput = (EditText) findViewById(R.id.location_search_input);
+//        String searchString = locationInput.getText().toString();
+//
+//        Geocoder gc = new Geocoder(this);
+//        List<Address> list = gc.getFromLocationName(searchString, 1);
+//
+//        if (list.size() > 0) {
+//            Address add = list.get(0);
+//            String locality = add.getLocality();
+//            Toast.makeText(this, "Found: " + locality, Toast.LENGTH_SHORT).show();
+//
+//            double lat = add.getLatitude();
+//            double lng = add.getLongitude();
+//            gotoLocation(lat, lng, zoomLevel);
+//        }
+//    }
 
     @Override
     public void onConnected(@Nullable Bundle bundle) {
