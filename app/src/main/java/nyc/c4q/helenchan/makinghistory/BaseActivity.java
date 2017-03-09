@@ -1,5 +1,6 @@
 package nyc.c4q.helenchan.makinghistory;
 
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -18,8 +19,6 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.FirebaseDatabase;
 
 import me.anwarshahriar.calligrapher.Calligrapher;
-
-import static com.facebook.FacebookSdk.getApplicationContext;
 
 public class BaseActivity extends AppCompatActivity implements BottomNavigationView.OnNavigationItemSelectedListener {
 
@@ -113,6 +112,10 @@ public class BaseActivity extends AppCompatActivity implements BottomNavigationV
         switch (item.getItemId()) {
             case R.id.sign_out_menu:
                 AuthUI.getInstance().signOut(this);
+                return true;
+            case R.id.user_profile:
+                Intent userProfileIntent = new Intent(getApplicationContext(), UserProfileActivity.class);
+                startActivity(userProfileIntent);
                 return true;
             default:
                 return super.onOptionsItemSelected(item);

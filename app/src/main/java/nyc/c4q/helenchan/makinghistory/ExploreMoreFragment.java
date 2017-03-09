@@ -18,13 +18,11 @@ import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.FrameLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -74,7 +72,6 @@ public class ExploreMoreFragment extends Fragment implements OnMapReadyCallback,
     private DatabaseReference mFirebaseDatabase2;
     private static final String ANONYMOUS = "ANONYMOUS";
     private static final int RC_SIGN_IN = 1;
-    private FirebaseDatabase loginFirebaseDatabase;
     private FirebaseAuth mFirebaseAuth;
     private FirebaseAuth.AuthStateListener mAuthStateListener;
     private String mUsername;
@@ -88,11 +85,11 @@ public class ExploreMoreFragment extends Fragment implements OnMapReadyCallback,
     GoogleMap mMap;
     private float zoomLevel = 15;
     private Button searchAddressBtn;
-    private FrameLayout baseLayout;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setHasOptionsMenu(true);
 
     }
 
@@ -103,7 +100,6 @@ public class ExploreMoreFragment extends Fragment implements OnMapReadyCallback,
         View root = inflater.inflate(R.layout.activity_map, container, false);
         mapListener = this;
 
-        loginFirebaseDatabase = FirebaseDatabase.getInstance();
         mFirebaseAuth = FirebaseAuth.getInstance();
         mUsername = ANONYMOUS;
         setAuthenticationListener();
@@ -374,19 +370,6 @@ public class ExploreMoreFragment extends Fragment implements OnMapReadyCallback,
                 Toast.makeText(getActivity(), "Canceled", Toast.LENGTH_SHORT).show();
                 getActivity().finish();
             }
-        }
-    }
-
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.sign_out_menu:
-                AuthUI.getInstance().signOut(getActivity());
-                return true;
-            default:
-                return super.onOptionsItemSelected(item);
-
         }
     }
 
