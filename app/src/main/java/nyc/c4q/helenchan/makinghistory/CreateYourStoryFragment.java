@@ -127,7 +127,10 @@ public class CreateYourStoryFragment extends Fragment implements View.OnClickLis
         if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
             galleryAddPic();
             try {
-                imageBitmap = MediaStore.Images.Media.getBitmap(getApplicationContext().getContentResolver(), contentUri);
+                imageBitmap = MediaStore.Images.Media
+                        .getBitmap(getApplicationContext()
+                                .getContentResolver(),
+                                contentUri);
                 imagePreview.setImageBitmap(imageBitmap);
             } catch (IOException e) {
                 e.printStackTrace();
@@ -162,30 +165,34 @@ public class CreateYourStoryFragment extends Fragment implements View.OnClickLis
                 if (imageBitmap != null) {
                     mProgressDialog.setMessage("Uploading Image");
                     mProgressDialog.show();
-                    String randomID = java.util.UUID.randomUUID().toString();
-                    StorageReference photoStorageReference = myStorageRef.child("photos").child(randomID);
+                    String photoID = contentUri.getLastPathSegment();
+                    StorageReference photoStorageReference = myStorageRef.child("photos").child(photoID);
                     UploadTask uploadTask = photoStorageReference.putFile(contentUri);
-                    uploadTask.addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                        @Override
-                        public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                            mProgressDialog.dismiss();
-                            Toast.makeText(getApplicationContext(), "Uploaded", Toast.LENGTH_SHORT).show();
-                            downloadUri = taskSnapshot.getDownloadUrl();
-                            Log.d("location key", userLocationKey);
-                            addUserContentToDatabase(userLocationKey, downloadUri.toString());
-                        }
-                    }).addOnFailureListener(new OnFailureListener() {
-                        @Override
-                        public void onFailure(@NonNull Exception e) {
-                            Toast.makeText(getApplicationContext(), "Upload Failed! Try Again", Toast.LENGTH_LONG).show();
-                        }
-                    });
+                    uploadingToFireBase(uploadTask);
                 } else {
                     Toast.makeText(getApplicationContext(), "Please take a photo!", Toast.LENGTH_LONG).show();
                 }
                 break;
             default:
         }
+    }
+
+    private void uploadingToFireBase(UploadTask uploadTask) {
+        uploadTask.addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+            @Override
+            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                mProgressDialog.dismiss();
+                Toast.makeText(getApplicationContext(), "Uploaded", Toast.LENGTH_SHORT).show();
+                downloadUri = taskSnapshot.getDownloadUrl();
+                Log.d("location key", userLocationKey);
+                addUserContentToDatabase(userLocationKey, downloadUri.toString());
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Toast.makeText(getApplicationContext(), "Upload Failed! Try Again", Toast.LENGTH_LONG).show();
+            }
+        });
     }
 
     private void addUserContentToDatabase(String userLocationKey, String url) {
