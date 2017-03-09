@@ -92,7 +92,6 @@ public class ExploreMoreFragment extends Fragment implements OnMapReadyCallback,
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
-
         super.onCreate(savedInstanceState);
 
     }
@@ -201,16 +200,11 @@ public class ExploreMoreFragment extends Fragment implements OnMapReadyCallback,
 //                // for ActivityCompat#requestPermissions for more details.
 //                return;
 //            }
-//            mMap.setMyLocationEnabled(true);
-//        } else if (requestPermissions()) {
-//            mMap.setMyLocationEnabled(true);
-//        } else {
-//            Toast.makeText(getApplicationContext(), "To view your location, please visit settings and change location permissions", Toast.LENGTH_LONG).show();
-//        }
 
         if (ContextCompat.checkSelfPermission(getActivity().getApplicationContext(), android.Manifest.permission.ACCESS_FINE_LOCATION)
                 == PackageManager.PERMISSION_GRANTED) {
             mMap.setMyLocationEnabled(true);
+
         } else {
             ActivityCompat.requestPermissions(getActivity(), new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION}, 1);
             if (ContextCompat.checkSelfPermission(getApplicationContext(), android.Manifest.permission.ACCESS_FINE_LOCATION)
@@ -218,16 +212,10 @@ public class ExploreMoreFragment extends Fragment implements OnMapReadyCallback,
                 mMap.setMyLocationEnabled(true);
             }
         }
-
-        // TODO: update later
         // centers map on current user location, stack overflow solution. will update later
-        LocationManager locationManager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
-        Criteria criteria = new Criteria();
-        Location location = locationManager.getLastKnownLocation(locationManager.getBestProvider(criteria, false));
-        if (location != null) {
-            CameraPosition cameraPosition = new CameraPosition.Builder().target(new LatLng(location.getLatitude(), location.getLongitude())).zoom(12).build();
-            googleMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
-        }
+        CameraPosition cameraPosition = new CameraPosition.Builder().target(new LatLng(40.574933 , -73.98593)).zoom(12).build();
+        googleMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
+
 
         parseJSON(getActivity());
         mMap.setOnMarkerClickListener(this);
@@ -421,3 +409,4 @@ public class ExploreMoreFragment extends Fragment implements OnMapReadyCallback,
 
     }
 }
+
