@@ -298,12 +298,9 @@ public class ExploreMoreActivity extends BaseActivity implements OnMapReadyCallb
                     latitude = coordinates[i];
                 }
             }
-
             LatLng currLatLng = new LatLng(latitude, longitude);
             map.addMarker(new MarkerOptions().position(currLatLng).title(feature.getProperties().getName())).setTag(feature);
-
         }
-
     }
 
 
