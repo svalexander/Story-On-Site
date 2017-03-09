@@ -6,11 +6,14 @@ import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
+import android.os.StrictMode;
 import android.provider.MediaStore;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.content.FileProvider;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -31,6 +34,10 @@ import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
 import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import me.anwarshahriar.calligrapher.Calligrapher;
 import nyc.c4q.helenchan.makinghistory.models.Content;
@@ -64,6 +71,8 @@ public class CreateYourStoryFragment extends Fragment implements View.OnClickLis
     private Bitmap imageBitmap;
     private Button saveContent;
     private String userLocationKey;
+    String mCurrentPhotoPath;
+    Uri contentUri;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -72,6 +81,8 @@ public class CreateYourStoryFragment extends Fragment implements View.OnClickLis
         mFirebaseDatabase = FirebaseDatabase.getInstance().getReference();
         mFirebaseStorage = FirebaseStorage.getInstance();
         myStorageRef = mFirebaseStorage.getReference();
+        StrictMode.VmPolicy.Builder builder = new StrictMode.VmPolicy.Builder();
+        StrictMode.setVmPolicy(builder.build());
 
         if (!checkPermissions()) {
             requestPermissions();
@@ -113,10 +124,13 @@ public class CreateYourStoryFragment extends Fragment implements View.OnClickLis
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
-            Bundle extras = data.getExtras();
-            imageBitmap = (Bitmap) extras.get("data");
-            imagePreview.setImageBitmap(imageBitmap);
-
+            galleryAddPic();
+            try {
+                imageBitmap = MediaStore.Images.Media.getBitmap(getApplicationContext().getContentResolver(), contentUri);
+                imagePreview.setImageBitmap(imageBitmap);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
     }
 
@@ -149,11 +163,7 @@ public class CreateYourStoryFragment extends Fragment implements View.OnClickLis
                     mProgressDialog.show();
                     String randomID = java.util.UUID.randomUUID().toString();
                     StorageReference photoStorageReference = myStorageRef.child("photos").child(randomID);
-                    ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-                    imageBitmap.compress(Bitmap.CompressFormat.JPEG, 100, byteArrayOutputStream);
-                    byte[] photoByteArray = byteArrayOutputStream.toByteArray();
-
-                    UploadTask uploadTask = photoStorageReference.putBytes(photoByteArray);
+                    UploadTask uploadTask = photoStorageReference.putFile(contentUri);
                     uploadTask.addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                         @Override
                         public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
@@ -165,6 +175,8 @@ public class CreateYourStoryFragment extends Fragment implements View.OnClickLis
 
                         }
                     });
+
+
                 } else {
                     Toast.makeText(getApplicationContext(), "Please take a photo!", Toast.LENGTH_LONG).show();
                 }
@@ -192,10 +204,47 @@ public class CreateYourStoryFragment extends Fragment implements View.OnClickLis
         return checkPermissions();
     }
 
-    private void openCamera() {
-        Intent openCamera = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        startActivityForResult(openCamera, REQUEST_IMAGE_CAPTURE);
+
+    private File createImageFile() throws IOException {
+        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+        String imageFileName = "JPEG_" + timeStamp + "_";
+        File storageDir = getApplicationContext().getExternalFilesDir(Environment.DIRECTORY_PICTURES);
+        File image = File.createTempFile(
+                imageFileName,  /* prefix */
+                ".jpg",         /* suffix */
+                storageDir      /* directory */
+        );
+        mCurrentPhotoPath = image.getAbsolutePath();
+        return image;
     }
+
+    private void openCamera() {
+        Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        if (takePictureIntent.resolveActivity(getApplicationContext().getPackageManager()) != null) {
+            File photoFile = null;
+            try {
+                photoFile = createImageFile();
+            } catch (IOException ex) {
+                System.out.println(ex.toString());
+            }
+            if (photoFile != null) {
+                Uri photoURI = FileProvider.getUriForFile(getApplicationContext(),
+                        "nyc.c4q.helenchan.makinghistory",
+                        photoFile);
+                takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);
+                startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
+            }
+        }
+    }
+
+    private void galleryAddPic() {
+        Intent mediaScanIntent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
+        File f = new File(mCurrentPhotoPath);
+        contentUri = Uri.fromFile(f);
+        mediaScanIntent.setData(contentUri);
+        getApplicationContext().sendBroadcast(mediaScanIntent);
+    }
+
 
     private void openVideo() {
         Intent openVideoCapture = new Intent(MediaStore.ACTION_VIDEO_CAPTURE);
