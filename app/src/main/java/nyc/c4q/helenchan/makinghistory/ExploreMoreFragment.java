@@ -134,7 +134,25 @@ public class ExploreMoreFragment extends Fragment implements OnMapReadyCallback,
         }
         mFirebaseDatabase2 = FirebaseDatabase.getInstance().getReference();
 
+        searchAddressBtn = (Button) root.findViewById(R.id.location_search_btn);
+        searchAddressBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                try {
+                    locateFromAddress(view);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+
+        setActionBarTitle(root);
+
         return root;
+    }
+
+    private void setActionBarTitle(View v) {
+        ((BaseActivity) v.getContext()).getSupportActionBar().setTitle(R.string.explore_btn_text);
     }
 
     private boolean checkPlayServices() {
