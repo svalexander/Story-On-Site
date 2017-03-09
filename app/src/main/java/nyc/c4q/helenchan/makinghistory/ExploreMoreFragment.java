@@ -6,10 +6,8 @@ import android.content.pm.PackageManager;
 import android.content.res.AssetFileDescriptor;
 import android.content.res.Resources;
 import android.location.Address;
-import android.location.Criteria;
 import android.location.Geocoder;
 import android.location.Location;
-import android.location.LocationManager;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -23,10 +21,8 @@ import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.Toast;
 
-import com.firebase.ui.auth.AuthUI;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -42,8 +38,6 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MapStyleOptions;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.gson.Gson;
@@ -51,14 +45,11 @@ import com.google.gson.Gson;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.Arrays;
 import java.util.List;
 
 import nyc.c4q.helenchan.makinghistory.models.nypl.Feature;
 import nyc.c4q.helenchan.makinghistory.models.nypl.FeatureResponse;
 
-import static android.app.Activity.RESULT_CANCELED;
-import static android.app.Activity.RESULT_OK;
 import static android.content.Context.INPUT_METHOD_SERVICE;
 import static com.facebook.FacebookSdk.getApplicationContext;
 
@@ -70,13 +61,6 @@ public class ExploreMoreFragment extends Fragment implements OnMapReadyCallback,
 
     private DatabaseReference mFirebaseDatabase;
     private DatabaseReference mFirebaseDatabase2;
-    private static final String ANONYMOUS = "ANONYMOUS";
-    private static final int RC_SIGN_IN = 1;
-    private FirebaseAuth mFirebaseAuth;
-    private FirebaseAuth.AuthStateListener mAuthStateListener;
-    private String mUsername;
-    private TextView signInTV;
-    private TextView welcomeTV;
 
     private MapListener mapListener;
     private static final String TAG = "Main Activity";
@@ -98,19 +82,6 @@ public class ExploreMoreFragment extends Fragment implements OnMapReadyCallback,
 
         View root = inflater.inflate(R.layout.activity_map, container, false);
         mapListener = this;
-
-        mFirebaseAuth = FirebaseAuth.getInstance();
-        mUsername = ANONYMOUS;
-        setAuthenticationListener();
-
-        signInTV = (TextView) root.findViewById(R.id.sign_in_tv);
-        signInTV.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                getLoginScreen();
-            }
-        });
-        welcomeTV = (TextView) root.findViewById(R.id.welcome_tv);
 
         if (checkPlayServices()) {
 
@@ -328,63 +299,6 @@ public class ExploreMoreFragment extends Fragment implements OnMapReadyCallback,
 
     }
 
-
-    private void setAuthenticationListener() {
-        mAuthStateListener = new FirebaseAuth.AuthStateListener() {
-            @Override
-            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
-                FirebaseUser user = firebaseAuth.getCurrentUser();
-                if (user != null) {
-                    mUsername = user.getDisplayName();
-                    welcomeTV.setVisibility(View.VISIBLE);
-                    welcomeTV.setText("Hello " + mUsername);
-                    signInTV.setVisibility(View.GONE);
-
-                } else {
-                    welcomeTV.setVisibility(View.GONE);
-                    signInTV.setVisibility(View.VISIBLE);
-                }
-            }
-        };
-    }
-
-    private void getLoginScreen() {
-        startActivityForResult(
-                AuthUI.getInstance()
-                        .createSignInIntentBuilder()
-                        .setIsSmartLockEnabled(false)
-                        .setProviders(Arrays.asList(new AuthUI.IdpConfig.Builder(AuthUI.EMAIL_PROVIDER).build(),
-                                new AuthUI.IdpConfig.Builder(AuthUI.GOOGLE_PROVIDER).build()))
-                        .build(),
-                RC_SIGN_IN);
-    }
-
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == RC_SIGN_IN) {
-            if (resultCode == RESULT_OK) {
-                Toast.makeText(getActivity(), "Welcome", Toast.LENGTH_SHORT).show();
-            } else if (resultCode == RESULT_CANCELED) {
-                Toast.makeText(getActivity(), "Canceled", Toast.LENGTH_SHORT).show();
-                getActivity().finish();
-            }
-        }
-    }
-
-    @Override
-    public void onPause() {
-        super.onPause();
-        if (mAuthStateListener != null) {
-            mFirebaseAuth.removeAuthStateListener(mAuthStateListener);
-        }
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        mFirebaseAuth.addAuthStateListener(mAuthStateListener);
-    }
 
     @Override
     public void onLocationChanged(Location location) {
