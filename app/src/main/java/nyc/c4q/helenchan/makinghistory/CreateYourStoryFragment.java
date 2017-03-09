@@ -73,8 +73,8 @@ public class CreateYourStoryFragment extends Fragment implements View.OnClickLis
     private Bitmap imageBitmap;
     private Button saveContent;
     private String userLocationKey;
-    String mCurrentPhotoPath;
-    Uri contentUri;
+    private String mCurrentPhotoPath;
+    private Uri contentUri;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
