@@ -91,6 +91,7 @@ public class ExploreMoreFragment extends Fragment implements OnMapReadyCallback,
     public void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
+        setHasOptionsMenu(true);
 
     }
 
@@ -381,9 +382,12 @@ public class ExploreMoreFragment extends Fragment implements OnMapReadyCallback,
             case R.id.sign_out_menu:
                 AuthUI.getInstance().signOut(getActivity());
                 return true;
+            case R.id.user_profile:
+                Intent userProfileIntent = new Intent(getApplicationContext(), UserProfileActivity.class);
+                startActivity(userProfileIntent);
+                return true;
             default:
                 return super.onOptionsItemSelected(item);
-
         }
     }
 
