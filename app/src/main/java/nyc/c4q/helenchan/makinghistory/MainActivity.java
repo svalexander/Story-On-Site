@@ -13,11 +13,12 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.google.firebase.database.DatabaseReference;
+
 import java.util.ArrayList;
 import java.util.List;
 
 import me.anwarshahriar.calligrapher.Calligrapher;
-import nyc.c4q.helenchan.makinghistory.models.Content;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener, AnimationListener {
 
@@ -28,7 +29,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private Animation fadeInAnimation;
     private ImageView mainPicIV;
 
-    List<Content> pics = new ArrayList<>();
+    List<String> picsList = new ArrayList<>();
+
+    private DatabaseReference dbRef;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -46,11 +49,37 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         mainLayout = (LinearLayout) findViewById(R.id.activity_main);
         mainPicIV = (ImageView) findViewById(R.id.main_pic_iv);
 
-       // Picasso.with(getBaseContext()).load().fit().into(mainPicIV);
+
+        // Picasso.with(getBaseContext()).load().fit().into(mainPicIV);
 
     }
 
     //TODO create method to get a random image from the db, load into mainPicIV
+
+//    private void getRandomImage() {
+//        dbRef = FirebaseDatabase.getInstance().getReference().child("Contact");
+//        dbRef.addValueEventListener(new ValueEventListener() {
+//            @Override
+//            public void onDataChange(DataSnapshot dataSnapshot) {
+//                for (DataSnapshot dss : dataSnapshot.getChildren()) {
+//                   // Content content = dss.getValue(Content.class);
+//                    MapPoint mapPoint = dss.getValue(MapPoint.class);
+//                    //String url = content.getUrl();
+//                   // for (url : content){
+//                     // picsList.add(url);
+//
+//                    }
+//
+//                }
+//            }
+//
+//            @Override
+//            public void onCancelled(DatabaseError databaseError) {
+//
+//            }
+//        })
+//
+//    }
 
     private void setListeners() {
         skipBtn.setOnClickListener(this);
@@ -65,10 +94,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.skipBtn:
-              //  fadeOutAnimation = AnimationUtils.loadAnimation(MainActivity.this, R.anim.fade_out);
+                //  fadeOutAnimation = AnimationUtils.loadAnimation(MainActivity.this, R.anim.fade_out);
                 Intent skipIntent = new Intent(MainActivity.this, BaseActivity.class);
                 startActivity(skipIntent);
-               //     overridePendingTransition(fadeOutAnimation,fadeInAnimation );
+                //     overridePendingTransition(fadeOutAnimation,fadeInAnimation );
         }
     }
 
