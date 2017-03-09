@@ -15,23 +15,16 @@ import android.view.MenuItem;
 import android.widget.FrameLayout;
 
 import com.firebase.ui.auth.AuthUI;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.FirebaseDatabase;
 
 import me.anwarshahriar.calligrapher.Calligrapher;
 
 public class BaseActivity extends AppCompatActivity implements BottomNavigationView.OnNavigationItemSelectedListener {
 
     private BottomNavigationView bottomNav;
-    private static final String ANONYMOUS = "ANONYMOUS";
-    private static final int RC_SIGN_IN = 1;
-    private FirebaseDatabase mFirebaseDatabase;
-    private FirebaseAuth mFirebaseAuth;
-
+    private FrameLayout baseLayout;
     CreateYourStoryFragment createYourStoryFragment = new CreateYourStoryFragment();
     SuggestedFragment suggestedFragment = new SuggestedFragment();
     ExploreMoreFragment exploreMoreFragment = new ExploreMoreFragment();
-    private FrameLayout baseLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,8 +34,6 @@ public class BaseActivity extends AppCompatActivity implements BottomNavigationV
         if(!checkPermissions()){
             requestPermissions();
         }
-        mFirebaseDatabase = FirebaseDatabase.getInstance();
-        mFirebaseAuth = FirebaseAuth.getInstance();
         initViews();
         setListeners();
         setFontType();
@@ -58,7 +49,7 @@ public class BaseActivity extends AppCompatActivity implements BottomNavigationV
     private void inflateDefaultView(){
 
         FragmentTransaction exploreFragTransaction = getSupportFragmentManager().beginTransaction();
-        exploreFragTransaction.replace(R.id.base_frame_Layout,exploreMoreFragment);
+        exploreFragTransaction.replace(R.id.base_frame_Layout,exploreMoreFragment).addToBackStack(null);
         exploreFragTransaction.commit();
     }
 
