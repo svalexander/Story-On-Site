@@ -1,5 +1,7 @@
 package nyc.c4q.helenchan.makinghistory;
 
+import android.*;
+import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -189,17 +191,6 @@ public class ExploreMoreFragment extends Fragment implements OnMapReadyCallback,
         } catch (Resources.NotFoundException e) {
             Log.e(TAG, "Can't find style. Error: ", e);
         }
-//        if (checkPermissions()) {
-//            if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-//                // TODO: Consider calling
-//                //    ActivityCompat#requestPermissions
-//                // here to request the missing permissions, and then overriding
-//                //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-//                //                                          int[] grantResults)
-//                // to handle the case where the user grants the permission. See the documentation
-//                // for ActivityCompat#requestPermissions for more details.
-//                return;
-//            }
 
         if (ContextCompat.checkSelfPermission(getActivity().getApplicationContext(), android.Manifest.permission.ACCESS_FINE_LOCATION)
                 == PackageManager.PERMISSION_GRANTED) {
@@ -213,9 +204,6 @@ public class ExploreMoreFragment extends Fragment implements OnMapReadyCallback,
             }
         }
         // centers map on current user location, stack overflow solution. will update later
-        CameraPosition cameraPosition = new CameraPosition.Builder().target(new LatLng(40.574933 , -73.98593)).zoom(12).build();
-        googleMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
-
 
         parseJSON(getActivity());
         mMap.setOnMarkerClickListener(this);
@@ -249,6 +237,19 @@ public class ExploreMoreFragment extends Fragment implements OnMapReadyCallback,
     @Override
     public void onConnected(@Nullable Bundle bundle) {
         Toast.makeText(getActivity(), "Map working!!", Toast.LENGTH_SHORT).show();
+        if (ActivityCompat.checkSelfPermission(getApplicationContext(), android.Manifest.permission.ACCESS_FINE_LOCATION)
+                != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(getActivity(),
+                    new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
+                    1);
+        } else {
+            Location myLocation =
+                    LocationServices.FusedLocationApi.getLastLocation(mLocationClient);
+            CameraPosition cameraPosition = new CameraPosition.Builder().target(new LatLng(myLocation.getLatitude(), myLocation.getLongitude())).zoom(12).build();
+            if (mMap != null) {
+                mMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
+            }
+        }
     }
 
     @Override
