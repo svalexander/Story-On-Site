@@ -106,6 +106,10 @@ public class BaseActivity extends AppCompatActivity implements BottomNavigationV
                 Intent intent = new Intent(BaseActivity.this, SignInActivity.class);
                 startActivity(intent);
                 return true;
+            case R.id.user_profile:
+                Intent userProfileIntent = new Intent(getApplicationContext(), UserProfileActivity.class);
+                startActivity(userProfileIntent);
+                return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
