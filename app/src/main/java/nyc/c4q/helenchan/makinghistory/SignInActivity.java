@@ -66,7 +66,7 @@ public class SignInActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == RC_SIGN_IN) {
             if (resultCode == RESULT_OK) {
-                Toast.makeText(SignInActivity.this, "Welcome " + mUsername, Toast.LENGTH_SHORT).show();
+                Toast.makeText(SignInActivity.this, "Welcome", Toast.LENGTH_SHORT).show();
             } else if (resultCode == RESULT_CANCELED) {
                 Toast.makeText(SignInActivity.this, "Canceled", Toast.LENGTH_SHORT).show();
                 SignInActivity.this.finish();
