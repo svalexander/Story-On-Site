@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.os.StrictMode;
 import android.provider.MediaStore;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
@@ -27,6 +28,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.VideoView;
 
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
@@ -123,7 +125,10 @@ public class CreateYourStoryFragment extends Fragment implements View.OnClickLis
         if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
             galleryAddPic();
             try {
-                imageBitmap = MediaStore.Images.Media.getBitmap(getApplicationContext().getContentResolver(), contentUri);
+                imageBitmap = MediaStore.Images.Media
+                        .getBitmap(getApplicationContext()
+                                .getContentResolver(),
+                                contentUri);
                 imagePreview.setImageBitmap(imageBitmap);
             } catch (IOException ell) {
                 ell.printStackTrace();
@@ -158,25 +163,34 @@ public class CreateYourStoryFragment extends Fragment implements View.OnClickLis
                 if (imageBitmap != null) {
                     mProgressDialog.setMessage("Uploading Image");
                     mProgressDialog.show();
-                    String randomID = java.util.UUID.randomUUID().toString();
-                    StorageReference photoStorageReference = myStorageRef.child("photos").child(randomID);
+                    String photoID = contentUri.getLastPathSegment();
+                    StorageReference photoStorageReference = myStorageRef.child("photos").child(photoID);
                     UploadTask uploadTask = photoStorageReference.putFile(contentUri);
-                    uploadTask.addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                        @Override
-                        public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                            mProgressDialog.dismiss();
-                            Toast.makeText(getApplicationContext(), "Uploaded", Toast.LENGTH_SHORT).show();
-                            downloadUri = taskSnapshot.getDownloadUrl();
-                            Log.d("location key", userLocationKey);
-                            addUserContentToDatabase(userLocationKey, downloadUri.toString());
-                        }
-                    });
+                    uploadingToFireBase(uploadTask);
                 } else {
                     Toast.makeText(getApplicationContext(), "Please take a photo!", Toast.LENGTH_LONG).show();
                 }
                 break;
             default:
         }
+    }
+
+    private void uploadingToFireBase(UploadTask uploadTask) {
+        uploadTask.addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+            @Override
+            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                mProgressDialog.dismiss();
+                Toast.makeText(getApplicationContext(), "Uploaded", Toast.LENGTH_SHORT).show();
+                downloadUri = taskSnapshot.getDownloadUrl();
+                Log.d("location key", userLocationKey);
+                addUserContentToDatabase(userLocationKey, downloadUri.toString());
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Toast.makeText(getApplicationContext(), "Upload Failed! Try Again", Toast.LENGTH_LONG).show();
+            }
+        });
     }
 
     private void addUserContentToDatabase(String userLocationKey, String url) {
@@ -203,11 +217,7 @@ public class CreateYourStoryFragment extends Fragment implements View.OnClickLis
         String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
         String imageFileName = "JPEG_" + timeStamp + "_";
         File storageDir = getApplicationContext().getExternalFilesDir(Environment.DIRECTORY_PICTURES);
-        File image = File.createTempFile(
-                imageFileName,  /* prefix */
-                ".jpg",         /* suffix */
-                storageDir      /* directory */
-        );
+        File image = File.createTempFile(imageFileName, ".jpg", storageDir);
         mCurrentPhotoPath = image.getAbsolutePath();
         return image;
     }
@@ -232,11 +242,11 @@ public class CreateYourStoryFragment extends Fragment implements View.OnClickLis
     }
 
     private void galleryAddPic() {
-        Intent mediaScanIntent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
-        File f = new File(mCurrentPhotoPath);
-        contentUri = Uri.fromFile(f);
-        mediaScanIntent.setData(contentUri);
-        getApplicationContext().sendBroadcast(mediaScanIntent);
+        Intent galleryIntent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
+        File file = new File(mCurrentPhotoPath);
+        contentUri = Uri.fromFile(file);
+        galleryIntent.setData(contentUri);
+        getApplicationContext().sendBroadcast(galleryIntent);
     }
 
 
