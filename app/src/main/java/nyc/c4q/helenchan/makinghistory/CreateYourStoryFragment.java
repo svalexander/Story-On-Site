@@ -1,6 +1,5 @@
 package nyc.c4q.helenchan.makinghistory;
 
-import android.*;
 import android.Manifest;
 import android.app.ProgressDialog;
 import android.content.Intent;
@@ -35,7 +34,6 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
-import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
@@ -127,8 +125,8 @@ public class CreateYourStoryFragment extends Fragment implements View.OnClickLis
             try {
                 imageBitmap = MediaStore.Images.Media.getBitmap(getApplicationContext().getContentResolver(), contentUri);
                 imagePreview.setImageBitmap(imageBitmap);
-            } catch (IOException e) {
-                e.printStackTrace();
+            } catch (IOException ell) {
+                ell.printStackTrace();
             }
         }
     }

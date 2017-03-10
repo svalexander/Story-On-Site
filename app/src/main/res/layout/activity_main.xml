@@ -18,7 +18,7 @@
             android:layout_width="@dimen/main_picture"
             android:layout_height="@dimen/main_picture"
             android:layout_gravity="center_horizontal"
-            android:background="@color/primary_light"
+            android:background="@color/text"
             android:paddingTop="@dimen/main_pic_margin" />
 
         <TextView
