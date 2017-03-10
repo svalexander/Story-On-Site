@@ -19,6 +19,7 @@
         android:gravity="center"
         android:orientation="vertical">
         <TextView
+            android:textSize="16sp"
             android:id="@+id/create_prompt_tv"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

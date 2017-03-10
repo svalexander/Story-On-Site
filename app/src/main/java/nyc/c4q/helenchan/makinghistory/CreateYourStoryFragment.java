@@ -4,6 +4,7 @@ import android.Manifest;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.content.pm.ResolveInfo;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
@@ -40,6 +41,7 @@ import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 
 import me.anwarshahriar.calligrapher.Calligrapher;
 import nyc.c4q.helenchan.makinghistory.models.Content;
@@ -75,6 +77,8 @@ public class CreateYourStoryFragment extends Fragment implements View.OnClickLis
     private String userLocationKey;
     private String mCurrentPhotoPath;
     private Uri contentUri;
+    private static final int CAMERA_IMAGE_CAPTURE = 0;
+    private static final String PACKAGENAME = "nyc.c4q.helenchan.makinghistory";
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -85,6 +89,7 @@ public class CreateYourStoryFragment extends Fragment implements View.OnClickLis
         myStorageRef = mFirebaseStorage.getReference();
         StrictMode.VmPolicy.Builder builder = new StrictMode.VmPolicy.Builder();
         StrictMode.setVmPolicy(builder.build());
+        setRetainInstance(true);
 
     }
 
@@ -205,6 +210,7 @@ public class CreateYourStoryFragment extends Fragment implements View.OnClickLis
     }
 
     private boolean requestPermissions() {
+
         ActivityCompat.requestPermissions(getActivity(), new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION,
                 android.Manifest.permission.WRITE_EXTERNAL_STORAGE,
                 android.Manifest.permission.READ_EXTERNAL_STORAGE,
@@ -223,7 +229,9 @@ public class CreateYourStoryFragment extends Fragment implements View.OnClickLis
     }
 
     private void openCamera() {
+
         Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+
         if (takePictureIntent.resolveActivity(getApplicationContext().getPackageManager()) != null) {
             File photoFile = null;
             try {
@@ -235,6 +243,12 @@ public class CreateYourStoryFragment extends Fragment implements View.OnClickLis
                 Uri photoURI = FileProvider.getUriForFile(getApplicationContext(),
                         "nyc.c4q.helenchan.makinghistory",
                         photoFile);
+                List<ResolveInfo> resolvedIntentActivities = getContext().getPackageManager().queryIntentActivities(takePictureIntent, PackageManager.MATCH_DEFAULT_ONLY);
+                for (ResolveInfo resolvedIntentInfo : resolvedIntentActivities) {
+                    String packageName = resolvedIntentInfo.activityInfo.packageName;
+
+                    getContext().grantUriPermission(packageName, photoURI, Intent.FLAG_GRANT_WRITE_URI_PERMISSION | Intent.FLAG_GRANT_READ_URI_PERMISSION);
+                }
                 takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);
                 startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
             }
@@ -247,6 +261,7 @@ public class CreateYourStoryFragment extends Fragment implements View.OnClickLis
         contentUri = Uri.fromFile(file);
         galleryIntent.setData(contentUri);
         getApplicationContext().sendBroadcast(galleryIntent);
+
     }
 
 
