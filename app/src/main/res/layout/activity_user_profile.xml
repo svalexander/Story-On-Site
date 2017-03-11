@@ -10,8 +10,8 @@
         android:id="@+id/user_profile_photo"
         android:layout_width="@dimen/profile_img_wh"
         android:layout_height="@dimen/profile_img_wh"
-        android:background="@color/authui_colorPrimaryDark"
-        android:layout_marginBottom="20dp"/>
+        android:background="@color/colorPrimaryDark"
+        android:layout_marginBottom="30dp"/>
 
     <TextView
         android:id="@+id/user_num_photos"
@@ -19,7 +19,7 @@
         android:layout_height="wrap_content"
         android:layout_toRightOf="@id/user_profile_photo"
         android:text="200"
-        android:layout_marginLeft="40dp"
+        android:layout_marginLeft="@dimen/user_profile_margin_left"
         android:textSize="18dp" />
 
     <TextView
@@ -27,30 +27,56 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="@dimen/activity_vertical_margin"
-        android:layout_marginLeft="40dp"
-        android:layout_below="@id/user_num_photos"
-        android:layout_toRightOf="@id/user_profile_photo"
+        android:layout_marginLeft="5dp"
+        android:layout_marginTop="5dp"
+        android:layout_toRightOf="@id/user_num_photos"
         android:text="photos"
         android:textSize="12dp" />
 
-    <Button
-        android:id="@+id/edit_profile_btn"
-        android:layout_width="150dp"
-        android:layout_height="35dp"
-        android:background="@color/com_facebook_blue"
-        android:text="Edit Your Profile"
-        android:layout_alignParentRight="true"
-        android:layout_marginLeft="40dp"
+    <TextView
+        android:id="@+id/user_profile_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/user_num_photos"
         android:layout_toRightOf="@id/user_profile_photo"
+        android:layout_marginLeft="25dp"
+        android:text="USERNAME HERE"
+        android:layout_marginTop="@dimen/activity_vertical_margin"
+        android:layout_marginBottom="4dp"
+        android:textSize="@dimen/profile_user_name"
+        android:textStyle="bold"
+        android:textAllCaps="true"/>
+
+
+    <TextView
+        android:id="@+id/user_profile_bio"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_toRightOf="@id/user_profile_photo"
+        android:layout_marginLeft="@dimen/user_profile_margin_left"
+        android:text="I'm an InstaThot. Fly me to Dubai for $15k."
+        android:textSize="12dp"
         android:layout_alignBottom="@id/user_profile_photo"
-        android:textAlignment="center"
-        android:textColor="@color/white_text" />
+        android:layout_below="@+id/user_profile_name"/>
+
+    <!--<Button-->
+        <!--android:id="@+id/edit_profile_btn"-->
+        <!--android:layout_width="150dp"-->
+        <!--android:layout_height="35dp"-->
+        <!--android:background="@color/com_facebook_blue"-->
+        <!--android:text="Edit Your Profile"-->
+        <!--android:layout_alignParentRight="true"-->
+        <!--android:layout_marginLeft="40dp"-->
+        <!--android:layout_toRightOf="@id/user_profile_photo"-->
+        <!--android:layout_alignBottom="@id/user_profile_photo"-->
+        <!--android:textAlignment="center"-->
+        <!--android:textColor="@color/white_text" />-->
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/user_profile_recycler_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@id/user_profile_photo"
-        android:background="@color/accent" />
+        android:layout_below="@id/user_profile_photo" />
 
 </RelativeLayout>
