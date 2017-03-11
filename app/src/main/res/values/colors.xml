@@ -16,4 +16,5 @@
     <color name="primaryMedium">#403D39</color>
     <color name="primaryDark">#252422</color>
     <color name="teal_accent">#87D1C4</color>
+    <color name="primaryMediumTintOverlay">#80403D39</color>
 </resources>
