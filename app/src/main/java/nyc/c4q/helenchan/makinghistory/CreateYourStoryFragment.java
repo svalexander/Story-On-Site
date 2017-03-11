@@ -124,7 +124,7 @@ public class CreateYourStoryFragment extends Fragment implements View.OnClickLis
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
-            galleryAddPic();
+            addPicToGallery();
             try {
                 imageBitmap = MediaStore.Images.Media
                         .getBitmap(getApplicationContext()
@@ -256,7 +256,7 @@ public class CreateYourStoryFragment extends Fragment implements View.OnClickLis
         }
     }
 
-    private void galleryAddPic() {
+    private void addPicToGallery() {
         Intent galleryIntent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
         File file = new File(mCurrentPhotoPath);
         contentUri = Uri.fromFile(file);
