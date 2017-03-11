@@ -1,48 +1,58 @@
 package nyc.c4q.helenchan.makinghistory.models;
 
+import java.util.Calendar;
+
+import nyc.c4q.helenchan.makinghistory.SignInActivity;
+
 /**
  * Created by Akasha on 3/8/17.
  */
 
 public class UserContent {
 
-    private String userId;
-    private String userProfilePhoto;
-    private String userImageUrl;
-    private int numUserPhotos;
+    private String userName;
+    private String userPhotoUrl;
+    private String text;
+    private Calendar year;
 
-
-
-    public String getUserId() {
-        return userId;
+    public UserContent(String userName, String userPhotoUrl, String text, Calendar year) {
+        this.userName = userName;
+        this.userPhotoUrl = userPhotoUrl;
+        this.text = text;
+        this.year = year;
     }
 
-    public void setUserId(String userId) {
-        this.userId = userId;
+    public String getUserName() {
+        return SignInActivity.mUsername;
+        //return userName;
     }
 
-    public String getUserImageUrl() {
-        return userImageUrl;
+    public void setUserName(String userName) {
+        this.userName = userName;
     }
 
-    public void setUserImageUrl(String userImageUrl) {
-        this.userImageUrl = userImageUrl;
+    public String getUserPhotoUrl() {
+        return userPhotoUrl;
     }
 
-    public int getNumUserPhotos() {
-        return numUserPhotos;
+    public void setUserPhotoUrl(String userPhotoUrl) {
+        this.userPhotoUrl = userPhotoUrl;
     }
 
-    public void setNumUserPhotos(int numUserPhotos) {
-        this.numUserPhotos = numUserPhotos;
+    public String getText() {
+        return text;
     }
 
-    public String getUserProfilePhoto() {
-        return userProfilePhoto;
+    public void setText(String text) {
+        this.text = text;
     }
 
-    public void setUserProfilePhoto(String userProfilePhoto) {
-        this.userProfilePhoto = userProfilePhoto;
+
+    public Calendar getYear() {
+        return year;
     }
 
+    public void setYear(Calendar year) {
+        this.year = year;
+    }
 }

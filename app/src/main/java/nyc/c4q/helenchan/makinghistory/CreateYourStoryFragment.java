@@ -29,8 +29,12 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.VideoView;
 
+import com.firebase.ui.auth.ui.User;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.database.ChildEventListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
@@ -45,6 +49,7 @@ import java.util.Date;
 
 import me.anwarshahriar.calligrapher.Calligrapher;
 import nyc.c4q.helenchan.makinghistory.models.Content;
+import nyc.c4q.helenchan.makinghistory.models.UserContent;
 
 import static android.app.Activity.RESULT_OK;
 import static com.facebook.FacebookSdk.getApplicationContext;
@@ -129,7 +134,7 @@ public class CreateYourStoryFragment extends Fragment implements View.OnClickLis
             try {
                 imageBitmap = MediaStore.Images.Media
                         .getBitmap(getApplicationContext()
-                                .getContentResolver(),
+                                        .getContentResolver(),
                                 contentUri);
                 imagePreview.setImageBitmap(imageBitmap);
             } catch (IOException e) {
@@ -196,7 +201,8 @@ public class CreateYourStoryFragment extends Fragment implements View.OnClickLis
     }
 
     private void addUserContentToDatabase(String userLocationKey, String url) {
-        mFirebaseDatabase.child("MapPoint").child(userLocationKey).child("ContentList").push().setValue(new Content(" ", "UserIdGoesHere", " ", "wash sq", url, "2017"));
+        String userName = SignInActivity.mUsername;
+        mFirebaseDatabase.child("MapPoint").child(userLocationKey).child("ContentList").push().setValue(new Content(" ", userName, " ", "wash sq", url, "2017"));
     }
 
     private boolean checkPermissions() {

@@ -8,4 +8,6 @@
     <dimen name="content_img_space_below">8dp</dimen>
     <dimen name="profile_img_wh">90dp</dimen>
     <dimen name="profile_user_name">18sp</dimen>
+    <dimen name="user_profile_margin_left">25dp</dimen>
+    <dimen name="user_content_wh">150dp</dimen>
 </resources>

@@ -23,7 +23,9 @@ public class SignInActivity extends AppCompatActivity {
     private static final String USERNAME = "username";
     private FirebaseAuth mFirebaseAuth;
     private FirebaseAuth.AuthStateListener mAuthStateListener;
-    private String mUsername;
+    //private String mUsername;
+
+    public static String mUsername;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {

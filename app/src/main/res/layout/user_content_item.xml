@@ -6,9 +6,22 @@
 
 
     <ImageView
-        android:id="@+id/user_content"
-        android:layout_width="150dp"
-        android:layout_height="150dp"
-        android:background="@color/authui_colorAccent"/>
+        android:id="@+id/user_photo_content"
+        android:layout_width="@dimen/user_content_wh"
+        android:layout_height="@dimen/user_content_wh"
+        android:background="@color/authui_colorAccent"
+        android:layout_marginBottom="@dimen/activity_vertical_margin"/>
+
+    <!--<TextView-->
+        <!--android:id="@+id/user_text_content"-->
+        <!--android:layout_width="@dimen/user_content_wh"-->
+        <!--android:layout_height="@dimen/user_content_wh"-->
+        <!--android:background="@color/primary_dark"-->
+        <!--android:text="sample text sample text sample text sample text sample text sample text sample text sample text sample text sample text sample text"-->
+        <!--android:textColor="@color/white_text"-->
+        <!--android:textAlignment="center"-->
+        <!--android:textSize="12dp"-->
+        <!--android:padding="2dp"-->
+        <!--android:layout_marginBottom="@dimen/activity_vertical_margin"/>-->
 
 </LinearLayout>
