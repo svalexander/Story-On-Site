@@ -1,10 +1,10 @@
 package nyc.c4q.helenchan.makinghistory;
 
-import android.*;
 import android.Manifest;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.content.pm.ResolveInfo;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
@@ -37,11 +37,11 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
-import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 
 import me.anwarshahriar.calligrapher.Calligrapher;
 import nyc.c4q.helenchan.makinghistory.models.Content;
@@ -64,7 +64,6 @@ public class CreateYourStoryFragment extends Fragment implements View.OnClickLis
     private ProgressDialog mProgressDialog;
 
     private Button takePhoto;
-    private Button addLocation;
     private Button takeVideo;
     private ImageView imagePreview;
     private VideoView videoView;
@@ -131,9 +130,8 @@ public class CreateYourStoryFragment extends Fragment implements View.OnClickLis
                         .getBitmap(getApplicationContext()
                                 .getContentResolver(),
                                 contentUri);
-                imagePreview.setImageBitmap(imageBitmap);
-            } catch (IOException e) {
-                e.printStackTrace();
+            } catch (IOException ell) {
+                ell.printStackTrace();
             }
         }
     }
@@ -169,6 +167,8 @@ public class CreateYourStoryFragment extends Fragment implements View.OnClickLis
                     StorageReference photoStorageReference = myStorageRef.child("photos").child(photoID);
                     UploadTask uploadTask = photoStorageReference.putFile(contentUri);
                     uploadingToFireBase(uploadTask);
+                    returnToMap();
+
                 } else {
                     Toast.makeText(getApplicationContext(), "Please take a photo!", Toast.LENGTH_LONG).show();
                 }
@@ -177,6 +177,10 @@ public class CreateYourStoryFragment extends Fragment implements View.OnClickLis
         }
     }
 
+    private void returnToMap(){
+        Intent intent = new Intent(getContext(), BaseActivity.class);
+        startActivity(intent);
+    }
     private void uploadingToFireBase(UploadTask uploadTask) {
         uploadTask.addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
             @Override
@@ -208,6 +212,7 @@ public class CreateYourStoryFragment extends Fragment implements View.OnClickLis
     }
 
     private boolean requestPermissions() {
+
         ActivityCompat.requestPermissions(getActivity(), new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION,
                 android.Manifest.permission.WRITE_EXTERNAL_STORAGE,
                 android.Manifest.permission.READ_EXTERNAL_STORAGE,
@@ -226,7 +231,9 @@ public class CreateYourStoryFragment extends Fragment implements View.OnClickLis
     }
 
     private void openCamera() {
+
         Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+
         if (takePictureIntent.resolveActivity(getApplicationContext().getPackageManager()) != null) {
             File photoFile = null;
             try {
@@ -238,6 +245,12 @@ public class CreateYourStoryFragment extends Fragment implements View.OnClickLis
                 Uri photoURI = FileProvider.getUriForFile(getApplicationContext(),
                         "nyc.c4q.helenchan.makinghistory",
                         photoFile);
+                List<ResolveInfo> resolvedIntentActivities = getContext().getPackageManager().queryIntentActivities(takePictureIntent, PackageManager.MATCH_DEFAULT_ONLY);
+                for (ResolveInfo resolvedIntentInfo : resolvedIntentActivities) {
+                    String packageName = resolvedIntentInfo.activityInfo.packageName;
+
+                    getContext().grantUriPermission(packageName, photoURI, Intent.FLAG_GRANT_WRITE_URI_PERMISSION | Intent.FLAG_GRANT_READ_URI_PERMISSION);
+                }
                 takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);
                 startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
             }
@@ -250,6 +263,7 @@ public class CreateYourStoryFragment extends Fragment implements View.OnClickLis
         contentUri = Uri.fromFile(file);
         galleryIntent.setData(contentUri);
         getApplicationContext().sendBroadcast(galleryIntent);
+
     }
 
 

@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/activity_main"
     android:orientation="vertical"
+    android:background="@drawable/main_background"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="nyc.c4q.helenchan.makinghistory.MainActivity">
@@ -15,10 +16,10 @@
 
         <ImageView
             android:id="@+id/main_pic_iv"
-            android:layout_width="@dimen/main_picture"
+            android:layout_width="match_parent"
             android:layout_height="@dimen/main_picture"
             android:layout_gravity="center_horizontal"
-            android:background="@color/primary_light"
+            android:background="@color/text"
             android:paddingTop="@dimen/main_pic_margin" />
 
         <TextView
@@ -26,7 +27,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="bottom"
-            android:layout_margin="@dimen/main_pic_margin"
+            android:layout_marginTop="@dimen/main_pic_margin"
             android:ellipsize="end"
             android:maxLines="6"
             android:text="@string/samuel_ipsum" />
