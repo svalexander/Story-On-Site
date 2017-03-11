@@ -9,7 +9,7 @@
     <string name="hello">Hello</string>
     <string name="login">Login</string>
     <string name="place_holder">This is a PlaceHolder for the View to Come</string>
-    <string name="explore_btn_text">Explore More</string>
+    <string name="explore_btn_text">Explore</string>
     <string name="create_btn_state">Create Your Own Story</string>
     <string name="sign_out">Sign Out</string>
     <string name="location_label">Location:</string>
@@ -19,7 +19,7 @@
     <string name="profile">My Profile</string>
     <string name="preview_your_story_here">Preview Your Story Here</string>
     <string name="create_your_own_story">Create Your Own Story</string>
-    <string name="create_prompt">Help create our collective history by leaving your personal story/experience with this space here. Write a thoughtful story, snap a pic or take a video. The add to the database for others to experience.</string>
+    <string name="create_prompt">Help create our collective history by leaving your personal story/experience with this space here. Write a thoughtful story, snap a pic or take a video. Then save to add to the map for others to experience.</string>
     <string name="save">SAVE</string>
     <string name="sign_in_menu">Sign In</string>
     <string name="user_profile_menu">User Profile</string>

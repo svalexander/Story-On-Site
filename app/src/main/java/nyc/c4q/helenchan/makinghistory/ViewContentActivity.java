@@ -43,8 +43,9 @@ public class ViewContentActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_viewcontent);
 
+
         contentRV = (RecyclerView) findViewById(R.id.content_recycler_view);
-        contentRV.setLayoutManager(new LinearLayoutManager(this));
+        contentRV.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
         viewContentAdapter = new ViewContentAdapter();
         contentRV.setAdapter(viewContentAdapter);
         lat = getIntent().getDoubleExtra("Latitude", 0);
