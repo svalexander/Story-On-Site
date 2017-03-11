@@ -130,13 +130,11 @@ public class CreateYourStoryFragment extends Fragment implements View.OnClickLis
                         .getBitmap(getApplicationContext()
                                 .getContentResolver(),
                                 contentUri);
-                imagePreview.setImageBitmap(imageBitmap);
             } catch (IOException ell) {
                 ell.printStackTrace();
             }
         }
     }
-
 
     @Override
     public void onClick(View view) {

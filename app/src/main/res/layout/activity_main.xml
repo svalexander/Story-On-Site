@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/activity_main"
     android:orientation="vertical"
+    android:background="@drawable/main_background"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="nyc.c4q.helenchan.makinghistory.MainActivity">

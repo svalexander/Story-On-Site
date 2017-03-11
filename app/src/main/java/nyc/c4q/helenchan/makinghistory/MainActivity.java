@@ -42,7 +42,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         setListeners();
         setAnimations();
         setFontType();
-
     }
 
     private void initViews() {
@@ -56,7 +55,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             String url = picsList.get(i).getUrl();
             String text = picsList.get(i).getText();
             Picasso.with(getBaseContext()).load(url).resize(1200, 1200).centerCrop().into(mainPicIV);
-           mainPicTV.setText(text);
+            mainPicTV.setText(text);
         }
 
 
@@ -75,7 +74,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.skipBtn:
-                  fadeOutAnimation = AnimationUtils.loadAnimation(MainActivity.this, R.anim.fade_out);
+                fadeOutAnimation = AnimationUtils.loadAnimation(MainActivity.this, R.anim.fade_out);
                 Intent skipIntent = new Intent(MainActivity.this, BaseActivity.class);
                 startActivity(skipIntent);
                 //     overridePendingTransition(fadeOutAnimation,fadeInAnimation );
