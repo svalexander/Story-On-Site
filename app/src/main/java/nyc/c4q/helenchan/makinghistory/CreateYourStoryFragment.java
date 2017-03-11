@@ -64,7 +64,6 @@ public class CreateYourStoryFragment extends Fragment implements View.OnClickLis
     private ProgressDialog mProgressDialog;
 
     private Button takePhoto;
-    private Button addLocation;
     private Button takeVideo;
     private ImageView imagePreview;
     private VideoView videoView;
@@ -77,8 +76,6 @@ public class CreateYourStoryFragment extends Fragment implements View.OnClickLis
     private String userLocationKey;
     private String mCurrentPhotoPath;
     private Uri contentUri;
-    private static final int CAMERA_IMAGE_CAPTURE = 0;
-    private static final String PACKAGENAME = "nyc.c4q.helenchan.makinghistory";
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -89,7 +86,6 @@ public class CreateYourStoryFragment extends Fragment implements View.OnClickLis
         myStorageRef = mFirebaseStorage.getReference();
         StrictMode.VmPolicy.Builder builder = new StrictMode.VmPolicy.Builder();
         StrictMode.setVmPolicy(builder.build());
-        setRetainInstance(true);
 
     }
 
@@ -141,6 +137,7 @@ public class CreateYourStoryFragment extends Fragment implements View.OnClickLis
         }
     }
 
+
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
@@ -172,6 +169,8 @@ public class CreateYourStoryFragment extends Fragment implements View.OnClickLis
                     StorageReference photoStorageReference = myStorageRef.child("photos").child(photoID);
                     UploadTask uploadTask = photoStorageReference.putFile(contentUri);
                     uploadingToFireBase(uploadTask);
+                    returnToMap();
+
                 } else {
                     Toast.makeText(getApplicationContext(), "Please take a photo!", Toast.LENGTH_LONG).show();
                 }
@@ -180,6 +179,10 @@ public class CreateYourStoryFragment extends Fragment implements View.OnClickLis
         }
     }
 
+    private void returnToMap(){
+        Intent intent = new Intent(getContext(), BaseActivity.class);
+        startActivity(intent);
+    }
     private void uploadingToFireBase(UploadTask uploadTask) {
         uploadTask.addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
             @Override
