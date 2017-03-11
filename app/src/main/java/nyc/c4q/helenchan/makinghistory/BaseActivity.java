@@ -49,7 +49,7 @@ public class BaseActivity extends AppCompatActivity implements BottomNavigationV
     private void inflateDefaultView(){
 
         FragmentTransaction exploreFragTransaction = getSupportFragmentManager().beginTransaction();
-        exploreFragTransaction.replace(R.id.base_frame_Layout,exploreMoreFragment).addToBackStack(null);
+        exploreFragTransaction.replace(R.id.base_frame_Layout,exploreMoreFragment);
         exploreFragTransaction.commit();
     }
 
