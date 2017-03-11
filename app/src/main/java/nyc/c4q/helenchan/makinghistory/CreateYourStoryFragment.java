@@ -6,6 +6,8 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.graphics.Bitmap;
+import android.graphics.Matrix;
+import android.media.ExifInterface;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -123,12 +125,33 @@ public class CreateYourStoryFragment extends Fragment implements View.OnClickLis
         if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
             addPicToGallery();
             goToEditActivity();
+
 //            try {
-//                goToEditActivity();
 //                imageBitmap = MediaStore.Images.Media
 //                        .getBitmap(getApplicationContext()
-//                                .getContentResolver(),
+//                                        .getContentResolver(),
 //                                contentUri);
+//
+//                ExifInterface exifInterface = new ExifInterface(contentUri.getPath());
+//                int currentRotation = exifInterface.getAttributeInt(ExifInterface.TAG_ORIENTATION, ExifInterface.ORIENTATION_UNDEFINED);
+//                Matrix matrix = new Matrix();
+//
+//                switch (currentRotation) {
+//                    case ExifInterface.ORIENTATION_ROTATE_90:
+//                        matrix.setRotate(90);
+//                        break;
+//
+//                    case ExifInterface.ORIENTATION_ROTATE_180:
+//                       matrix.setRotate(180);
+//                        break;
+//
+//                    case ExifInterface.ORIENTATION_ROTATE_270:
+//                      matrix.setRotate(270);
+//                        break;
+//                }
+//
+//                Bitmap rotatedBitmap = Bitmap.createBitmap(imageBitmap,0,0,imageBitmap.getWidth(),imageBitmap.getHeight(), matrix, true);
+//                imagePreview.setImageBitmap(rotatedBitmap);
 //            } catch (IOException ell) {
 //                ell.printStackTrace();
 //            }
@@ -186,6 +209,7 @@ public class CreateYourStoryFragment extends Fragment implements View.OnClickLis
         Intent intent = new Intent(getContext(), BaseActivity.class);
         startActivity(intent);
     }
+
     private void uploadingToFireBase(UploadTask uploadTask) {
         uploadTask.addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
             @Override
