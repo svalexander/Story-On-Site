@@ -1,14 +1,11 @@
 package nyc.c4q.helenchan.makinghistory;
 
-import android.*;
 import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.res.AssetFileDescriptor;
 import android.content.res.Resources;
-import android.location.Address;
-import android.location.Geocoder;
 import android.location.Location;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -22,7 +19,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
@@ -102,17 +98,17 @@ public class ExploreMoreFragment extends Fragment implements OnMapReadyCallback,
         }
         mFirebaseDatabase2 = FirebaseDatabase.getInstance().getReference();
 
-        searchAddressBtn = (Button) root.findViewById(R.id.location_search_btn);
-        searchAddressBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                try {
-                    locateFromAddress(view);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-        });
+//        searchAddressBtn = (Button) root.findViewById(R.id.location_search_btn);
+//        searchAddressBtn.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                try {
+//                    locateFromAddress(view);
+//                } catch (IOException e) {
+//                    e.printStackTrace();
+//                }
+//            }
+//        });
 
         setActionBarTitle(root);
         return root;
@@ -181,25 +177,25 @@ public class ExploreMoreFragment extends Fragment implements OnMapReadyCallback,
         imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
     }
 
-    public void locateFromAddress(View v) throws IOException {
-        hideSoftKeyboard(v);
-
-        EditText locationInput = (EditText) v.findViewById(R.id.location_search_input);
-        String searchString = locationInput.getText().toString();
-
-        Geocoder gc = new Geocoder(getActivity());
-        List<Address> list = gc.getFromLocationName(searchString, 1);
-
-        if (list.size() > 0) {
-            Address add = list.get(0);
-            String locality = add.getLocality();
-            Toast.makeText(getActivity(), "Found: " + locality, Toast.LENGTH_SHORT).show();
-
-            double lat = add.getLatitude();
-            double lng = add.getLongitude();
-            gotoLocation(lat, lng, zoomLevel);
-        }
-    }
+//    public void locateFromAddress(View v) throws IOException {
+//        hideSoftKeyboard(v);
+//
+//        EditText locationInput = (EditText) v.findViewById(R.id.location_search_input);
+//        String searchString = locationInput.getText().toString();
+//
+//        Geocoder gc = new Geocoder(getActivity());
+//        List<Address> list = gc.getFromLocationName(searchString, 1);
+//
+//        if (list.size() > 0) {
+//            Address add = list.get(0);
+//            String locality = add.getLocality();
+//            Toast.makeText(getActivity(), "Found: " + locality, Toast.LENGTH_SHORT).show();
+//
+//            double lat = add.getLatitude();
+//            double lng = add.getLongitude();
+//            gotoLocation(lat, lng, zoomLevel);
+//        }
+//    }
 
     @Override
     public void onConnected(@Nullable Bundle bundle) {
