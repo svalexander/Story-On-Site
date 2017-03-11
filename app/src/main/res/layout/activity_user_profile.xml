@@ -10,7 +10,7 @@
         android:id="@+id/user_profile_photo"
         android:layout_width="@dimen/profile_img_wh"
         android:layout_height="@dimen/profile_img_wh"
-        android:background="@color/authui_colorPrimaryDark"
+        android:background="@color/colorPrimaryDark"
         android:layout_marginBottom="30dp"/>
 
     <TextView
@@ -77,7 +77,6 @@
         android:id="@+id/user_profile_recycler_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@id/user_profile_photo"
-        android:background="@color/accent" />
+        android:layout_below="@id/user_profile_photo" />
 
 </RelativeLayout>

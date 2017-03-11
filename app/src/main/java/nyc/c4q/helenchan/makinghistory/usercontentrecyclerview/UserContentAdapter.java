@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import nyc.c4q.helenchan.makinghistory.R;
-import nyc.c4q.helenchan.makinghistory.models.UserContent;
+import nyc.c4q.helenchan.makinghistory.models.Content;
 
 /**
  * Created by Akasha on 3/8/17.
@@ -17,7 +17,7 @@ import nyc.c4q.helenchan.makinghistory.models.UserContent;
 
 public class UserContentAdapter  extends RecyclerView.Adapter<UserContentViewHolder> {
 
-    private List<UserContent> userContentList = new ArrayList<>();
+    private List<Content> userPhotoList = new ArrayList<>();
 
     @Override
     public UserContentViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -27,17 +27,20 @@ public class UserContentAdapter  extends RecyclerView.Adapter<UserContentViewHol
 
     @Override
     public void onBindViewHolder(UserContentViewHolder holder, int position) {
-        UserContent userContent = userContentList.get(position);
-        holder.bind(userContent);
+        Content content = userPhotoList.get(position);
+        holder.bind(content);
     }
+
 
     @Override
     public int getItemCount() {
-        return userContentList.size();
+        return userPhotoList.size();
     }
 
-//    public void setMapContent(List<Content> mapContent) {
-//        this.mapContent = mapContent;
-//        notifyDataSetChanged();
-//    }
+    public void setUserPhotoContent(List<Content> userPhotoList) {
+        this.userPhotoList = userPhotoList;
+        notifyDataSetChanged();
+    }
+
 }
+

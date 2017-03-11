@@ -1,16 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
               android:orientation="vertical"
-              android:layout_width="match_parent"
-              android:layout_height="match_parent">
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content">
 
 
     <ImageView
         android:id="@+id/user_photo_content"
-        android:layout_width="@dimen/user_content_wh"
-        android:layout_height="@dimen/user_content_wh"
-        android:background="@color/authui_colorAccent"
-        android:layout_marginBottom="@dimen/activity_vertical_margin"/>
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:layout_marginBottom="@dimen/content_img_space_below"/>
 
     <!--<TextView-->
         <!--android:id="@+id/user_text_content"-->

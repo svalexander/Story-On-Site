@@ -8,14 +8,15 @@ import nyc.c4q.helenchan.makinghistory.SignInActivity;
  * Created by Akasha on 3/8/17.
  */
 
-public class UserContent {
+public class User {
 
     private String userName;
     private String userPhotoUrl;
     private String text;
     private Calendar year;
 
-    public UserContent(String userName, String userPhotoUrl, String text, Calendar year) {
+
+    public User(String userName, String userPhotoUrl, String text, Calendar year) {
         this.userName = userName;
         this.userPhotoUrl = userPhotoUrl;
         this.text = text;

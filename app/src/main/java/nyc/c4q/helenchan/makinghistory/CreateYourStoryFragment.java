@@ -1,6 +1,5 @@
 package nyc.c4q.helenchan.makinghistory;
 
-import android.*;
 import android.Manifest;
 import android.app.ProgressDialog;
 import android.content.Intent;
@@ -29,19 +28,15 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.VideoView;
 
-import com.firebase.ui.auth.ui.User;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.firebase.database.ChildEventListener;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
-import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
@@ -49,7 +44,6 @@ import java.util.Date;
 
 import me.anwarshahriar.calligrapher.Calligrapher;
 import nyc.c4q.helenchan.makinghistory.models.Content;
-import nyc.c4q.helenchan.makinghistory.models.UserContent;
 
 import static android.app.Activity.RESULT_OK;
 import static com.facebook.FacebookSdk.getApplicationContext;
@@ -67,6 +61,8 @@ public class CreateYourStoryFragment extends Fragment implements View.OnClickLis
     private StorageReference myStorageRef;
     private Uri downloadUri;
     private ProgressDialog mProgressDialog;
+
+    private FirebaseAuth mFirebaseAuth;
 
     private Button takePhoto;
     private Button addLocation;
@@ -110,6 +106,10 @@ public class CreateYourStoryFragment extends Fragment implements View.OnClickLis
         mProgressDialog = new ProgressDialog(getActivity());
         saveContent = (Button) root.findViewById(R.id.saveBtn);
         saveContent.setOnClickListener(this);
+
+
+        String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        Log.i("Create Story", "user id is: " + uid);
 
         setActionBarTitle(root);
         setFontType(root);
@@ -201,8 +201,10 @@ public class CreateYourStoryFragment extends Fragment implements View.OnClickLis
     }
 
     private void addUserContentToDatabase(String userLocationKey, String url) {
-        String userName = SignInActivity.mUsername;
-        mFirebaseDatabase.child("MapPoint").child(userLocationKey).child("ContentList").push().setValue(new Content(" ", userName, " ", "wash sq", url, "2017"));
+        String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        mFirebaseDatabase.child("MapPoint").child(userLocationKey).child("ContentList").push().setValue(new Content(" ", "Akasha testing", " ", "wash sq", url, "2017"));
+        mFirebaseDatabase.child("Users").child(uid).child("ContentList").push().setValue(new Content(" ", uid, " ", "wash sq", url, "2017"));
+
     }
 
     private boolean checkPermissions() {
