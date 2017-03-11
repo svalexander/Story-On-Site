@@ -33,6 +33,7 @@ import android.widget.VideoView;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
@@ -69,6 +70,8 @@ public class CreateYourStoryFragment extends Fragment implements View.OnClickLis
     private ImageButton takePhoto;
     private ImageButton takeVideo;
     private ImageButton selectImage;
+    private FirebaseAuth mFirebaseAuth;
+
     private ImageView imagePreview;
     private VideoView videoView;
     private FrameLayout baseLayout;
@@ -103,6 +106,10 @@ public class CreateYourStoryFragment extends Fragment implements View.OnClickLis
         selectImage = (ImageButton) root.findViewById(R.id.pic_image_create);
         selectImage.setOnClickListener(this);
         mProgressDialog = new ProgressDialog(getActivity());
+
+
+        String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        Log.i("Create Story", "user id is: " + uid);
 
         setActionBarTitle(root);
         setFontType(root);
@@ -229,8 +236,9 @@ public class CreateYourStoryFragment extends Fragment implements View.OnClickLis
     }
 
     private void addUserContentToDatabase(String userLocationKey, String url) {
-        mFirebaseDatabase.child("MapPoint").child(userLocationKey).child("ContentList").push().setValue(new Content(" ", "UserIdGoesHere", " ", "wash sq", url, "2017"));
-        mFirebaseDatabase.child("Users").child("leigh").child("ContentList").push().setValue(new Content(" ", "UserIdGoesHere", " ", "wash sq", url, "2017"));
+        String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        mFirebaseDatabase.child("MapPoint").child(userLocationKey).child("ContentList").push().setValue(new Content(" ", "Akasha testing", " ", "wash sq", url, "2017"));
+        mFirebaseDatabase.child("Users").child(uid).child("ContentList").push().setValue(new Content(" ", uid, " ", "wash sq", url, "2017"));
     }
 
     private boolean checkPermissions() {
