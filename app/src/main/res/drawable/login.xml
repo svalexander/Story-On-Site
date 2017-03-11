@@ -5,7 +5,7 @@
 
     <item android:top="120dp">
         <bitmap
-            android:src="@drawable/ogowhite"
+            android:src="@drawable/logowhite"
             android:gravity="top|center_horizontal" />
     </item>
 
