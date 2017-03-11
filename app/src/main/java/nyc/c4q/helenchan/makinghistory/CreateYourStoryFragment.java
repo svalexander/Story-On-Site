@@ -54,6 +54,7 @@ import static com.facebook.FacebookSdk.getApplicationContext;
  */
 
 public class CreateYourStoryFragment extends Fragment implements View.OnClickListener, FindLocation.NearLocationListener {
+    private static final String PHOTOURI = "PHOTOURI";
     static int REQUEST_IMAGE_CAPTURE = 1;
     static int REQUEST_VIDEO_CAPTURE = 2;
 
@@ -101,7 +102,6 @@ public class CreateYourStoryFragment extends Fragment implements View.OnClickLis
         selectImage.setOnClickListener(this);
         mProgressDialog = new ProgressDialog(getActivity());
 
-
         setActionBarTitle(root);
         setFontType(root);
         return root;
@@ -122,14 +122,16 @@ public class CreateYourStoryFragment extends Fragment implements View.OnClickLis
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
             addPicToGallery();
-            try {
-                imageBitmap = MediaStore.Images.Media
-                        .getBitmap(getApplicationContext()
-                                .getContentResolver(),
-                                contentUri);
-            } catch (IOException ell) {
-                ell.printStackTrace();
-            }
+            goToEditActivity();
+//            try {
+//                goToEditActivity();
+//                imageBitmap = MediaStore.Images.Media
+//                        .getBitmap(getApplicationContext()
+//                                .getContentResolver(),
+//                                contentUri);
+//            } catch (IOException ell) {
+//                ell.printStackTrace();
+//            }
         }
     }
 
@@ -172,6 +174,12 @@ public class CreateYourStoryFragment extends Fragment implements View.OnClickLis
                 break;
             default:
         }
+    }
+
+    private void goToEditActivity(){
+        Intent editIntent = new Intent(getApplicationContext(), EditContentActivity.class);
+        editIntent.putExtra(PHOTOURI, contentUri);
+        startActivity(editIntent);
     }
 
     private void returnToMap(){
