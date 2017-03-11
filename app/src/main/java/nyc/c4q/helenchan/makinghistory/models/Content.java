@@ -12,7 +12,6 @@ public class Content {
     String url;
     String year;
 
-
     public Content(String name, String type, String text, String folder, String url, String year) {
         this.name = name;
         this.type = type;
