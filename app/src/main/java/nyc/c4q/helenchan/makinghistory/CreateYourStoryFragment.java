@@ -201,6 +201,7 @@ public class CreateYourStoryFragment extends Fragment implements View.OnClickLis
 
     private void addUserContentToDatabase(String userLocationKey, String url) {
         mFirebaseDatabase.child("MapPoint").child(userLocationKey).child("ContentList").push().setValue(new Content(" ", "UserIdGoesHere", " ", "wash sq", url, "2017"));
+        mFirebaseDatabase.child("Users").child("leigh").child("ContentList").push().setValue(new Content(" ", "UserIdGoesHere", " ", "wash sq", url, "2017"));
     }
 
     private boolean checkPermissions() {
