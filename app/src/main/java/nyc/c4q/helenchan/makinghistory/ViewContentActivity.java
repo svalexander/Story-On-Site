@@ -72,6 +72,7 @@ public class ViewContentActivity extends AppCompatActivity {
                         for (String s : contentList.keySet()) {
                             tempList.add(contentList.get(s));
                         }
+                        break;
                     }
                 }
 
