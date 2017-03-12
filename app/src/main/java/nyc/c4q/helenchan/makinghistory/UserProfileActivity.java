@@ -70,6 +70,9 @@ public class UserProfileActivity extends AppCompatActivity {
                 Content userPhotoUrl = dataSnapshot.getValue(Content.class);
                 userPhotoList.add(userPhotoUrl);
                 userContentAdapter.setUserPhotoContent(userPhotoList);
+
+                numUserPhotos = userPhotoList.size();
+                userPhotoCountTv.setText(String.valueOf(numUserPhotos));
             }
 
             @Override

@@ -4,7 +4,6 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.AlphaAnimation;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,7 +15,7 @@ import nyc.c4q.helenchan.makinghistory.models.Content;
  * Created by leighdouglas on 3/6/17.
  */
 
-public class ViewContentAdapter extends RecyclerView.Adapter<ContentViewHolder>{
+public class ViewContentAdapter extends RecyclerView.Adapter<ContentViewHolder> {
     private List<Content> mapContent = new ArrayList<>();
 
     @Override
@@ -29,7 +28,6 @@ public class ViewContentAdapter extends RecyclerView.Adapter<ContentViewHolder>{
     public void onBindViewHolder(ContentViewHolder holder, int position) {
         Content c = mapContent.get(position);
         holder.bind(c);
-
     }
 
     @Override

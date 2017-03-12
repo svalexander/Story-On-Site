@@ -1,5 +1,6 @@
 package nyc.c4q.helenchan.makinghistory.contentrecyclerview;
 
+import android.graphics.Typeface;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.ImageView;
@@ -22,6 +23,9 @@ public class ContentViewHolder extends RecyclerView.ViewHolder {
         super(itemView);
         contentImageView = (ImageView) itemView.findViewById(R.id.content_image);
         contentTitleTextView = (TextView) itemView.findViewById(R.id.content_title);
+        Typeface titleFont = Typeface.createFromAsset(itemView.getContext().getAssets(), "ArimaMadurai-Regular.ttf");
+        Typeface bodyFont = Typeface.createFromAsset(itemView.getContext().getAssets(), "Raleway-Regular.ttf" );
+        contentTitleTextView.setTypeface(titleFont);
     }
 
     public void bind(Content c) {
