@@ -111,6 +111,8 @@ public class ExploreMoreFragment extends Fragment implements OnMapReadyCallback,
 //        });
 
         setActionBarTitle(root);
+
+
         return root;
     }
 
@@ -272,6 +274,8 @@ public class ExploreMoreFragment extends Fragment implements OnMapReadyCallback,
             throw new RuntimeException(e);
         }
 
+
+        //        mFirebaseDatabase.child("MapPoint").child("Location3").child("ContentList").push().setValue(new Content("Highline", "Historical", "This was the highline a long time ago", "HighLine", "http://oldnyc-assets.nypl.org/600px/712105f-a.jpg", "1920"));
     }
 
     @Override

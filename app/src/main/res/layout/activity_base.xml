@@ -1,29 +1,31 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/activity_base"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
     tools:context="nyc.c4q.helenchan.makinghistory.BaseActivity">
-<FrameLayout
-    android:orientation="horizontal"
-    android:id="@+id/base_frame_Layout"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
 
-</FrameLayout>
     <android.support.design.widget.BottomNavigationView
         android:id="@+id/bottom_nav_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
         android:background="@color/primaryMedium"
+        android:textAlignment="center"
         app:itemIconTint="@color/white_text"
         app:itemTextColor="@color/white_text"
-        app:menu="@menu/bottom_navigation"
-        android:textAlignment="center"
-        android:layout_alignParentBottom="true">
+        app:menu="@menu/bottom_navigation">
 
     </android.support.design.widget.BottomNavigationView>
+
+    <FrameLayout
+        android:id="@+id/base_frame_Layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@id/bottom_nav_view"
+        android:orientation="horizontal" />
+
 </RelativeLayout>

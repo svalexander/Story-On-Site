@@ -27,4 +27,5 @@
     <string name="camera">CAMERA</string>
     <string name="select_image">PICK IMAGE</string>
     <string name="addstory_edittext_hint">Add your story or description of the photo you are uploading here.</string>
+    <string name="new_post">New Post</string>
 </resources>
