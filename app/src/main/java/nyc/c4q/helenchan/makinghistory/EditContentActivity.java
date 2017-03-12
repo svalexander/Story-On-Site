@@ -110,7 +110,6 @@ public class EditContentActivity extends AppCompatActivity {
             case(R.id.edit_content_save):
 
                 uploadingToFireBase();
-                returnToMap();
                 return true;
             }
         return super.onOptionsItemSelected(item);
