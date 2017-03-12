@@ -56,7 +56,7 @@ public class UserProfileActivity extends AppCompatActivity {
 
         String userName = SignInActivity.mUsername;
         userNameTv.setText(userName);
-        userPhotoCountTv.setText(String.valueOf(numUserPhotos));
+
 
         userContentRV = (RecyclerView) findViewById(R.id.user_profile_recycler_view);
         userContentRV.setLayoutManager(new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL));
@@ -70,6 +70,9 @@ public class UserProfileActivity extends AppCompatActivity {
                 Content userPhotoUrl = dataSnapshot.getValue(Content.class);
                 userPhotoList.add(userPhotoUrl);
                 userContentAdapter.setUserPhotoContent(userPhotoList);
+
+                numUserPhotos = userPhotoList.size();
+                userPhotoCountTv.setText(String.valueOf(numUserPhotos));
             }
 
             @Override
