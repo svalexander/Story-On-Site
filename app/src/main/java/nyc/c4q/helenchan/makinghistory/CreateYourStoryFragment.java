@@ -131,7 +131,9 @@ public class CreateYourStoryFragment extends Fragment implements View.OnClickLis
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
             addPicToGallery();
-            goToEditActivity();
+            Intent editIntent = new Intent(getApplicationContext(), EditContentActivity.class);
+            editIntent.putExtra(PHOTOURI, contentUri.toString());
+            startActivity(editIntent);
 
 //            try {
 //                imageBitmap = MediaStore.Images.Media
@@ -196,7 +198,6 @@ public class CreateYourStoryFragment extends Fragment implements View.OnClickLis
                     StorageReference photoStorageReference = myStorageRef.child("photos").child(photoID);
                     UploadTask uploadTask = photoStorageReference.putFile(contentUri);
                     uploadingToFireBase(uploadTask);
-                    returnToMap();
 
                 } else {
                     Toast.makeText(getApplicationContext(), "Please take a photo!", Toast.LENGTH_LONG).show();
@@ -206,13 +207,7 @@ public class CreateYourStoryFragment extends Fragment implements View.OnClickLis
         }
     }
 
-    private void goToEditActivity(){
-        Intent editIntent = new Intent(getApplicationContext(), EditContentActivity.class);
-        editIntent.putExtra(PHOTOURI, contentUri);
-        startActivity(editIntent);
-    }
-
-    private void returnToMap(){
+    private void returnToMap() {
         Intent intent = new Intent(getContext(), BaseActivity.class);
         startActivity(intent);
     }
@@ -226,6 +221,7 @@ public class CreateYourStoryFragment extends Fragment implements View.OnClickLis
                 downloadUri = taskSnapshot.getDownloadUrl();
                 Log.d("location key", userLocationKey);
                 addUserContentToDatabase(userLocationKey, downloadUri.toString());
+                returnToMap();
             }
         }).addOnFailureListener(new OnFailureListener() {
             @Override
