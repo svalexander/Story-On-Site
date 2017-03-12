@@ -5,7 +5,9 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.LinearSnapHelper;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.SnapHelper;
 import android.util.Log;
 import android.widget.TextView;
 
@@ -48,6 +50,8 @@ public class ViewContentActivity extends AppCompatActivity {
         contentRV.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
         viewContentAdapter = new ViewContentAdapter();
         contentRV.setAdapter(viewContentAdapter);
+        SnapHelper snapHelper = new LinearSnapHelper();
+        snapHelper.attachToRecyclerView(contentRV);
         lat = getIntent().getDoubleExtra("Latitude", 0);
         lng = getIntent().getDoubleExtra("Longitude", 0);
         Log.d("lat", String.valueOf(lat));
