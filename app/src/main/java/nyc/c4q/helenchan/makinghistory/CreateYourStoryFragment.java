@@ -40,6 +40,7 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
@@ -81,6 +82,12 @@ public class CreateYourStoryFragment extends Fragment implements View.OnClickLis
     private String userLocationKey;
     private String mCurrentPhotoPath;
     private Uri contentUri;
+    private Bitmap rotatedImageBitmap;
+    private Uri rotatedImgUri;
+    private String rotatedImgPath;
+    private String imageFileName;
+    private int currentRotation;
+    private ExifInterface exifInterface;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -140,8 +147,8 @@ public class CreateYourStoryFragment extends Fragment implements View.OnClickLis
                                         .getContentResolver(),
                                 contentUri);
 
-                ExifInterface exifInterface = new ExifInterface(contentUri.getPath());
-                int currentRotation = exifInterface.getAttributeInt(ExifInterface.TAG_ORIENTATION, ExifInterface.ORIENTATION_UNDEFINED);
+                exifInterface = new ExifInterface(contentUri.getPath());
+                currentRotation = exifInterface.getAttributeInt(ExifInterface.TAG_ORIENTATION, ExifInterface.ORIENTATION_UNDEFINED);
                 Matrix matrix = new Matrix();
 
                 switch (currentRotation) {
@@ -150,16 +157,24 @@ public class CreateYourStoryFragment extends Fragment implements View.OnClickLis
                         break;
 
                     case ExifInterface.ORIENTATION_ROTATE_180:
-                       matrix.setRotate(180);
+                        matrix.setRotate(180);
                         break;
 
                     case ExifInterface.ORIENTATION_ROTATE_270:
-                      matrix.setRotate(270);
+                        matrix.setRotate(270);
+                        break;
+                    case ExifInterface.ORIENTATION_NORMAL:
+
                         break;
                 }
 
-                Bitmap rotatedBitmap = Bitmap.createBitmap(imageBitmap,0,0,imageBitmap.getWidth(),imageBitmap.getHeight(), matrix, true);
-                imagePreview.setImageBitmap(rotatedBitmap);
+                rotatedImageBitmap = Bitmap.createBitmap(imageBitmap, 0, 0, imageBitmap.getWidth(), imageBitmap.getHeight(), matrix, true);
+                if (currentRotation == exifInterface.ORIENTATION_NORMAL) {
+                    imagePreview.setImageBitmap(imageBitmap);
+                } else {
+                    imagePreview.setImageBitmap(rotatedImageBitmap);
+                }
+//
             } catch (IOException ell) {
                 ell.printStackTrace();
             }
@@ -190,14 +205,33 @@ public class CreateYourStoryFragment extends Fragment implements View.OnClickLis
                 }
                 break;
             case R.id.saveBtn:
-                if (imageBitmap != null) {
+                if (rotatedImageBitmap != null) {
                     mProgressDialog.setMessage("Uploading Image");
                     mProgressDialog.show();
-                    String photoID = contentUri.getLastPathSegment();
-                    StorageReference photoStorageReference = myStorageRef.child("photos").child(photoID);
-                    UploadTask uploadTask = photoStorageReference.putFile(contentUri);
-                    uploadingToFireBase(uploadTask);
-                    returnToMap();
+
+                    if (currentRotation == exifInterface.ORIENTATION_UNDEFINED) {
+                        String photoID = contentUri.getLastPathSegment();
+                        StorageReference photoStorageReference = myStorageRef.child("photos").child(photoID);
+                        UploadTask uploadTask = photoStorageReference.putFile(contentUri);
+                        uploadingToFireBase(uploadTask);
+                    } else {
+                        String randomID = java.util.UUID.randomUUID().toString();
+                        StorageReference photoStorageReference = myStorageRef.child("photos").child(randomID);
+                        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+                        rotatedImageBitmap.compress(Bitmap.CompressFormat.JPEG, 100, byteArrayOutputStream);
+                        byte[] photoByteArray = byteArrayOutputStream.toByteArray();
+                        UploadTask uploadTask = photoStorageReference.putBytes(photoByteArray);
+                        uploadTask.addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                            @Override
+                            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                                mProgressDialog.dismiss();
+                                Toast.makeText(getApplicationContext(), "Uploaded", Toast.LENGTH_SHORT).show();
+                                downloadUri = taskSnapshot.getDownloadUrl();
+                                returnToMap();
+
+                            }
+                        });
+                    }
 
                 } else {
                     Toast.makeText(getApplicationContext(), "Please take a photo!", Toast.LENGTH_LONG).show();
@@ -211,6 +245,7 @@ public class CreateYourStoryFragment extends Fragment implements View.OnClickLis
         Intent intent = new Intent(getContext(), BaseActivity.class);
         startActivity(intent);
     }
+
 
     private void uploadingToFireBase(UploadTask uploadTask) {
         uploadTask.addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
@@ -252,10 +287,9 @@ public class CreateYourStoryFragment extends Fragment implements View.OnClickLis
         return checkPermissions();
     }
 
-
     private File createImageFile() throws IOException {
         String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
-        String imageFileName = "JPEG_" + timeStamp + "_";
+        imageFileName = "JPEG_" + timeStamp + "_";
         File storageDir = getApplicationContext().getExternalFilesDir(Environment.DIRECTORY_PICTURES);
         File image = File.createTempFile(imageFileName, ".jpg", storageDir);
         mCurrentPhotoPath = image.getAbsolutePath();
