@@ -24,8 +24,12 @@ import android.widget.Toast;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
 import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.common.api.Status;
 import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.location.places.Place;
+import com.google.android.gms.location.places.ui.PlaceAutocompleteFragment;
+import com.google.android.gms.location.places.ui.PlaceSelectionListener;
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -45,6 +49,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.List;
 
+import nyc.c4q.helenchan.makinghistory.models.Content;
 import nyc.c4q.helenchan.makinghistory.models.nypl.Feature;
 import nyc.c4q.helenchan.makinghistory.models.nypl.FeatureResponse;
 
@@ -111,6 +116,8 @@ public class ExploreMoreFragment extends Fragment implements OnMapReadyCallback,
 //        });
 
         setActionBarTitle(root);
+
+
         return root;
     }
 
@@ -272,6 +279,8 @@ public class ExploreMoreFragment extends Fragment implements OnMapReadyCallback,
             throw new RuntimeException(e);
         }
 
+
+        //        mFirebaseDatabase.child("MapPoint").child("Location3").child("ContentList").push().setValue(new Content("Highline", "Historical", "This was the highline a long time ago", "HighLine", "http://oldnyc-assets.nypl.org/600px/712105f-a.jpg", "1920"));
     }
 
     @Override
