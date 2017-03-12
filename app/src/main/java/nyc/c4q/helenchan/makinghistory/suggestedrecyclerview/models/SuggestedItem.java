@@ -1,4 +1,4 @@
-package nyc.c4q.helenchan.makinghistory.suggestedviewpager.models;
+package nyc.c4q.helenchan.makinghistory.suggestedrecyclerview.models;
 
 /**
  * Created by leighdouglas on 3/11/17.
