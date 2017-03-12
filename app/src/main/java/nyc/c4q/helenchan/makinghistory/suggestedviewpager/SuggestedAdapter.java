@@ -1,6 +1,7 @@
 package nyc.c4q.helenchan.makinghistory.suggestedviewpager;
 
 import android.content.Intent;
+import android.graphics.Typeface;
 import android.support.v4.view.PagerAdapter;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -44,6 +45,10 @@ public class SuggestedAdapter extends PagerAdapter implements View.OnClickListen
         container.addView(layout);
         ImageButton imgBttn = (ImageButton) layout.findViewById(R.id.suggested_bttn);
         TextView imgTxt = (TextView) layout.findViewById(R.id.suggested_text);
+
+        Typeface maduraBld = Typeface.createFromAsset(imgTxt.getContext().getApplicationContext().getAssets(), "ArimaMadurai-Bold.ttf");
+        imgTxt.setTypeface(maduraBld);
+
         switch(position){
             case 0:
                 imgBttn.setBackground(container
