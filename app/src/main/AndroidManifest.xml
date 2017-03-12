@@ -49,6 +49,7 @@
         <activity android:name=".BaseActivity" />
         <activity android:name=".ViewContentActivity" />
         <activity android:name=".UserProfileActivity" />
+        <activity android:name=".EditContentActivity"/>
     </application>
 
 </manifest>

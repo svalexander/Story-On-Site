@@ -23,8 +23,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.FrameLayout;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -59,27 +59,29 @@ import static com.facebook.FacebookSdk.getApplicationContext;
  */
 
 public class CreateYourStoryFragment extends Fragment implements View.OnClickListener, FindLocation.NearLocationListener {
+    private static final String PHOTOURI = "PHOTOURI";
+    private static final String BITMAP = "BITMAP";
     static int REQUEST_IMAGE_CAPTURE = 1;
     static int REQUEST_VIDEO_CAPTURE = 2;
 
     private DatabaseReference mFirebaseDatabase;
     private FirebaseStorage mFirebaseStorage;
     private StorageReference myStorageRef;
-    private Uri downloadUri;
     private ProgressDialog mProgressDialog;
 
+    private ImageButton takePhoto;
+    private ImageButton takeVideo;
+    private ImageButton selectImage;
     private FirebaseAuth mFirebaseAuth;
 
-    private Button takePhoto;
-    private Button takeVideo;
     private ImageView imagePreview;
     private VideoView videoView;
     private FrameLayout baseLayout;
     private TextView titleTV;
     private LinearLayout btnLayout;
     private FrameLayout userPreviewLayout;
+    private Uri downloadUri;
     private Bitmap imageBitmap;
-    private Button saveContent;
     private String userLocationKey;
     private String mCurrentPhotoPath;
     private Uri contentUri;
@@ -93,7 +95,6 @@ public class CreateYourStoryFragment extends Fragment implements View.OnClickLis
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         mFirebaseDatabase = FirebaseDatabase.getInstance().getReference();
         mFirebaseStorage = FirebaseStorage.getInstance();
         myStorageRef = mFirebaseStorage.getReference();
@@ -105,18 +106,15 @@ public class CreateYourStoryFragment extends Fragment implements View.OnClickLis
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View root = inflater.inflate(R.layout.activity_addcontent, container, false);
-        userPreviewLayout = (FrameLayout) root.findViewById(R.id.user_preview_layout);
+        View root = inflater.inflate(R.layout.activity_create_content, container, false);
         titleTV = (TextView) root.findViewById(R.id.create_title_tv);
-        btnLayout = (LinearLayout) root.findViewById(R.id.user_actions_layout);
-        imagePreview = (ImageView) root.findViewById(R.id.display_image);
-        takePhoto = (Button) root.findViewById(R.id.bttn_takePic);
+        takePhoto = (ImageButton) root.findViewById(R.id.camera_button_create);
         takePhoto.setOnClickListener(this);
-        takeVideo = (Button) root.findViewById(R.id.bttn_takeVideo);
+        takeVideo = (ImageButton) root.findViewById(R.id.video_button_create);
         takeVideo.setOnClickListener(this);
+        selectImage = (ImageButton) root.findViewById(R.id.pic_image_create);
+        selectImage.setOnClickListener(this);
         mProgressDialog = new ProgressDialog(getActivity());
-        saveContent = (Button) root.findViewById(R.id.saveBtn);
-        saveContent.setOnClickListener(this);
 
 
         String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
@@ -141,44 +139,51 @@ public class CreateYourStoryFragment extends Fragment implements View.OnClickLis
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
-            galleryAddPic();
-            try {
-                imageBitmap = MediaStore.Images.Media
-                        .getBitmap(getApplicationContext()
-                                        .getContentResolver(),
-                                contentUri);
+            addPicToGallery();
+            Intent editIntent = new Intent(getApplicationContext(), EditContentActivity.class);
+            editIntent.putExtra(PHOTOURI, contentUri.toString());
+            editIntent.putExtra("userLocation", userLocationKey);
+//            editIntent.putExtra(BITMAP, rotatedImageBitmap);
+            startActivity(editIntent);
 
-                exifInterface = new ExifInterface(contentUri.getPath());
-                currentRotation = exifInterface.getAttributeInt(ExifInterface.TAG_ORIENTATION, ExifInterface.ORIENTATION_UNDEFINED);
-                Matrix matrix = new Matrix();
+        }
+    }
 
-                switch (currentRotation) {
-                    case ExifInterface.ORIENTATION_ROTATE_90:
-                        matrix.setRotate(90);
-                        break;
+    private void checkOrientationAndRotate() {
+        try{
+            imageBitmap = MediaStore.Images.Media
+                    .getBitmap(getApplicationContext()
+                            .getContentResolver(), contentUri);
 
-                    case ExifInterface.ORIENTATION_ROTATE_180:
-                        matrix.setRotate(180);
-                        break;
+            exifInterface = new ExifInterface(contentUri.getPath());
+            currentRotation = exifInterface.getAttributeInt(ExifInterface.TAG_ORIENTATION, ExifInterface.ORIENTATION_UNDEFINED);
+            Matrix matrix = new Matrix();
 
-                    case ExifInterface.ORIENTATION_ROTATE_270:
-                        matrix.setRotate(270);
-                        break;
-                    case ExifInterface.ORIENTATION_NORMAL:
+            switch (currentRotation) {
+                case ExifInterface.ORIENTATION_ROTATE_90:
+                    matrix.setRotate(90);
+                    break;
 
-                        break;
-                }
+                case ExifInterface.ORIENTATION_ROTATE_180:
+                    matrix.setRotate(180);
+                    break;
 
-                rotatedImageBitmap = Bitmap.createBitmap(imageBitmap, 0, 0, imageBitmap.getWidth(), imageBitmap.getHeight(), matrix, true);
-                if (currentRotation == exifInterface.ORIENTATION_NORMAL) {
-                    imagePreview.setImageBitmap(imageBitmap);
-                } else {
-                    imagePreview.setImageBitmap(rotatedImageBitmap);
-                }
-//
-            } catch (IOException ell) {
-                ell.printStackTrace();
+                case ExifInterface.ORIENTATION_ROTATE_270:
+                    matrix.setRotate(270);
+                    break;
+                case ExifInterface.ORIENTATION_NORMAL:
+
+                    break;
             }
+
+            rotatedImageBitmap = Bitmap.createBitmap(imageBitmap, 0, 0, imageBitmap.getWidth(), imageBitmap.getHeight(), matrix, true);
+            if (currentRotation == exifInterface.ORIENTATION_NORMAL) {
+                imagePreview.setImageBitmap(imageBitmap);
+            } else {
+                imagePreview.setImageBitmap(rotatedImageBitmap);
+            }
+        } catch (IOException ell) {
+            ell.printStackTrace();
         }
     }
 
@@ -186,7 +191,7 @@ public class CreateYourStoryFragment extends Fragment implements View.OnClickLis
     public void onClick(View view) {
         switch (view.getId()) {
 
-            case R.id.bttn_takePic:
+            case R.id.camera_button_create:
                 mProgressDialog.setMessage("Checking user location");
                 mProgressDialog.show();
 
@@ -196,7 +201,7 @@ public class CreateYourStoryFragment extends Fragment implements View.OnClickLis
 
                 break;
 
-            case R.id.bttn_takeVideo:
+            case R.id.video_button_create:
                 if (checkPermissions()) {
                     openVideo();
                 } else if (requestPermissions()) {
@@ -257,6 +262,7 @@ public class CreateYourStoryFragment extends Fragment implements View.OnClickLis
                 downloadUri = taskSnapshot.getDownloadUrl();
                 Log.d("location key", userLocationKey);
                 addUserContentToDatabase(userLocationKey, downloadUri.toString());
+                returnToMap();
             }
         }).addOnFailureListener(new OnFailureListener() {
             @Override
@@ -324,7 +330,7 @@ public class CreateYourStoryFragment extends Fragment implements View.OnClickLis
         }
     }
 
-    private void galleryAddPic() {
+    private void addPicToGallery() {
         Intent galleryIntent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
         File file = new File(mCurrentPhotoPath);
         contentUri = Uri.fromFile(file);
