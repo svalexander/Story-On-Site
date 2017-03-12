@@ -6,6 +6,8 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.graphics.Bitmap;
+import android.graphics.Matrix;
+import android.media.ExifInterface;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -31,6 +33,7 @@ import android.widget.VideoView;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
@@ -62,6 +65,8 @@ public class CreateYourStoryFragment extends Fragment implements View.OnClickLis
     private StorageReference myStorageRef;
     private Uri downloadUri;
     private ProgressDialog mProgressDialog;
+
+    private FirebaseAuth mFirebaseAuth;
 
     private Button takePhoto;
     private Button takeVideo;
@@ -105,6 +110,10 @@ public class CreateYourStoryFragment extends Fragment implements View.OnClickLis
         saveContent = (Button) root.findViewById(R.id.saveBtn);
         saveContent.setOnClickListener(this);
 
+
+        String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        Log.i("Create Story", "user id is: " + uid);
+
         setActionBarTitle(root);
         setFontType(root);
         return root;
@@ -128,8 +137,29 @@ public class CreateYourStoryFragment extends Fragment implements View.OnClickLis
             try {
                 imageBitmap = MediaStore.Images.Media
                         .getBitmap(getApplicationContext()
-                                .getContentResolver(),
+                                        .getContentResolver(),
                                 contentUri);
+
+                ExifInterface exifInterface = new ExifInterface(contentUri.getPath());
+                int currentRotation = exifInterface.getAttributeInt(ExifInterface.TAG_ORIENTATION, ExifInterface.ORIENTATION_UNDEFINED);
+                Matrix matrix = new Matrix();
+
+                switch (currentRotation) {
+                    case ExifInterface.ORIENTATION_ROTATE_90:
+                        matrix.setRotate(90);
+                        break;
+
+                    case ExifInterface.ORIENTATION_ROTATE_180:
+                       matrix.setRotate(180);
+                        break;
+
+                    case ExifInterface.ORIENTATION_ROTATE_270:
+                      matrix.setRotate(270);
+                        break;
+                }
+
+                Bitmap rotatedBitmap = Bitmap.createBitmap(imageBitmap,0,0,imageBitmap.getWidth(),imageBitmap.getHeight(), matrix, true);
+                imagePreview.setImageBitmap(rotatedBitmap);
             } catch (IOException ell) {
                 ell.printStackTrace();
             }
@@ -177,10 +207,11 @@ public class CreateYourStoryFragment extends Fragment implements View.OnClickLis
         }
     }
 
-    private void returnToMap(){
+    private void returnToMap() {
         Intent intent = new Intent(getContext(), BaseActivity.class);
         startActivity(intent);
     }
+
     private void uploadingToFireBase(UploadTask uploadTask) {
         uploadTask.addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
             @Override
@@ -200,8 +231,9 @@ public class CreateYourStoryFragment extends Fragment implements View.OnClickLis
     }
 
     private void addUserContentToDatabase(String userLocationKey, String url) {
-        mFirebaseDatabase.child("MapPoint").child(userLocationKey).child("ContentList").push().setValue(new Content(" ", "UserIdGoesHere", " ", "wash sq", url, "2017"));
-        mFirebaseDatabase.child("Users").child("leigh").child("ContentList").push().setValue(new Content(" ", "UserIdGoesHere", " ", "wash sq", url, "2017"));
+        String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        mFirebaseDatabase.child("MapPoint").child(userLocationKey).child("ContentList").push().setValue(new Content(" ", "Akasha testing", " ", "wash sq", url, "2017"));
+        mFirebaseDatabase.child("Users").child(uid).child("ContentList").push().setValue(new Content(" ", uid, " ", "wash sq", url, "2017"));
     }
 
     private boolean checkPermissions() {

@@ -1,8 +1,5 @@
 package nyc.c4q.helenchan.makinghistory.models;
 
-import java.util.ArrayList;
-import java.util.List;
-
 /**
  * Created by leighdouglas on 3/4/17.
  */
@@ -14,20 +11,6 @@ public class Content {
     String folder;
     String url;
     String year;
-
-    List<Content> listOfContent = new ArrayList<>();
-
-    public Content(List<Content> listOfContent) {
-        this.listOfContent = listOfContent;
-    }
-
-    public List<Content> getListOfContent() {
-        return listOfContent;
-    }
-
-    public void setListOfContent(List<Content> listOfContent) {
-        this.listOfContent = listOfContent;
-    }
 
     public Content(String name, String type, String text, String folder, String url, String year) {
         this.name = name;
