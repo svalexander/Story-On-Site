@@ -23,15 +23,8 @@ public class UserContentViewHolder extends RecyclerView.ViewHolder {
     }
 
     public void bind(Content userContent) {
-        if (!userContent.getType().equals("Historical"))
             Picasso.with(itemView.getContext())
                     .load(userContent.getUrl())
                     .into(userContentImageView);
         }
-
-        /*
-            userContentTextView.setVisibility(View.GONE);
-            userContentImageView.setVisibility(View.VISIBLE);
-         */
-
 }
