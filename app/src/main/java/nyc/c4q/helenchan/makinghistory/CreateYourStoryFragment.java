@@ -174,7 +174,6 @@ public class CreateYourStoryFragment extends Fragment implements View.OnClickLis
                 } else {
                     imagePreview.setImageBitmap(rotatedImageBitmap);
                 }
-//
             } catch (IOException ell) {
                 ell.printStackTrace();
             }
