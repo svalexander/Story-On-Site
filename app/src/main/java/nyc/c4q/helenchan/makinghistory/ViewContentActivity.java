@@ -23,6 +23,7 @@ import java.util.List;
 import nyc.c4q.helenchan.makinghistory.contentrecyclerview.ViewContentAdapter;
 import nyc.c4q.helenchan.makinghistory.models.Content;
 import nyc.c4q.helenchan.makinghistory.models.MapPoint;
+import nyc.c4q.helenchan.makinghistory.usercontentrecyclerview.RvCenterStart;
 
 /**
  * Created by leighdouglas on 3/6/17.
@@ -48,6 +49,7 @@ public class ViewContentActivity extends AppCompatActivity {
         contentRV.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
         viewContentAdapter = new ViewContentAdapter();
         contentRV.setAdapter(viewContentAdapter);
+        contentRV.addItemDecoration(new RvCenterStart(40));
         SnapHelper snapHelper = new LinearSnapHelper();
         snapHelper.attachToRecyclerView(contentRV);
         lat = getIntent().getDoubleExtra("Latitude", 0);
