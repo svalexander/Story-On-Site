@@ -28,7 +28,6 @@ public class ViewContentAdapter extends RecyclerView.Adapter<ContentViewHolder>{
     public void onBindViewHolder(ContentViewHolder holder, int position) {
         Content c = mapContent.get(position);
         holder.bind(c);
-
     }
 
     @Override

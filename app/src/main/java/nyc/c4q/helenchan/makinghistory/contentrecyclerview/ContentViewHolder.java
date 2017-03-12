@@ -17,11 +17,15 @@ import nyc.c4q.helenchan.makinghistory.models.Content;
 public class ContentViewHolder extends RecyclerView.ViewHolder {
     private ImageView contentImageView;
     private TextView contentTitleTextView;
+    private TextView contentDescriptionTextView;
+    private TextView contentYearTextView;
 
     public ContentViewHolder(View itemView) {
         super(itemView);
         contentImageView = (ImageView) itemView.findViewById(R.id.content_image);
         contentTitleTextView = (TextView) itemView.findViewById(R.id.content_title);
+        contentDescriptionTextView = (TextView) itemView.findViewById(R.id.content_description);
+        contentYearTextView = (TextView) itemView.findViewById(R.id.content_year);
     }
 
     public void bind(Content c) {
@@ -32,7 +36,8 @@ public class ContentViewHolder extends RecyclerView.ViewHolder {
                 .into(contentImageView);
 
         contentTitleTextView.setText(c.getName());
-
+        contentDescriptionTextView.setText(c.getText());
+        contentYearTextView.setText(c.getYear());
     }
 
 }
