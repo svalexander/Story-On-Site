@@ -52,7 +52,6 @@ public class EditContentActivity extends AppCompatActivity {
         setContentView(R.layout.activity_edit_content);
         setActionBarTitle();
         initialize();
-        mProgressDialog = new ProgressDialog(EditContentActivity.this);
 
 
         Bundle extras = getIntent().getExtras();
@@ -75,7 +74,7 @@ public class EditContentActivity extends AppCompatActivity {
         mFirebaseStorage = FirebaseStorage.getInstance();
         myStorageRef = mFirebaseStorage.getReference();
         portraitIV = (ImageView) findViewById(R.id.preview_portrait_iv);
-
+        mProgressDialog = new ProgressDialog(EditContentActivity.this);
     }
 
     private void setActionBarTitle() {
