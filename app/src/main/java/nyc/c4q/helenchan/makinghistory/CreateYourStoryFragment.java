@@ -5,15 +5,11 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
-import android.graphics.Bitmap;
-import android.graphics.Matrix;
-import android.media.ExifInterface;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.StrictMode;
 import android.provider.MediaStore;
-import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
@@ -23,33 +19,15 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.FrameLayout;
 import android.widget.ImageButton;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.VideoView;
 
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.StorageReference;
-import com.google.firebase.storage.UploadTask;
-
-import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
-
-import me.anwarshahriar.calligrapher.Calligrapher;
-import nyc.c4q.helenchan.makinghistory.models.Content;
-import retrofit2.http.HEAD;
 
 import static android.app.Activity.RESULT_OK;
 import static com.facebook.FacebookSdk.getApplicationContext;
@@ -60,75 +38,40 @@ import static com.facebook.FacebookSdk.getApplicationContext;
 
 public class CreateYourStoryFragment extends Fragment implements View.OnClickListener, FindLocation.NearLocationListener {
     private static final String PHOTOURI = "PHOTOURI";
-    private static final String BITMAP = "BITMAP";
     static int REQUEST_IMAGE_CAPTURE = 1;
     static int REQUEST_VIDEO_CAPTURE = 2;
 
-    private DatabaseReference mFirebaseDatabase;
-    private FirebaseStorage mFirebaseStorage;
-    private StorageReference myStorageRef;
     private ProgressDialog mProgressDialog;
-
     private ImageButton takePhoto;
     private ImageButton takeVideo;
     private ImageButton selectImage;
-    private FirebaseAuth mFirebaseAuth;
 
-    private ImageView imagePreview;
-    private VideoView videoView;
-    private FrameLayout baseLayout;
-    private TextView titleTV;
-    private LinearLayout btnLayout;
-    private FrameLayout userPreviewLayout;
-    private Uri downloadUri;
-    private Bitmap imageBitmap;
     private String userLocationKey;
     private String mCurrentPhotoPath;
-    private Uri contentUri;
-    private Bitmap rotatedImageBitmap;
-    private Uri rotatedImgUri;
-    private String rotatedImgPath;
     private String imageFileName;
-    private int currentRotation;
-    private ExifInterface exifInterface;
+    private Uri contentUri;
+    private VideoView videoView;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mFirebaseDatabase = FirebaseDatabase.getInstance().getReference();
-        mFirebaseStorage = FirebaseStorage.getInstance();
-        myStorageRef = mFirebaseStorage.getReference();
         StrictMode.VmPolicy.Builder builder = new StrictMode.VmPolicy.Builder();
         StrictMode.setVmPolicy(builder.build());
-
+        mProgressDialog = new ProgressDialog(getActivity());
     }
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.activity_create_content, container, false);
-        titleTV = (TextView) root.findViewById(R.id.create_title_tv);
         takePhoto = (ImageButton) root.findViewById(R.id.camera_button_create);
         takePhoto.setOnClickListener(this);
         takeVideo = (ImageButton) root.findViewById(R.id.video_button_create);
         takeVideo.setOnClickListener(this);
         selectImage = (ImageButton) root.findViewById(R.id.pic_image_create);
         selectImage.setOnClickListener(this);
-        mProgressDialog = new ProgressDialog(getActivity());
-
-
-        String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
-        Log.i("Create Story", "user id is: " + uid);
-
         setActionBarTitle(root);
-        setFontType(root);
         return root;
-    }
-
-    private void setFontType(View view) {
-        Calligrapher calligrapher = new Calligrapher(getActivity());
-        calligrapher.setFont(view.findViewById(R.id.user_actions_layout), "Raleway-Regular.ttf");
-        calligrapher.setFont(view.findViewById(R.id.user_preview_layout), "Raleway-Regular.ttf");
     }
 
     private void setActionBarTitle(View v) {
@@ -143,47 +86,7 @@ public class CreateYourStoryFragment extends Fragment implements View.OnClickLis
             Intent editIntent = new Intent(getApplicationContext(), EditContentActivity.class);
             editIntent.putExtra(PHOTOURI, contentUri.toString());
             editIntent.putExtra("userLocation", userLocationKey);
-//            editIntent.putExtra(BITMAP, rotatedImageBitmap);
             startActivity(editIntent);
-
-        }
-    }
-
-    private void checkOrientationAndRotate() {
-        try{
-            imageBitmap = MediaStore.Images.Media
-                    .getBitmap(getApplicationContext()
-                            .getContentResolver(), contentUri);
-
-            exifInterface = new ExifInterface(contentUri.getPath());
-            currentRotation = exifInterface.getAttributeInt(ExifInterface.TAG_ORIENTATION, ExifInterface.ORIENTATION_UNDEFINED);
-            Matrix matrix = new Matrix();
-
-            switch (currentRotation) {
-                case ExifInterface.ORIENTATION_ROTATE_90:
-                    matrix.setRotate(90);
-                    break;
-
-                case ExifInterface.ORIENTATION_ROTATE_180:
-                    matrix.setRotate(180);
-                    break;
-
-                case ExifInterface.ORIENTATION_ROTATE_270:
-                    matrix.setRotate(270);
-                    break;
-                case ExifInterface.ORIENTATION_NORMAL:
-
-                    break;
-            }
-
-            rotatedImageBitmap = Bitmap.createBitmap(imageBitmap, 0, 0, imageBitmap.getWidth(), imageBitmap.getHeight(), matrix, true);
-            if (currentRotation == exifInterface.ORIENTATION_NORMAL) {
-                imagePreview.setImageBitmap(imageBitmap);
-            } else {
-                imagePreview.setImageBitmap(rotatedImageBitmap);
-            }
-        } catch (IOException ell) {
-            ell.printStackTrace();
         }
     }
 
@@ -194,89 +97,40 @@ public class CreateYourStoryFragment extends Fragment implements View.OnClickLis
             case R.id.camera_button_create:
                 mProgressDialog.setMessage("Checking user location");
                 mProgressDialog.show();
-
                 FindLocation findLocation = new FindLocation(getApplicationContext(), this);
                 findLocation.buildGoogleApiClient();
                 findLocation.connectApiClient();
-
                 break;
 
             case R.id.video_button_create:
-                if (checkPermissions()) {
-                    openVideo();
-                } else if (requestPermissions()) {
-                    openVideo();
-                } else {
-                    Toast.makeText(getApplicationContext(), "Permission denied by user", Toast.LENGTH_LONG).show();
-                }
-                break;
-            case R.id.saveBtn:
-                if (rotatedImageBitmap != null) {
-                    mProgressDialog.setMessage("Uploading Image");
-                    mProgressDialog.show();
-
-                    if (currentRotation == exifInterface.ORIENTATION_UNDEFINED) {
-                        String photoID = contentUri.getLastPathSegment();
-                        StorageReference photoStorageReference = myStorageRef.child("photos").child(photoID);
-                        UploadTask uploadTask = photoStorageReference.putFile(contentUri);
-                        uploadingToFireBase(uploadTask);
-                    } else {
-                        String randomID = java.util.UUID.randomUUID().toString();
-                        StorageReference photoStorageReference = myStorageRef.child("photos").child(randomID);
-                        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-                        rotatedImageBitmap.compress(Bitmap.CompressFormat.JPEG, 100, byteArrayOutputStream);
-                        byte[] photoByteArray = byteArrayOutputStream.toByteArray();
-                        UploadTask uploadTask = photoStorageReference.putBytes(photoByteArray);
-                        uploadTask.addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                            @Override
-                            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                                mProgressDialog.dismiss();
-                                Toast.makeText(getApplicationContext(), "Uploaded", Toast.LENGTH_SHORT).show();
-                                downloadUri = taskSnapshot.getDownloadUrl();
-                                returnToMap();
-
-                            }
-                        });
-                    }
-
-                } else {
-                    Toast.makeText(getApplicationContext(), "Please take a photo!", Toast.LENGTH_LONG).show();
-                }
+//                if (checkPermissions()) {
+//                    openVideo();
+//                } else if (requestPermissions()) {
+//                    openVideo();
+//                } else {
+//                    Toast.makeText(getApplicationContext(), "Permission denied by user", Toast.LENGTH_LONG).show();
+//                }
                 break;
             default:
         }
     }
 
-    private void returnToMap() {
-        Intent intent = new Intent(getContext(), BaseActivity.class);
-        startActivity(intent);
-    }
-
-
-    private void uploadingToFireBase(UploadTask uploadTask) {
-        uploadTask.addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-            @Override
-            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                mProgressDialog.dismiss();
-                Toast.makeText(getApplicationContext(), "Uploaded", Toast.LENGTH_SHORT).show();
-                downloadUri = taskSnapshot.getDownloadUrl();
-                Log.d("location key", userLocationKey);
-                addUserContentToDatabase(userLocationKey, downloadUri.toString());
-                returnToMap();
+    private void clickedButton(boolean foundLocation) {
+        Log.d("nearby", String.valueOf(foundLocation));
+        if (!foundLocation) {
+            Toast.makeText(getApplicationContext(), "Sorry, you're currently not near a location", Toast.LENGTH_LONG).show();
+        } else if (foundLocation && ContextCompat.checkSelfPermission(getActivity().getApplicationContext(), Manifest.permission.CAMERA)
+                == PackageManager.PERMISSION_GRANTED) {
+            openCamera();
+        } else {
+            ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.CAMERA}, 1);
+            if (ContextCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.CAMERA)
+                    == PackageManager.PERMISSION_GRANTED) {
+                openCamera();
             }
-        }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-                Toast.makeText(getApplicationContext(), "Upload Failed! Try Again", Toast.LENGTH_LONG).show();
-            }
-        });
+        }
     }
 
-    private void addUserContentToDatabase(String userLocationKey, String url) {
-        String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
-        mFirebaseDatabase.child("MapPoint").child(userLocationKey).child("ContentList").push().setValue(new Content(" ", "UserIdGoesHere", " ", "wash sq", url, "2017"));
-        mFirebaseDatabase.child("Users").child(uid).child("ContentList").push().setValue(new Content(" ", uid, " ", "wash sq", url, "2017"));
-    }
 
     private boolean checkPermissions() {
         return (ContextCompat.checkSelfPermission(getApplicationContext(), android.Manifest.permission.ACCESS_FINE_LOCATION)
@@ -352,25 +206,10 @@ public class CreateYourStoryFragment extends Fragment implements View.OnClickLis
         clickedButton(foundLocation);
     }
 
-    private void clickedButton(boolean foundLocation) {
-        Log.d("nearby", String.valueOf(foundLocation));
-        if (!foundLocation) {
-            Toast.makeText(getApplicationContext(), "Sorry, you're currently not near a location", Toast.LENGTH_LONG).show();
-        } else if (foundLocation && ContextCompat.checkSelfPermission(getActivity().getApplicationContext(), Manifest.permission.CAMERA)
-                == PackageManager.PERMISSION_GRANTED) {
-            openCamera();
-        } else {
-            ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.CAMERA}, 1);
-            if (ContextCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.CAMERA)
-                    == PackageManager.PERMISSION_GRANTED) {
-                openCamera();
-            }
-        }
-
 
 //    private void addContentToDatabase() {
 
-        //first line adds a coordinate, second location adds content to list at that location
+    //first line adds a coordinate, second location adds content to list at that location
 //        mFirebaseDatabase.child("MapPoint").child("Location3").setValue(new Coordinate(40.720398, -74.025452));
 //        mFirebaseDatabase.child("MapPoint").child("Location3").child("ContentList").push().setValue(new Content("Highline", "Historical", "This was the highline a long time ago", "HighLine", "http://oldnyc-assets.nypl.org/600px/712105f-a.jpg", "1920"));
 //        mFirebaseDatabase.child("MapPoint").child("Location3").child("ContentList").push().setValue(new Content("Highline", "Historical", "This was the highline a long time ago", "HighLine", "http://oldnyc-assets.nypl.org/600px/712105f-a.jpg", "1920"));
@@ -398,5 +237,5 @@ public class CreateYourStoryFragment extends Fragment implements View.OnClickLis
 //        mFirebaseDatabase.child("locations").push().setValue(currLocation);
 //    }
 
-    }
 }
+
