@@ -38,7 +38,6 @@ public class EditContentActivity extends AppCompatActivity {
     private ImageView portraitIV;
     private Uri photoUri;
     private Uri downloadUri;
-    private Bitmap imageBitmap;
     private String userLocationKey;
 
     private DatabaseReference mFirebaseDatabase;
@@ -61,7 +60,6 @@ public class EditContentActivity extends AppCompatActivity {
             userLocationKey = extras.getString("userLocation");
             if (extras.containsKey("PHOTOURI")) {
                 String stringUri = extras.getString("PHOTOURI");
-//                cameraBitmap = getBitmapFromUri(stringUri);
                 photoUri = Uri.parse(stringUri);
                 Glide.with(getApplicationContext())
                         .load(photoUri.getPath())
@@ -78,19 +76,6 @@ public class EditContentActivity extends AppCompatActivity {
         myStorageRef = mFirebaseStorage.getReference();
         portraitIV = (ImageView) findViewById(R.id.preview_portrait_iv);
 
-    }
-
-    private Bitmap getBitmapFromUri(String uriString) {
-        Bitmap imageBitmap = null;
-        Uri photoUri = Uri.parse(uriString);
-        try {
-            imageBitmap = MediaStore.Images.Media
-                    .getBitmap(getApplicationContext()
-                            .getContentResolver(), photoUri);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return imageBitmap;
     }
 
     private void setActionBarTitle() {

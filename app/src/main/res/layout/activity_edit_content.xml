@@ -30,7 +30,7 @@
             android:inputType="textCapSentences|textMultiLine|textAutoCorrect"
             android:padding="8dp"
             android:textColor="@color/white_text"
-            android:textColorHint="@color/accent"
+            android:textColorHint="@color/primaryDark"
             android:textSize="16dp" />
 
     </LinearLayout>
