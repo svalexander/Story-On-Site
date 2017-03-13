@@ -49,7 +49,6 @@ import java.util.List;
 
 import me.anwarshahriar.calligrapher.Calligrapher;
 import nyc.c4q.helenchan.makinghistory.models.Content;
-import retrofit2.http.HEAD;
 
 import static android.app.Activity.RESULT_OK;
 import static com.facebook.FacebookSdk.getApplicationContext;
