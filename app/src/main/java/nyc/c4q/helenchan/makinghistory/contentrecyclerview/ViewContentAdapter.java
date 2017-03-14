@@ -15,7 +15,7 @@ import nyc.c4q.helenchan.makinghistory.models.Content;
  * Created by leighdouglas on 3/6/17.
  */
 
-public class ViewContentAdapter extends RecyclerView.Adapter<ContentViewHolder>{
+public class ViewContentAdapter extends RecyclerView.Adapter<ContentViewHolder> {
     private List<Content> mapContent = new ArrayList<>();
 
     @Override
