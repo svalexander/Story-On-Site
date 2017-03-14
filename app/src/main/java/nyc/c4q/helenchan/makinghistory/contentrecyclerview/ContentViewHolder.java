@@ -20,6 +20,7 @@ public class ContentViewHolder extends RecyclerView.ViewHolder {
     private TextView contentTitleTextView;
     private TextView contentDescriptionTextView;
     private TextView contentYearTextView;
+    private ImageView expandedImage;
 
     public ContentViewHolder(View itemView) {
         super(itemView);
@@ -30,9 +31,10 @@ public class ContentViewHolder extends RecyclerView.ViewHolder {
         Typeface titleFont = Typeface.createFromAsset(itemView.getContext().getAssets(), "ArimaMadurai-Regular.ttf");
         Typeface bodyFont = Typeface.createFromAsset(itemView.getContext().getAssets(), "Raleway-Regular.ttf" );
         contentTitleTextView.setTypeface(titleFont);
+        expandedImage = (ImageView) itemView.findViewById(R.id.expanded_IV);
     }
 
-    public void bind(Content c) {
+    public void bind(final Content c) {
         Glide.with(itemView.getContext())
                 .load(c.getUrl())
                 .override(1200, 1200)
@@ -42,6 +44,18 @@ public class ContentViewHolder extends RecyclerView.ViewHolder {
         contentTitleTextView.setText(c.getName());
         contentDescriptionTextView.setText(c.getText());
         contentYearTextView.setText(c.getYear());
+
+        contentImageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                contentImageView.setVisibility(View.INVISIBLE);
+                expandedImage.setVisibility(View.VISIBLE);
+                Glide.with(itemView.getContext())
+                        .load(c.getUrl())
+                        .centerCrop()
+                        .into(expandedImage);
+            }
+        });
     }
 
 }

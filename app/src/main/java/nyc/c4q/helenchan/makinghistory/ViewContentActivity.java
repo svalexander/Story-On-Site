@@ -1,5 +1,6 @@
 package nyc.c4q.helenchan.makinghistory;
 
+import android.animation.Animator;
 import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -37,6 +38,8 @@ public class ViewContentActivity extends AppCompatActivity {
     private double lng;
     private ViewContentAdapter viewContentAdapter;
     private ProgressDialog mProgressDialog;
+    private Animator animator;
+    private int shortAnimationLength;
 
 
     @Override
@@ -56,6 +59,14 @@ public class ViewContentActivity extends AppCompatActivity {
         lng = getIntent().getDoubleExtra("Longitude", 0);
         Log.d("lat", String.valueOf(lat));
         mProgressDialog = new ProgressDialog(this);
+
+//        final ImageView contentImage = (ImageView) findViewById(R.id.content_image);
+//        contentImage.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//
+//            }
+//        });
 
     }
 
