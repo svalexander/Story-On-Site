@@ -35,6 +35,7 @@ public class ViewContentActivity extends AppCompatActivity {
 
     private RecyclerView contentRV;
     private DatabaseReference databaseRefToMappoint;
+    private DatabaseReference refToLocationOfPicTaken;
     private double lat;
     private double lng;
     private ViewContentAdapter viewContentAdapter;
@@ -71,9 +72,9 @@ public class ViewContentActivity extends AppCompatActivity {
         super.onStart();
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
-            if(extras.containsKey("PICLATLONG")){
-                String location = extras.getString("PICLATLONG");
-                DatabaseReference refToLocationOfPicTaken = FirebaseDatabase.getInstance().getReference().child("MapPoint").child(location);
+            if(extras.containsKey(EditContentActivity.PICLATLONG)){
+                String location = extras.getString(EditContentActivity.PICLATLONG);
+                refToLocationOfPicTaken = FirebaseDatabase.getInstance().getReference().child("MapPoint").child(location);
                 refToLocationOfPicTaken.addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
@@ -123,7 +124,6 @@ public class ViewContentActivity extends AppCompatActivity {
         calligrapher.setFont(this, "ArimaMadurai-Bold.ttf", true);
         calligrapher.setFont(findViewById(R.id.content_title), "Raleway-Regular.ttf");
     }
-
 
     //TODO: build retrofit call to NYTimes Api here
 }
