@@ -4,7 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
+import android.support.v7.widget.CardView;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.Animation.AnimationListener;
@@ -32,6 +32,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private Animation fadeInAnimation;
     private ImageView mainPicIV;
     private TextView mainPicTV;
+    private CardView cardView;
 
     List<Content> picsList = new ArrayList<>();
 
@@ -50,6 +51,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         mainLayout = (LinearLayout) findViewById(R.id.activity_main);
         mainPicIV = (ImageView) findViewById(R.id.main_pic_iv);
         mainPicTV = (TextView) findViewById(R.id.main_pic_tv);
+        cardView = (CardView) findViewById(R.id.main_card);
         getRandomImage();
 
         for (int i = 0; i < picsList.size(); i++) {
@@ -67,8 +69,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     private void setAnimations() {
-        fadeOutAnimation = AnimationUtils.loadAnimation(MainActivity.this, R.anim.fade_out);
-        fadeInAnimation = AnimationUtils.loadAnimation(MainActivity.this, R.anim.fade_in);
+//        fadeOutAnimation = AnimationUtils.loadAnimation(MainActivity.this, R.anim.fade_out);
+//        fadeInAnimation = AnimationUtils.loadAnimation(MainActivity.this, R.anim.fade_in);
+        cardView.setEnabled(true);
+        cardView.setVisibility(View.VISIBLE);
+        cardView.setAnimation(AnimationUtils.loadAnimation(this, android.R.anim.slide_in_left));
     }
 
     @Override
