@@ -63,9 +63,35 @@ public class ViewContentActivity extends AppCompatActivity {
 
     }
 
+
+
+
     @Override
     protected void onStart() {
         super.onStart();
+        Bundle extras = getIntent().getExtras();
+        if (extras != null) {
+            if(extras.containsKey("PICLATLONG")){
+                String location = extras.getString("PICLATLONG");
+                DatabaseReference ref2 = FirebaseDatabase.getInstance().getReference().child("MapPoint").child(location);
+                ref2.addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        MapPoint mapPoint = dataSnapshot.getValue(MapPoint.class);
+                        lat = mapPoint.getLatitude();
+                        lng = mapPoint.getLongitude();
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+
+                    }
+                });
+
+
+            }
+        }
+
         ref1 = FirebaseDatabase.getInstance().getReference().child("MapPoint");
         ref1.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override

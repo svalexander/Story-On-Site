@@ -131,8 +131,8 @@ public class EditContentActivity extends AppCompatActivity {
                 mProgressDialog.dismiss();
                 Toast.makeText(getApplicationContext(), "Uploaded", Toast.LENGTH_LONG).show();
                 downloadUri = taskSnapshot.getDownloadUrl();
-                addUserContentToDatabase(userLocationKey, downloadUri.toString(), userStory, photoLocationName);
-                returnToMap();
+                addUserContentToDatabase(userLocationKey, downloadUri.toString(), photoLocationName, userStory);
+                goToViewContentActivity();
                 finish();
             }
         }).addOnFailureListener(new OnFailureListener() {
@@ -143,14 +143,15 @@ public class EditContentActivity extends AppCompatActivity {
         });
     }
 
-    private void addUserContentToDatabase(String userLocationKey, String url, String story, String locationName) {
+    private void addUserContentToDatabase(String userLocationKey, String url, String locationName, String story) {
         String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
         mFirebaseDatabase.child("MapPoint").child(userLocationKey).child("ContentList").push().setValue(new Content(locationName, "story", story, "wash sq", url, "2017"));
         mFirebaseDatabase.child("Users").child(uid).child("ContentList").push().setValue(new Content(" ", uid, " ", "wash sq", url, "2017"));
     }
 
-    private void returnToMap() {
-        Intent intent = new Intent(getApplicationContext(), BaseActivity.class);
+    private void goToViewContentActivity() {
+        Intent intent = new Intent(EditContentActivity.this, ViewContentActivity.class);
+        intent.putExtra("PICLATLONG", userLocationKey);
         startActivity(intent);
     }
 }
