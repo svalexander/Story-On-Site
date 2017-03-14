@@ -125,6 +125,7 @@ public class EditContentActivity extends AppCompatActivity {
                 downloadUri = taskSnapshot.getDownloadUrl();
                 addUserContentToDatabase(userLocationKey, downloadUri.toString(), userStory);
                 returnToMap();
+                finish();
             }
         }).addOnFailureListener(new OnFailureListener() {
             @Override
