@@ -56,6 +56,15 @@ public class ContentViewHolder extends RecyclerView.ViewHolder {
                         .into(expandedImage);
             }
         });
+
+        expandedImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                expandedImage.setVisibility(View.INVISIBLE);
+                contentImageView.setVisibility(View.VISIBLE);
+            }
+        });
     }
 
+    //private void enlargeImage()
 }

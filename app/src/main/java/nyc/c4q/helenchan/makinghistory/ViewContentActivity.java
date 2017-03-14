@@ -10,6 +10,7 @@ import android.support.v7.widget.LinearSnapHelper;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SnapHelper;
 import android.util.Log;
+import android.widget.ImageView;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -70,7 +71,9 @@ public class ViewContentActivity extends AppCompatActivity {
 
     }
 
+private void enlargeImage(final ImageView originalImage, int image){
 
+}
 
 
     @Override
