@@ -46,7 +46,8 @@
 
         <activity android:name=".MainActivity" />
         <activity android:name=".SplashActivity" />
-        <activity android:name=".BaseActivity" />
+        <activity android:name=".BaseActivity"
+            android:screenOrientation="portrait"/>
         <activity android:name=".ViewContentActivity" />
         <activity android:name=".UserProfileActivity" />
         <activity android:name=".EditContentActivity"/>

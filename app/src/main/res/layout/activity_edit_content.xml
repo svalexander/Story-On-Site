@@ -17,20 +17,34 @@
             android:id="@+id/preview_portrait_iv"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="2" />
+            android:layout_weight="2"
+            android:layout_marginTop="20dp"/>
+
+        <EditText
+            android:id="@+id/location_name_edittext"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="textImeMultiLine|textCapSentences"
+            android:background="@null"
+            android:hint="@string/location_name"
+            android:textColor="@color/white_text"
+            android:textColorHint="@color/teal_accent"
+            android:layout_marginTop="20dp"
+            android:gravity="center_vertical"/>
 
         <EditText
             android:id="@+id/user_story_edittext"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_gravity="bottom"
             android:layout_weight="1"
             android:gravity="center"
+            android:background="@null"
             android:hint="@string/addstory_edittext_hint"
             android:inputType="textCapSentences|textMultiLine|textAutoCorrect"
             android:padding="8dp"
             android:textColor="@color/white_text"
-            android:textColorHint="@color/accent"
+            android:textColorHint="@color/teal_accent"
+            android:textAlignment="center"
             android:textSize="16dp" />
 
     </LinearLayout>

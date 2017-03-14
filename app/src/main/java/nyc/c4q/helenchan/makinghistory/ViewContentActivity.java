@@ -34,7 +34,7 @@ import nyc.c4q.helenchan.makinghistory.usercontentrecyclerview.RvCenterStart;
 public class ViewContentActivity extends AppCompatActivity {
 
     private RecyclerView contentRV;
-    private DatabaseReference ref1;
+    private DatabaseReference databaseRefToMappoint;
     private double lat;
     private double lng;
     private ViewContentAdapter viewContentAdapter;
@@ -63,11 +63,37 @@ public class ViewContentActivity extends AppCompatActivity {
 
     }
 
+
+
+
     @Override
     protected void onStart() {
         super.onStart();
-        ref1 = FirebaseDatabase.getInstance().getReference().child("MapPoint");
-        ref1.addListenerForSingleValueEvent(new ValueEventListener() {
+        Bundle extras = getIntent().getExtras();
+        if (extras != null) {
+            if(extras.containsKey("PICLATLONG")){
+                String location = extras.getString("PICLATLONG");
+                DatabaseReference refToLocationOfPicTaken = FirebaseDatabase.getInstance().getReference().child("MapPoint").child(location);
+                refToLocationOfPicTaken.addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        MapPoint mapPoint = dataSnapshot.getValue(MapPoint.class);
+                        lat = mapPoint.getLatitude();
+                        lng = mapPoint.getLongitude();
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+
+                    }
+                });
+
+
+            }
+        }
+
+        databaseRefToMappoint = FirebaseDatabase.getInstance().getReference().child("MapPoint");
+        databaseRefToMappoint.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 List<Content> tempList = new ArrayList<>();
