@@ -35,6 +35,7 @@ public class ViewContentActivity extends AppCompatActivity {
 
     private RecyclerView contentRV;
     private DatabaseReference databaseRefToMappoint;
+    private DatabaseReference refToLocationOfPicTaken;
     private double lat;
     private double lng;
     private ViewContentAdapter viewContentAdapter;
@@ -81,9 +82,9 @@ private void enlargeImage(final ImageView originalImage, int image){
         super.onStart();
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
-            if(extras.containsKey("PICLATLONG")){
-                String location = extras.getString("PICLATLONG");
-                DatabaseReference refToLocationOfPicTaken = FirebaseDatabase.getInstance().getReference().child("MapPoint").child(location);
+            if(extras.containsKey(EditContentActivity.PICLATLONG)){
+                String location = extras.getString(EditContentActivity.PICLATLONG);
+                refToLocationOfPicTaken = FirebaseDatabase.getInstance().getReference().child("MapPoint").child(location);
                 refToLocationOfPicTaken.addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {

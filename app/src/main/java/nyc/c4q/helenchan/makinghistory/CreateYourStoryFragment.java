@@ -37,7 +37,7 @@ import static com.facebook.FacebookSdk.getApplicationContext;
  */
 
 public class CreateYourStoryFragment extends Fragment implements View.OnClickListener, FindLocation.NearLocationListener {
-    private static final String PHOTOURI = "PHOTOURI";
+    public static final String PHOTOURI = "PHOTOURI";
     static int REQUEST_IMAGE_CAPTURE = 1;
     static int REQUEST_VIDEO_CAPTURE = 2;
 
