@@ -2,17 +2,15 @@ package nyc.c4q.helenchan.makinghistory;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
-import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
@@ -26,7 +24,9 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
-import java.io.IOException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 
 import nyc.c4q.helenchan.makinghistory.models.Content;
 
@@ -35,11 +35,15 @@ import nyc.c4q.helenchan.makinghistory.models.Content;
  */
 
 public class EditContentActivity extends AppCompatActivity {
+    public static final String PICLATLONG = "PICLATLONG";
     private ImageView portraitIV;
+    private EditText storyEditText;
+    private EditText locationEditText;
     private Uri photoUri;
     private Uri downloadUri;
-    private Bitmap imageBitmap;
     private String userLocationKey;
+    private String userStory;
+    private String photoLocationName;
 
     private DatabaseReference mFirebaseDatabase;
     private FirebaseStorage mFirebaseStorage;
@@ -53,15 +57,13 @@ public class EditContentActivity extends AppCompatActivity {
         setContentView(R.layout.activity_edit_content);
         setActionBarTitle();
         initialize();
-        mProgressDialog = new ProgressDialog(EditContentActivity.this);
 
 
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
             userLocationKey = extras.getString("userLocation");
-            if (extras.containsKey("PHOTOURI")) {
-                String stringUri = extras.getString("PHOTOURI");
-//                cameraBitmap = getBitmapFromUri(stringUri);
+            if (extras.containsKey(CreateYourStoryFragment.PHOTOURI)) {
+                String stringUri = extras.getString(CreateYourStoryFragment.PHOTOURI);
                 photoUri = Uri.parse(stringUri);
                 Glide.with(getApplicationContext())
                         .load(photoUri.getPath())
@@ -77,20 +79,9 @@ public class EditContentActivity extends AppCompatActivity {
         mFirebaseStorage = FirebaseStorage.getInstance();
         myStorageRef = mFirebaseStorage.getReference();
         portraitIV = (ImageView) findViewById(R.id.preview_portrait_iv);
-
-    }
-
-    private Bitmap getBitmapFromUri(String uriString) {
-        Bitmap imageBitmap = null;
-        Uri photoUri = Uri.parse(uriString);
-        try {
-            imageBitmap = MediaStore.Images.Media
-                    .getBitmap(getApplicationContext()
-                            .getContentResolver(), photoUri);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return imageBitmap;
+        storyEditText = (EditText) findViewById(R.id.user_story_edittext);
+        locationEditText = (EditText) findViewById(R.id.location_name_edittext);
+        mProgressDialog = new ProgressDialog(EditContentActivity.this);
     }
 
     private void setActionBarTitle() {
@@ -106,16 +97,34 @@ public class EditContentActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()){
-            case(R.id.edit_content_save):
-
-                uploadingToFireBase();
-                return true;
-            }
+        switch (item.getItemId()) {
+            case (R.id.edit_content_save):
+                if (checkifEdittextHasText()) {
+                    userStory = String.valueOf(storyEditText.getText());
+                    photoLocationName = String.valueOf(locationEditText.getText());
+                    uploadingToFireBase();
+                    return true;
+                }
+                return false;
+        }
         return super.onOptionsItemSelected(item);
     }
 
-    private void uploadingToFireBase( ) {
+
+    private Boolean checkifEdittextHasText() {
+        if (storyEditText.length() == 0) {
+            Toast.makeText(getApplicationContext(), "Please enter a short description of photo", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+        if (locationEditText.length() == 0) {
+            Toast.makeText(getApplicationContext(), "Please complete the location field", Toast.LENGTH_SHORT).show();
+            return false;
+        } else {
+            return true;
+        }
+    }
+
+    private void uploadingToFireBase() {
         mProgressDialog.setMessage("Uploading Image");
         mProgressDialog.show();
         String photoID = photoUri.getLastPathSegment();
@@ -127,8 +136,9 @@ public class EditContentActivity extends AppCompatActivity {
                 mProgressDialog.dismiss();
                 Toast.makeText(getApplicationContext(), "Uploaded", Toast.LENGTH_LONG).show();
                 downloadUri = taskSnapshot.getDownloadUrl();
-                addUserContentToDatabase(userLocationKey, downloadUri.toString());
-                returnToMap();
+                addUserContentToDatabase(userLocationKey, downloadUri.toString(), photoLocationName, userStory);
+                goToViewContentActivity();
+                finish();
             }
         }).addOnFailureListener(new OnFailureListener() {
             @Override
@@ -138,15 +148,22 @@ public class EditContentActivity extends AppCompatActivity {
         });
     }
 
-    private void addUserContentToDatabase(String userLocationKey, String url) {
+    private void addUserContentToDatabase(String userLocationKey, String url, String locationName, String story) {
         String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
-        mFirebaseDatabase.child("MapPoint").child(userLocationKey).child("ContentList").push().setValue(new Content(" ", "Akasha testing", " ", "wash sq", url, "2017"));
+        mFirebaseDatabase.child("MapPoint").child(userLocationKey).child("ContentList").push().setValue(new Content(locationName, "story", story, "wash sq", url, getDate()));
         mFirebaseDatabase.child("Users").child(uid).child("ContentList").push().setValue(new Content(" ", uid, " ", "wash sq", url, "2017"));
     }
 
-    private void returnToMap() {
-        Intent intent = new Intent(getApplicationContext(), BaseActivity.class);
+    private void goToViewContentActivity() {
+        Intent intent = new Intent(EditContentActivity.this, ViewContentActivity.class);
+        intent.putExtra(PICLATLONG, userLocationKey);
         startActivity(intent);
+    }
+
+    private String getDate(){
+        DateFormat dateFormat = new SimpleDateFormat("EEE, d MMM yyyy, HH:mm");
+        String date = dateFormat.format(Calendar.getInstance().getTime());
+        return date;
     }
 }
 
