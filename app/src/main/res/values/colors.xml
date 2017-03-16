@@ -18,4 +18,10 @@
     <color name="teal_accent">#87D1C4</color>
     <color name="primaryMediumTintOverlay">#80403D39</color>
     <color name="testing">#fcfcfc</color>
+    <color name="testingBlue">#66ffd0</color>
+
+    <color name="brightBlue">#0090C1</color>
+    <color name="testingGry">#DDDFDF</color>
+    <color name="brightPurple">#5603AD</color>
+    <color name="forestGreen">#002621</color>
 </resources>

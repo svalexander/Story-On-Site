@@ -5,6 +5,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -17,6 +18,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import java.util.ArrayList;
 import java.util.List;
 
+import me.anwarshahriar.calligrapher.Calligrapher;
 import nyc.c4q.helenchan.makinghistory.models.Content;
 import nyc.c4q.helenchan.makinghistory.usercontentrecyclerview.UserContentAdapter;
 
@@ -30,6 +32,7 @@ public class UserProfileActivity extends AppCompatActivity {
     private TextView userNameTv;
     private TextView userPhotoCountTv;
     private int numUserPhotos = 0;    // size of list ?
+    private RelativeLayout userContentLayout;
 
     private RecyclerView userContentRV;
     private UserContentAdapter userContentAdapter;
@@ -49,14 +52,10 @@ public class UserProfileActivity extends AppCompatActivity {
         String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
         photoRef = FirebaseDatabase.getInstance().getReference().child("Users").child(uid).child("ContentList");
 
-        userProfilePhoto = (ImageView) findViewById(R.id.user_profile_photo);
-        userNameTv = (TextView) findViewById(R.id.user_profile_name);
-        userPhotoCountTv = (TextView) findViewById(R.id.user_num_photos);
-
+        initViews();
 
         String userName = SignInActivity.mUsername;
         userNameTv.setText(userName);
-
 
         userContentRV = (RecyclerView) findViewById(R.id.user_profile_recycler_view);
         userContentRV.setLayoutManager(new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL));
@@ -96,6 +95,20 @@ public class UserProfileActivity extends AppCompatActivity {
             }
         });
 
+        setFontType();
+    }
+
+    private void initViews() {
+        userProfilePhoto = (ImageView) findViewById(R.id.user_profile_photo);
+        userNameTv = (TextView) findViewById(R.id.user_profile_name);
+        userPhotoCountTv = (TextView) findViewById(R.id.user_num_photos);
+        userContentLayout = (RelativeLayout) findViewById(R.id.profileContent);
+    }
+
+    private void setFontType() {
+        Calligrapher calligrapher = new Calligrapher(this);
+        calligrapher.setFont(this, "ArimaMadurai-Bold.ttf", true);
+        calligrapher.setFont(findViewById(R.id.profileContent), "Raleway-Regular.ttf");
     }
 }
 

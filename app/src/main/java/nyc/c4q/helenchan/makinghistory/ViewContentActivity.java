@@ -22,6 +22,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import me.anwarshahriar.calligrapher.Calligrapher;
 import nyc.c4q.helenchan.makinghistory.contentrecyclerview.ViewContentAdapter;
 import nyc.c4q.helenchan.makinghistory.models.Content;
 import nyc.c4q.helenchan.makinghistory.models.MapPoint;
@@ -69,6 +70,12 @@ public class ViewContentActivity extends AppCompatActivity {
 //            }
 //        });
 
+        setFontType();
+    }
+
+    private void setFontType() {
+        Calligrapher calligrapher = new Calligrapher(this);
+        calligrapher.setFont(this, "ArimaMadurai-Bold.ttf", true);
     }
 
 private void enlargeImage(final ImageView originalImage, int image){
