@@ -31,6 +31,7 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MapStyleOptions;
@@ -94,7 +95,6 @@ public class ExploreMoreFragment extends Fragment implements OnMapReadyCallback,
                     .addOnConnectionFailedListener(this)
                     .build();
 
-            mLocationClient.connect();
         }
         mFirebaseDatabase2 = FirebaseDatabase.getInstance().getReference();
 
@@ -157,20 +157,17 @@ public class ExploreMoreFragment extends Fragment implements OnMapReadyCallback,
             Log.e(TAG, "Can't find style. Error: ", e);
         }
 
-        if (ContextCompat.checkSelfPermission(getActivity().getApplicationContext(), android.Manifest.permission.ACCESS_FINE_LOCATION)
-                == PackageManager.PERMISSION_GRANTED) {
-            mMap.setMyLocationEnabled(true);
-
+        if (ActivityCompat.checkSelfPermission(getApplicationContext(), android.Manifest.permission.ACCESS_FINE_LOCATION)
+                != PackageManager.PERMISSION_GRANTED) {
+            requestPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
+                    Constants.REQUEST_CODE_LOCATION);
         } else {
-            ActivityCompat.requestPermissions(getActivity(), new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION}, 1);
-            if (ContextCompat.checkSelfPermission(getApplicationContext(), android.Manifest.permission.ACCESS_FINE_LOCATION)
-                    == PackageManager.PERMISSION_GRANTED) {
-                mMap.setMyLocationEnabled(true);
-            }
+            mMap.setMyLocationEnabled(true);
+            mLocationClient.connect();
         }
-        // centers map on current user location, stack overflow solution. will update later
 
         parseJSON(getActivity());
+//        mLocationClient.connect();
         mMap.setOnMarkerClickListener(this);
     }
 
@@ -202,18 +199,19 @@ public class ExploreMoreFragment extends Fragment implements OnMapReadyCallback,
     @Override
     public void onConnected(@Nullable Bundle bundle) {
         Toast.makeText(getActivity(), "Map working!!", Toast.LENGTH_SHORT).show();
-        if (ActivityCompat.checkSelfPermission(getApplicationContext(), android.Manifest.permission.ACCESS_FINE_LOCATION)
-                != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(getActivity(),
-                    new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
-                    1);
-        } else {
-            Location myLocation =
-                    LocationServices.FusedLocationApi.getLastLocation(mLocationClient);
-            CameraPosition cameraPosition = new CameraPosition.Builder().target(new LatLng(myLocation.getLatitude(), myLocation.getLongitude())).zoom(12).build();
-            if (mMap != null) {
-                mMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
-            }
+        mapListener.zoomToUserLocation(mMap);
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        switch (requestCode) {
+            case Constants.REQUEST_CODE_LOCATION:
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    mMap.setMyLocationEnabled(true);
+                    mLocationClient.connect();
+                    break;
+                }
         }
     }
 
@@ -241,18 +239,11 @@ public class ExploreMoreFragment extends Fragment implements OnMapReadyCallback,
     public boolean onMarkerClick(Marker marker) {
         Feature feature = (Feature) marker.getTag();
         feature.getGeometry().getCoordinates();
-        double lat = 0;
-        double lng = 0;
+        double lat;
+        double lng;
         double[] coordinates = feature.getGeometry().getCoordinates();
-        for (int i = 0; i < coordinates.length; i++) {
-            if (i == 0) {
-                lng = coordinates[i];
-            }
-            if (i == 1) {
-                lat = coordinates[i];
-            }
-
-        }
+        lng = coordinates[0];
+        lat = coordinates[1];
         Intent intent = new Intent(getApplicationContext(), ViewContentActivity.class);
         intent.putExtra("Latitude", lat);
         intent.putExtra("Longitude", lng);
@@ -281,26 +272,28 @@ public class ExploreMoreFragment extends Fragment implements OnMapReadyCallback,
     @Override
     public void updateMarkers(GoogleMap map, List<Feature> featuresList) {
         mFirebaseDatabase = FirebaseDatabase.getInstance().getReference().child("MapPoint");
-        double latitude = 0;
-        double longitude = 0;
+        double latitude;
+        double longitude;
         for (Feature feature : featuresList) {
             double[] coordinates = feature.getGeometry().getCoordinates();
-            for (int i = 0; i < coordinates.length; i++) {
-                if (i == 0) {
-                    longitude = coordinates[i];
-                }
-                if (i == 1) {
-                    latitude = coordinates[i];
-                }
-            }
-
+            longitude = coordinates[0];
+            latitude = coordinates[1];
             LatLng currLatLng = new LatLng(latitude, longitude);
-            map.addMarker(new MarkerOptions().position(currLatLng).title(feature.getProperties().getName())).setTag(feature);
-
+            map.addMarker(new MarkerOptions()
+                    .position(currLatLng)
+                    .title(feature.getProperties().getName()))
+                    .setTag(feature);
         }
-
     }
 
+    @Override
+    public void zoomToUserLocation(GoogleMap map) {
+        Location myLocation = LocationServices.FusedLocationApi.getLastLocation(mLocationClient);
+        CameraPosition cameraPosition = new CameraPosition.Builder().target(new LatLng(myLocation.getLatitude(), myLocation.getLongitude())).zoom(12).build();
+        if (mMap != null) {
+            mMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
+        }
+    }
 
     @Override
     public void onLocationChanged(Location location) {
