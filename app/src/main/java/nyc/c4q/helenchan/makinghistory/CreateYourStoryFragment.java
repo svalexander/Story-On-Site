@@ -21,7 +21,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.Toast;
-import android.widget.VideoView;
 
 import java.io.File;
 import java.io.IOException;
@@ -38,8 +37,9 @@ import static com.facebook.FacebookSdk.getApplicationContext;
 
 public class CreateYourStoryFragment extends Fragment implements View.OnClickListener, FindLocation.NearLocationListener {
     public static final String PHOTOURI = "PHOTOURI";
+    public static final String VIDEOURI = "VIDEOURI";
     static int REQUEST_IMAGE_CAPTURE = 1;
-    static int REQUEST_VIDEO_CAPTURE = 2;
+    static int REQUEST_VIDEO_CAPTURE = 22;
 
     private ProgressDialog mProgressDialog;
     private ImageButton takePhoto;
@@ -49,8 +49,8 @@ public class CreateYourStoryFragment extends Fragment implements View.OnClickLis
     private String userLocationKey;
     private String mCurrentPhotoPath;
     private String imageFileName;
-    private Uri contentUri;
-    private VideoView videoView;
+    private Uri photoUri;
+    private Uri videoUri;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -81,11 +81,18 @@ public class CreateYourStoryFragment extends Fragment implements View.OnClickLis
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+        Intent editIntent = new Intent(getApplicationContext(), EditContentActivity.class);
+
         if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
             addPicToGallery();
-            Intent editIntent = new Intent(getApplicationContext(), EditContentActivity.class);
-            editIntent.putExtra(PHOTOURI, contentUri.toString());
+            editIntent.putExtra(PHOTOURI, photoUri.toString());
             editIntent.putExtra("userLocation", userLocationKey);
+            startActivity(editIntent);
+        }
+        if (requestCode == REQUEST_VIDEO_CAPTURE && resultCode == RESULT_OK) {
+            Log.d(this.getClass().getSimpleName(), "onActivityResult: "+ requestCode);
+            videoUri = data.getData();
+            editIntent.putExtra(VIDEOURI, videoUri.toString());
             startActivity(editIntent);
         }
     }
@@ -103,13 +110,13 @@ public class CreateYourStoryFragment extends Fragment implements View.OnClickLis
                 break;
 
             case R.id.video_button_create:
-//                if (checkPermissions()) {
-//                    openVideo();
-//                } else if (requestPermissions()) {
-//                    openVideo();
-//                } else {
-//                    Toast.makeText(getApplicationContext(), "Permission denied by user", Toast.LENGTH_LONG).show();
-//                }
+                if (checkPermissions()) {
+                    openVideo();
+                } else if (requestPermissions()) {
+                    openVideo();
+                } else {
+                    Toast.makeText(getApplicationContext(), "Permission denied by user", Toast.LENGTH_LONG).show();
+                }
                 break;
             default:
         }
@@ -187,16 +194,23 @@ public class CreateYourStoryFragment extends Fragment implements View.OnClickLis
     private void addPicToGallery() {
         Intent galleryIntent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
         File file = new File(mCurrentPhotoPath);
-        contentUri = Uri.fromFile(file);
-        galleryIntent.setData(contentUri);
+        photoUri = Uri.fromFile(file);
+        galleryIntent.setData(photoUri);
         getApplicationContext().sendBroadcast(galleryIntent);
 
     }
 
-
     private void openVideo() {
-        Intent openVideoCapture = new Intent(MediaStore.ACTION_VIDEO_CAPTURE);
-        startActivityForResult(openVideoCapture, REQUEST_VIDEO_CAPTURE);
+        if (getActivity().getPackageManager().hasSystemFeature(PackageManager.FEATURE_CAMERA_FRONT)) {
+            Intent openVideoCapture = new Intent(MediaStore.ACTION_VIDEO_CAPTURE);
+//            File videoFile = new File(
+//                    Environment.getExternalStorageDirectory().getAbsolutePath() + ".mp4");
+//            videoUri = Uri.fromFile(videoFile);
+//            openVideoCapture.putExtra(MediaStore.EXTRA_OUTPUT, videoUri);
+            startActivityForResult(openVideoCapture, REQUEST_VIDEO_CAPTURE);
+        } else {
+            Toast.makeText(getContext(), "No camera found", Toast.LENGTH_LONG).show();
+        }
     }
 
     @Override
