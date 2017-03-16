@@ -12,7 +12,7 @@
         android:background="@color/primaryDark"
         android:orientation="vertical">
 
-        <FrameLayout
+        <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="2" >
@@ -27,9 +27,13 @@
                 android:id="@+id/preview_videoview"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentRight="true"
                 android:layout_marginTop="20dp" />
 
-        </FrameLayout>
+        </RelativeLayout>
 
         <EditText
             android:id="@+id/location_name_edittext"
