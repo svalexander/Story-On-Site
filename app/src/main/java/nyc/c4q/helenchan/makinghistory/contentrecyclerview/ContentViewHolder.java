@@ -5,7 +5,7 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.squareup.picasso.Picasso;
+import com.bumptech.glide.Glide;
 
 import nyc.c4q.helenchan.makinghistory.R;
 import nyc.c4q.helenchan.makinghistory.models.Content;
@@ -29,7 +29,11 @@ public class ContentViewHolder extends RecyclerView.ViewHolder {
     }
 
     public void bind(Content c) {
-        Picasso.with(itemView.getContext()).load(c.getUrl()).resize(1200, 1200).centerCrop().into(contentImageView);
+        Glide.with(itemView.getContext())
+                .load(c.getUrl())
+                .override(1200, 1200)
+                .centerCrop()
+                .into(contentImageView);
 
         contentTitleTextView.setText(c.getName());
         contentDescriptionTextView.setText(c.getText());
