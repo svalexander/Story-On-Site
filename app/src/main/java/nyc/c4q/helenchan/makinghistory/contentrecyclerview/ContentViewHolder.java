@@ -1,7 +1,6 @@
 package nyc.c4q.helenchan.makinghistory.contentrecyclerview;
 
 import android.graphics.Typeface;
-import android.media.MediaPlayer;
 import android.net.Uri;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -35,7 +34,7 @@ public class ContentViewHolder extends RecyclerView.ViewHolder {
         contentDescriptionTextView = (TextView) itemView.findViewById(R.id.content_description);
         contentYearTextView = (TextView) itemView.findViewById(R.id.content_year);
         Typeface titleFont = Typeface.createFromAsset(itemView.getContext().getAssets(), "ArimaMadurai-Regular.ttf");
-        Typeface bodyFont = Typeface.createFromAsset(itemView.getContext().getAssets(), "Raleway-Regular.ttf" );
+        Typeface bodyFont = Typeface.createFromAsset(itemView.getContext().getAssets(), "Raleway-Regular.ttf");
         contentTitleTextView.setTypeface(titleFont);
         contentDescriptionTextView.setTypeface(bodyFont);
         contentYearTextView.setTypeface(bodyFont);
@@ -80,20 +79,16 @@ public class ContentViewHolder extends RecyclerView.ViewHolder {
     }
 
     private void loadVideoOrPhoto(Content c) {
-        if(c.getType().equals("video")){
+        if (c.getType().equals("video")) {
             userVideoView.setVisibility(View.VISIBLE);
             contentImageView.setVisibility(View.GONE);
             Uri videoUri = Uri.parse(c.getUrl());
             userVideoView.setMediaController(new MediaController(itemView.getContext()));
             userVideoView.setVideoURI(videoUri);
             userVideoView.requestFocus();
-            userVideoView.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
-                @Override
-                public void onPrepared(MediaPlayer mp) {
-                    userVideoView.start();
-                }
-            });
-        }else{
+            userVideoView.start();
+            
+        } else {
             userVideoView.setVisibility(View.GONE);
             contentImageView.setVisibility(View.VISIBLE);
             Glide.with(itemView.getContext())
@@ -105,9 +100,9 @@ public class ContentViewHolder extends RecyclerView.ViewHolder {
     }
 
     private void checkIfYearIsListed(Content c) {
-        if((c.getYear()).equals("0")){
+        if ((c.getYear()).equals("0")) {
             contentYearTextView.setText("Year Unknown");
-        }else {
+        } else {
             contentYearTextView.setText(c.getYear());
         }
     }
