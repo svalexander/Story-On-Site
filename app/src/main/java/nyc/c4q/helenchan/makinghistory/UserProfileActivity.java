@@ -2,11 +2,14 @@ package nyc.c4q.helenchan.makinghistory;
 
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.content.pm.ResolveInfo;
+import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.v4.app.NavUtils;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.content.FileProvider;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
@@ -23,12 +26,16 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
 import me.anwarshahriar.calligrapher.Calligrapher;
 import nyc.c4q.helenchan.makinghistory.models.Content;
 import nyc.c4q.helenchan.makinghistory.usercontentrecyclerview.UserContentAdapter;
+
+import static com.facebook.FacebookSdk.getApplicationContext;
 
 /**
  * Created by Akasha on 3/8/17.
@@ -59,6 +66,7 @@ public class UserProfileActivity extends AppCompatActivity {
 
         String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
         photoRef = FirebaseDatabase.getInstance().getReference().child("Users").child(uid).child("ContentList");
+
 
         initViews();
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -117,7 +125,6 @@ public class UserProfileActivity extends AppCompatActivity {
 
         setFontType();
     }
-
 
     private void initViews() {
         userProfilePhoto = (ImageView) findViewById(R.id.user_profile_photo);
