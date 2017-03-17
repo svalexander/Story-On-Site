@@ -11,7 +11,7 @@
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.CAMERA" />
-    <uses-permission android:name="android.permission.RECORD_AUDIO"/>
+    <uses-permission android:name="android.permission.RECORD_AUDIO" />
 
 
     <application
@@ -45,17 +45,28 @@
             android:grantUriPermissions="true">
             <meta-data
                 android:name="android.support.FILE_PROVIDER_PATHS"
-                android:resource="@xml/file_paths"/>
+                android:resource="@xml/file_paths" />
         </provider>
 
         <activity android:name=".MainActivity" />
         <activity android:name=".SplashActivity" />
-        <activity android:name=".BaseActivity"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".ViewContentActivity" />
-        <activity android:name=".UserProfileActivity" />
-        <activity android:name=".EditContentActivity"/>
-        <activity android:name=".UserPhotoDetailActivity"/>
+        <activity
+            android:name=".BaseActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ViewContentActivity"
+            android:parentActivityName=".BaseActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".BaseActivity" />
+        </activity>
+        <activity android:name=".UserProfileActivity"
+            android:parentActivityName=".BaseActivity">
+        <meta-data
+            android:name="android.support.PARENT_ACTIVITY"
+            android:value=".BaseActivity" />
+        </activity>
+        <activity android:name=".EditContentActivity" />
     </application>
 
 </manifest>
