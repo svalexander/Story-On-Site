@@ -7,6 +7,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 
 import nyc.c4q.helenchan.makinghistory.R;
 import nyc.c4q.helenchan.makinghistory.models.Content;
@@ -31,14 +32,16 @@ public class ContentViewHolder extends RecyclerView.ViewHolder {
         Typeface titleFont = Typeface.createFromAsset(itemView.getContext().getAssets(), "ArimaMadurai-Regular.ttf");
         Typeface bodyFont = Typeface.createFromAsset(itemView.getContext().getAssets(), "Raleway-Regular.ttf" );
         contentTitleTextView.setTypeface(titleFont);
+        contentDescriptionTextView.setTypeface(bodyFont);
+        contentYearTextView.setTypeface(bodyFont);
         expandedImage = (ImageView) itemView.findViewById(R.id.expanded_IV);
     }
 
     public void bind(final Content c) {
         Glide.with(itemView.getContext())
                 .load(c.getUrl())
-                .override(1200, 1200)
                 .centerCrop()
+                .diskCacheStrategy(DiskCacheStrategy.SOURCE)
                 .into(contentImageView);
 
         contentTitleTextView.setText(c.getName());
@@ -53,6 +56,7 @@ public class ContentViewHolder extends RecyclerView.ViewHolder {
                 Glide.with(itemView.getContext())
                         .load(c.getUrl())
                         .centerCrop()
+                        .diskCacheStrategy(DiskCacheStrategy.SOURCE)
                         .into(expandedImage);
             }
         });
@@ -64,7 +68,13 @@ public class ContentViewHolder extends RecyclerView.ViewHolder {
                 contentImageView.setVisibility(View.VISIBLE);
             }
         });
+
+//        contentImageView.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                new TransferAnimation(contentImageView).setDestinationView(expandedImage).animate();
+//            }
+//        });
     }
 
-    //private void enlargeImage()
 }
