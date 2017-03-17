@@ -1,6 +1,7 @@
 package nyc.c4q.helenchan.makinghistory.contentrecyclerview;
 
 import android.graphics.Typeface;
+import android.media.MediaPlayer;
 import android.net.Uri;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -86,7 +87,12 @@ public class ContentViewHolder extends RecyclerView.ViewHolder {
             userVideoView.setMediaController(new MediaController(itemView.getContext()));
             userVideoView.setVideoURI(videoUri);
             userVideoView.requestFocus();
-            userVideoView.start();
+            userVideoView.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
+                @Override
+                public void onPrepared(MediaPlayer mp) {
+                    userVideoView.start();
+                }
+            });
         }else{
             userVideoView.setVisibility(View.GONE);
             contentImageView.setVisibility(View.VISIBLE);
