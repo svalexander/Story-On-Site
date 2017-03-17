@@ -225,16 +225,6 @@ public class ExploreMoreFragment extends Fragment implements OnMapReadyCallback,
         Toast.makeText(getActivity(), "Map not connected!!", Toast.LENGTH_SHORT).show();
     }
 
-    private boolean checkPermissions() {
-        return (ContextCompat.checkSelfPermission(getApplicationContext(), android.Manifest.permission.ACCESS_FINE_LOCATION)
-                == PackageManager.PERMISSION_GRANTED);
-    }
-
-    private boolean requestPermissions() {
-        ActivityCompat.requestPermissions(getActivity(), new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION,}, 1);
-        return checkPermissions();
-    }
-
     @Override
     public boolean onMarkerClick(Marker marker) {
         Feature feature = (Feature) marker.getTag();
