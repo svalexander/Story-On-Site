@@ -31,9 +31,9 @@ public class BaseActivity extends AppCompatActivity implements BottomNavigationV
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_base);
 
-        if(!checkPermissions()){
-            requestPermissions();
-        }
+//        if(!checkPermissions()){
+//            requestPermissions();
+//        }
         initViews();
         setListeners();
         setFontType();
