@@ -91,7 +91,7 @@ public class CreateYourStoryFragment extends Fragment implements View.OnClickLis
             startActivity(editIntent);
         }
         if (requestCode == REQUEST_VIDEO_CAPTURE && resultCode == RESULT_OK) {
-            Log.d(this.getClass().getSimpleName(), "onActivityResult: "+ requestCode);
+            Log.d(this.getClass().getSimpleName(), "onActivityResult: " + requestCode);
             videoUri = data.getData();
             editIntent.putExtra(VIDEOURI, videoUri.toString());
             editIntent.putExtra("userLocation", userLocationKey);

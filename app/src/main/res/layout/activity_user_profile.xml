@@ -80,6 +80,6 @@
         android:id="@+id/user_profile_recycler_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@id/user_profile_photo" />
+        android:layout_below="@id/profileContent" />
 
 </RelativeLayout>

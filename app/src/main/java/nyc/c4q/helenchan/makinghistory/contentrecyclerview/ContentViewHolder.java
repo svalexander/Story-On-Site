@@ -46,7 +46,7 @@ public class ContentViewHolder extends RecyclerView.ViewHolder {
 
         contentTitleTextView.setText(c.getName());
         contentDescriptionTextView.setText(c.getText());
-        contentYearTextView.setText(c.getYear());
+        checkIfYearIsListed(c);
 
         contentImageView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -75,6 +75,14 @@ public class ContentViewHolder extends RecyclerView.ViewHolder {
 //                new TransferAnimation(contentImageView).setDestinationView(expandedImage).animate();
 //            }
 //        });
+    }
+
+    private void checkIfYearIsListed(Content c) {
+        if((c.getYear()).equals("0")){
+            contentYearTextView.setText("Year Unknown");
+        }else {
+            contentYearTextView.setText(c.getYear());
+        }
     }
 
 }
