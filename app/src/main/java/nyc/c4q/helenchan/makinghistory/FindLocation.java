@@ -93,12 +93,7 @@ public class FindLocation implements GoogleApiClient.ConnectionCallbacks, Google
                     }
                     Log.d("distance to:", String.valueOf(userLocation.distanceTo(mapLocation)));
                 }
-
-                if(temp){
                     listener.foundLocation(locationKey, temp);
-                } else {
-                    listener.foundLocation(locationKey, temp);
-                }
             }
 
             @Override
