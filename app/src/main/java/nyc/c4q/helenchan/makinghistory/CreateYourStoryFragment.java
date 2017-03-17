@@ -13,10 +13,12 @@ import android.provider.MediaStore;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.NavUtils;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.content.FileProvider;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
@@ -76,6 +78,7 @@ public class CreateYourStoryFragment extends Fragment implements View.OnClickLis
 
     private void setActionBarTitle(View v) {
         ((BaseActivity) v.getContext()).getSupportActionBar().setTitle(R.string.share_story);
+        ((BaseActivity) v.getContext()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
 
     @Override
@@ -101,7 +104,6 @@ public class CreateYourStoryFragment extends Fragment implements View.OnClickLis
                 findLocation.buildGoogleApiClient();
                 findLocation.connectApiClient();
                 break;
-
             case R.id.video_button_create:
 //                if (checkPermissions()) {
 //                    openVideo();
@@ -113,6 +115,16 @@ public class CreateYourStoryFragment extends Fragment implements View.OnClickLis
                 break;
             default:
         }
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                NavUtils.navigateUpFromSameTask(getActivity());
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     private void clickedButton(boolean foundLocation) {
