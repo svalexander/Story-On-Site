@@ -1,10 +1,12 @@
 package nyc.c4q.helenchan.makinghistory;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.CardView;
+import android.util.AttributeSet;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.Animation.AnimationListener;
@@ -33,6 +35,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private ImageView mainPicIV;
     private TextView mainPicTV;
     private CardView cardView;
+    private ImageView iconIV;
+    private ImageView oldPic;
+    private ImageView newPic;
+    private int shortAnimLength;
 
     List<Content> picsList = new ArrayList<>();
 
@@ -42,13 +48,16 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         setContentView(R.layout.activity_main);
         initViews();
         setListeners();
-        setAnimations();
-        setFontType();
+
+       // setFontType();
     }
 
     private void initViews() {
         skipBtn = (Button) findViewById(R.id.skipBtn);
         mainLayout = (LinearLayout) findViewById(R.id.activity_main);
+       // iconIV = (ImageView) findViewById(R.id.logoIV);
+//        oldPic = (ImageView) findViewById(R.id.old_pic);
+//        newPic= (ImageView) findViewById(R.id.new_pic);
         mainPicIV = (ImageView) findViewById(R.id.main_pic_iv);
         mainPicTV = (TextView) findViewById(R.id.main_pic_tv);
         cardView = (CardView) findViewById(R.id.main_card);
@@ -64,13 +73,32 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     }
 
+    @Override
+    public View onCreateView(View parent, String name, Context context, AttributeSet attrs) {
+       // setAnimations();
+        return super.onCreateView(parent, name, context, attrs);
+
+    }
+
     private void setListeners() {
         skipBtn.setOnClickListener(this);
     }
 
     private void setAnimations() {
+
+//        Animation slideDown = AnimationUtils.loadAnimation(getApplicationContext(),
+//                R.anim.slide_down_anim);
+//        iconIV.startAnimation(slideDown);
+//
 //        fadeOutAnimation = AnimationUtils.loadAnimation(MainActivity.this, R.anim.fade_out);
 //        fadeInAnimation = AnimationUtils.loadAnimation(MainActivity.this, R.anim.fade_in);
+//        shortAnimLength = getResources().getInteger(
+//                android.R.integer.config_shortAnimTime);
+//
+//        //not showing because they're both happening in oncreate
+//        new FadeInAnimation(oldPic).animate();
+//        new FadeOutAnimation(oldPic).animate();
+
         cardView.setEnabled(true);
         cardView.setVisibility(View.VISIBLE);
         cardView.setAnimation(AnimationUtils.loadAnimation(this, android.R.anim.slide_in_left));

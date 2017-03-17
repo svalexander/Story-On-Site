@@ -5,7 +5,10 @@
                 android:paddingLeft="@dimen/activity_vertical_margin"
                 android:paddingTop="@dimen/activity_vertical_margin"
                 android:paddingRight="@dimen/activity_vertical_margin">
-
+<RelativeLayout
+    android:id="@+id/profileContent"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
     <ImageView
         android:id="@+id/user_profile_photo"
         android:layout_width="@dimen/profile_img_wh"
@@ -55,11 +58,11 @@
         android:layout_alignParentRight="true"
         android:layout_toRightOf="@id/user_profile_photo"
         android:layout_marginLeft="@dimen/user_profile_margin_left"
-        android:text="I'm an InstaThot. Fly me to Dubai for $15k."
+        android:text="Seeing what there is to see"
         android:textSize="12dp"
         android:layout_alignBottom="@id/user_profile_photo"
         android:layout_below="@+id/user_profile_name"/>
-
+</RelativeLayout>
     <!--<Button-->
         <!--android:id="@+id/edit_profile_btn"-->
         <!--android:layout_width="150dp"-->
