@@ -29,6 +29,9 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
+import me.anwarshahriar.calligrapher.Calligrapher;
+import nyc.c4q.helenchan.makinghistory.models.Content;
+
 import static android.app.Activity.RESULT_OK;
 import static com.facebook.FacebookSdk.getApplicationContext;
 
@@ -211,7 +214,6 @@ public class CreateYourStoryFragment extends Fragment implements View.OnClickLis
         contentUri = Uri.fromFile(file);
         galleryIntent.setData(contentUri);
         getApplicationContext().sendBroadcast(galleryIntent);
-
     }
 
 

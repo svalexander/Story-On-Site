@@ -5,13 +5,16 @@ import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.v4.app.NavUtils;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.content.FileProvider;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.view.MenuItem;
 import android.view.View;
@@ -19,12 +22,16 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
 import java.io.File;
 import java.io.IOException;
@@ -43,20 +50,20 @@ import static com.facebook.FacebookSdk.getApplicationContext;
 
 public class UserProfileActivity extends AppCompatActivity {
 
+    private String TAG = "User Profile Activity: ";
+
     private ImageView userProfilePhoto;
     private TextView userNameTv;
     private TextView userPhotoCountTv;
-    private int numUserPhotos = 0;    // size of list ?
+    private int numUserPhotos = 0;
     private RelativeLayout userContentLayout;
 
     private RecyclerView userContentRV;
     private UserContentAdapter userContentAdapter;
     private DatabaseReference photoRef;
 
-    private List<Content> userPhotoList = new ArrayList<>();
 
-    //    private Button editUserProfile;
-    private Content userContent;   // use type (userId) to count amount of pictures a user has
+    private List<Content> userPhotoList = new ArrayList<>();
 
 
     @Override
@@ -86,7 +93,7 @@ public class UserProfileActivity extends AppCompatActivity {
         userNameTv.setText(userName);
 
         userContentRV = (RecyclerView) findViewById(R.id.user_profile_recycler_view);
-        userContentRV.setLayoutManager(new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL));
+        userContentRV.setLayoutManager((new GridLayoutManager(this, 2)));
         userContentAdapter = new UserContentAdapter();
         userContentRV.setAdapter(userContentAdapter);
 
@@ -109,7 +116,9 @@ public class UserProfileActivity extends AppCompatActivity {
 
             @Override
             public void onChildRemoved(DataSnapshot dataSnapshot) {
-
+                Content userPhotoUrl = dataSnapshot.getValue(Content.class);
+                userPhotoList.add(userPhotoUrl);
+                userContentAdapter.setUserPhotoContent(userPhotoList);
             }
 
             @Override
@@ -122,9 +131,8 @@ public class UserProfileActivity extends AppCompatActivity {
 
             }
         });
-
-        setFontType();
     }
+
 
     private void initViews() {
         userProfilePhoto = (ImageView) findViewById(R.id.user_profile_photo);
