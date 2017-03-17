@@ -50,6 +50,7 @@ import static com.facebook.FacebookSdk.getApplicationContext;
 
 public class UserProfileActivity extends AppCompatActivity {
 
+    private static final int REQUEST_IMAGE_CAPTURE = 3;
     private String TAG = "User Profile Activity: ";
 
     private ImageView userProfilePhoto;
@@ -156,6 +157,7 @@ public class UserProfileActivity extends AppCompatActivity {
         }
         return super.onOptionsItemSelected(item);
     }
+
 
     private boolean checkPermissions() {
         return (ContextCompat.checkSelfPermission(getApplicationContext(), android.Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED
