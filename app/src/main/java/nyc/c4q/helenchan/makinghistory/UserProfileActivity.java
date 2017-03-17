@@ -26,6 +26,7 @@ import nyc.c4q.helenchan.makinghistory.usercontentrecyclerview.UserContentAdapte
 
 public class UserProfileActivity extends AppCompatActivity {
 
+    private static final int REQUEST_IMAGE_CAPTURE = 3;
     private ImageView userProfilePhoto;
     private TextView userNameTv;
     private TextView userPhotoCountTv;
@@ -95,6 +96,10 @@ public class UserProfileActivity extends AppCompatActivity {
 
             }
         });
+
+    }
+
+    private void openCamera(){
 
     }
 }

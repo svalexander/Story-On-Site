@@ -203,10 +203,6 @@ public class CreateYourStoryFragment extends Fragment implements View.OnClickLis
     private void openVideo() {
         if (getActivity().getPackageManager().hasSystemFeature(PackageManager.FEATURE_CAMERA_FRONT)) {
             Intent openVideoCapture = new Intent(MediaStore.ACTION_VIDEO_CAPTURE);
-//            File videoFile = new File(
-//                    Environment.getExternalStorageDirectory().getAbsolutePath() + ".mp4");
-//            videoUri = Uri.fromFile(videoFile);
-//            openVideoCapture.putExtra(MediaStore.EXTRA_OUTPUT, videoUri);
             startActivityForResult(openVideoCapture, REQUEST_VIDEO_CAPTURE);
         } else {
             Toast.makeText(getContext(), "No camera found", Toast.LENGTH_LONG).show();
