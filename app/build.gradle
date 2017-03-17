@@ -27,7 +27,9 @@ android {
         noCompress "json"
     }
 }
-
+repositories {
+    maven { url "https://jitpack.io" }
+}
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
     androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
@@ -55,7 +57,7 @@ dependencies {
     compile 'com.airbnb.android:lottie:1.5.3'
     compile 'com.google.android.gms:play-services-places:10.2.0'
     compile 'me.relex:circleindicator:1.2.2@aar'
-
+    compile 'com.github.2359media:EasyAndroidAnimations:0.8'
 
 }
 apply plugin: 'com.google.gms.google-services'

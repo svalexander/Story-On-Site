@@ -44,8 +44,35 @@ public class UserPhotoDetailActivity extends AppCompatActivity {
             }
         }
 
-
     }
+
+
+
+    /*
+     public static void deleteUserPhoto(String userPhotoUrl) {
+//
+//        FirebaseStorage photoStorage = FirebaseStorage.getInstance();
+//        StorageReference storageRef = photoStorage.getReference();
+//
+//        StorageReference photoToDeleteRef = storageRef.child(userPhotoUrl);
+//
+//        photoToDeleteRef.delete().addOnSuccessListener(new OnSuccessListener<Void>() {
+//            @Override
+//            public void onSuccess(Void aVoid) {
+//                Log.i("User Profile Activity: ", "photo deleted");
+//            }
+//
+//        }).addOnFailureListener(new OnFailureListener() {
+//            @Override
+//            public void onFailure(@NonNull Exception e) {
+//                Log.i("User Profile Activity: ", "Error occurred");
+//            }
+//        });
+//
+//    }
+
+
+     */
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

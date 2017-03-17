@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#3F51B5</color>
+    <color name="colorPrimary">#70D8C9</color>
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#9abdf7</color>
     <color name="primary">#9E9E9E</color>
@@ -18,4 +18,10 @@
     <color name="teal_accent">#87D1C4</color>
     <color name="primaryMediumTintOverlay">#80403D39</color>
     <color name="testing">#fcfcfc</color>
+    <color name="testingBlue">#66ffd0</color>
+
+    <color name="brightBlue">#0090C1</color>
+    <color name="testingGry">#DDDFDF</color>
+    <color name="brightPurple">#5603AD</color>
+    <color name="forestGreen">#002621</color>
 </resources>

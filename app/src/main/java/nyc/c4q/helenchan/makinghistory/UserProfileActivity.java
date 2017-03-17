@@ -17,6 +17,7 @@ import android.util.Log;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.google.android.gms.tasks.OnFailureListener;
@@ -35,6 +36,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import me.anwarshahriar.calligrapher.Calligrapher;
 import nyc.c4q.helenchan.makinghistory.models.Content;
 import nyc.c4q.helenchan.makinghistory.usercontentrecyclerview.UserContentAdapter;
 
@@ -52,6 +54,7 @@ public class UserProfileActivity extends AppCompatActivity {
     private TextView userNameTv;
     private TextView userPhotoCountTv;
     private int numUserPhotos = 0;
+    private RelativeLayout userContentLayout;
 
     private RecyclerView userContentRV;
     private UserContentAdapter userContentAdapter;
@@ -69,9 +72,8 @@ public class UserProfileActivity extends AppCompatActivity {
         String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
         photoRef = FirebaseDatabase.getInstance().getReference().child("Users").child(uid).child("ContentList");
 
-        userProfilePhoto = (ImageView) findViewById(R.id.user_profile_photo);
-        userNameTv = (TextView) findViewById(R.id.user_profile_name);
-        userPhotoCountTv = (TextView) findViewById(R.id.user_num_photos);
+
+        initViews();
 
         userProfilePhoto.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -84,9 +86,9 @@ public class UserProfileActivity extends AppCompatActivity {
             }
         });
 
+
         String userName = SignInActivity.mUsername;
         userNameTv.setText(userName);
-
 
         userContentRV = (RecyclerView) findViewById(R.id.user_profile_recycler_view);
         userContentRV.setLayoutManager((new GridLayoutManager(this, 2)));
@@ -115,7 +117,6 @@ public class UserProfileActivity extends AppCompatActivity {
                 Content userPhotoUrl = dataSnapshot.getValue(Content.class);
                 userPhotoList.add(userPhotoUrl);
                 userContentAdapter.setUserPhotoContent(userPhotoList);
-
             }
 
             @Override
@@ -131,27 +132,17 @@ public class UserProfileActivity extends AppCompatActivity {
     }
 
 
-    public static void deleteUserPhoto(String userPhotoUrl) {
+    private void initViews() {
+        userProfilePhoto = (ImageView) findViewById(R.id.user_profile_photo);
+        userNameTv = (TextView) findViewById(R.id.user_profile_name);
+        userPhotoCountTv = (TextView) findViewById(R.id.user_num_photos);
+        userContentLayout = (RelativeLayout) findViewById(R.id.profileContent);
+    }
 
-        FirebaseStorage photoStorage = FirebaseStorage.getInstance();
-        StorageReference storageRef = photoStorage.getReference();
-
-        StorageReference photoToDeleteRef = storageRef.child(userPhotoUrl);
-
-        photoToDeleteRef.delete().addOnSuccessListener(new OnSuccessListener<Void>() {
-            @Override
-            public void onSuccess(Void aVoid) {
-                Log.i("User Profile Activity: ", "photo deleted");
-            }
-
-        }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-                Log.i("User Profile Activity: ", "Error occurred");
-            }
-        });
-
-
+    private void setFontType() {
+        Calligrapher calligrapher = new Calligrapher(this);
+        calligrapher.setFont(this, "ArimaMadurai-Bold.ttf", true);
+        calligrapher.setFont(findViewById(R.id.profileContent), "Raleway-Regular.ttf");
     }
 
     private boolean checkPermissions() {
