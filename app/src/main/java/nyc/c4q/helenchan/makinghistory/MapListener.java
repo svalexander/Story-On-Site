@@ -13,4 +13,5 @@ import nyc.c4q.helenchan.makinghistory.models.nypl.Feature;
 public interface MapListener {
 
     void updateMarkers(GoogleMap map, List<Feature> featuresList);
+    void zoomToUserLocation(GoogleMap map);
 }
