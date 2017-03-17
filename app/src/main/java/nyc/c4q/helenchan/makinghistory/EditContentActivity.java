@@ -24,6 +24,10 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+
 import nyc.c4q.helenchan.makinghistory.models.Content;
 
 /**
@@ -31,6 +35,7 @@ import nyc.c4q.helenchan.makinghistory.models.Content;
  */
 
 public class EditContentActivity extends AppCompatActivity {
+    public static final String PICLATLONG = "PICLATLONG";
     private ImageView portraitIV;
     private EditText storyEditText;
     private EditText locationEditText;
@@ -57,8 +62,8 @@ public class EditContentActivity extends AppCompatActivity {
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
             userLocationKey = extras.getString("userLocation");
-            if (extras.containsKey("PHOTOURI")) {
-                String stringUri = extras.getString("PHOTOURI");
+            if (extras.containsKey(CreateYourStoryFragment.PHOTOURI)) {
+                String stringUri = extras.getString(CreateYourStoryFragment.PHOTOURI);
                 photoUri = Uri.parse(stringUri);
                 Glide.with(getApplicationContext())
                         .load(photoUri.getPath())
@@ -145,14 +150,20 @@ public class EditContentActivity extends AppCompatActivity {
 
     private void addUserContentToDatabase(String userLocationKey, String url, String locationName, String story) {
         String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
-        mFirebaseDatabase.child("MapPoint").child(userLocationKey).child("ContentList").push().setValue(new Content(locationName, "story", story, "wash sq", url, "2017"));
+        mFirebaseDatabase.child("MapPoint").child(userLocationKey).child("ContentList").push().setValue(new Content(locationName, "story", story, "wash sq", url, getDate()));
         mFirebaseDatabase.child("Users").child(uid).child("ContentList").push().setValue(new Content(" ", uid, " ", "wash sq", url, "2017"));
     }
 
     private void goToViewContentActivity() {
         Intent intent = new Intent(EditContentActivity.this, ViewContentActivity.class);
-        intent.putExtra("PICLATLONG", userLocationKey);
+        intent.putExtra(PICLATLONG, userLocationKey);
         startActivity(intent);
+    }
+
+    private String getDate(){
+        DateFormat dateFormat = new SimpleDateFormat("EEE, d MMM yyyy, HH:mm");
+        String date = dateFormat.format(Calendar.getInstance().getTime());
+        return date;
     }
 }
 
