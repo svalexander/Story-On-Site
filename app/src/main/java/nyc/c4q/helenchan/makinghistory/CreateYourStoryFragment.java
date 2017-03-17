@@ -1,6 +1,5 @@
 package nyc.c4q.helenchan.makinghistory;
 
-import android.Manifest;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -12,9 +11,7 @@ import android.os.StrictMode;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.NavUtils;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.content.FileProvider;
 import android.util.Log;
@@ -76,6 +73,7 @@ public class CreateYourStoryFragment extends Fragment implements View.OnClickLis
         selectImage = (ImageButton) root.findViewById(R.id.pic_image_create);
         selectImage.setOnClickListener(this);
         setActionBarTitle(root);
+       setHasOptionsMenu(true);
         return root;
     }
 
@@ -124,12 +122,21 @@ public class CreateYourStoryFragment extends Fragment implements View.OnClickLis
         findLocation.connectApiClient();
     }
 
+    //temp workaround
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
-                NavUtils.navigateUpFromSameTask(getActivity());
-                return true;
+                Intent intent = new Intent(getContext(), BaseActivity.class);
+                startActivity(intent);
+
+                //this doesnt work because it knows it's in base and wants to find the parent of base
+                //however what we need to do is remove the fragment but adding to backstack crashes b/c of map
+//                NavUtils.navigateUpFromSameTask(getActivity());
+//                return true;
+
+                //this goes back to base
+               // getActivity();
         }
         return super.onOptionsItemSelected(item);
     }
