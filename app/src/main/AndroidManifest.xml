@@ -10,6 +10,7 @@
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.RECORD_AUDIO"/>
 
 
     <application
@@ -47,7 +48,8 @@
 
         <activity android:name=".MainActivity" />
         <activity android:name=".SplashActivity" />
-        <activity android:name=".BaseActivity" />
+        <activity android:name=".BaseActivity"
+            android:screenOrientation="portrait"/>
         <activity android:name=".ViewContentActivity" />
         <activity android:name=".UserProfileActivity" />
         <activity android:name=".EditContentActivity"/>

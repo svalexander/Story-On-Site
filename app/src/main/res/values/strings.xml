@@ -30,4 +30,5 @@
     <string name="new_post">New Post</string>
     <string name="share_user_photo">Share</string>
     <string name="delete_user_photo">Delete</string>
+    <string name="location_name">Location Name</string>
 </resources>

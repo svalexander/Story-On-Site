@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.os.StrictMode;
 import android.provider.MediaStore;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
@@ -40,7 +41,7 @@ import static com.facebook.FacebookSdk.getApplicationContext;
  */
 
 public class CreateYourStoryFragment extends Fragment implements View.OnClickListener, FindLocation.NearLocationListener {
-    private static final String PHOTOURI = "PHOTOURI";
+    public static final String PHOTOURI = "PHOTOURI";
     static int REQUEST_IMAGE_CAPTURE = 1;
     static int REQUEST_VIDEO_CAPTURE = 2;
 
@@ -54,6 +55,8 @@ public class CreateYourStoryFragment extends Fragment implements View.OnClickLis
     private String imageFileName;
     private Uri contentUri;
     private VideoView videoView;
+    private boolean cameraPressed;
+    private boolean videoPressed;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -95,60 +98,58 @@ public class CreateYourStoryFragment extends Fragment implements View.OnClickLis
 
     @Override
     public void onClick(View view) {
+        if (!checkPermissions()) {
+            requestCameraPermissions(Constants.REQUEST_CODE_CAMERAANDLOCATION);
+        } else {
+            setupLocationService();
+        }
+
         switch (view.getId()) {
 
             case R.id.camera_button_create:
-                mProgressDialog.setMessage("Checking user location");
-                mProgressDialog.show();
-                FindLocation findLocation = new FindLocation(getApplicationContext(), this);
-                findLocation.buildGoogleApiClient();
-                findLocation.connectApiClient();
+                cameraPressed = true;
                 break;
-
             case R.id.video_button_create:
-//                if (checkPermissions()) {
-//                    openVideo();
-//                } else if (requestPermissions()) {
-//                    openVideo();
-//                } else {
-//                    Toast.makeText(getApplicationContext(), "Permission denied by user", Toast.LENGTH_LONG).show();
-//                }
+                videoPressed = true;
                 break;
             default:
         }
+    }
+
+    private void setupLocationService() {
+        mProgressDialog.setMessage("Checking user location");
+        mProgressDialog.show();
+        FindLocation findLocation = new FindLocation(getApplicationContext(), this);
+        findLocation.buildGoogleApiClient();
+        findLocation.connectApiClient();
     }
 
     private void clickedButton(boolean foundLocation) {
         Log.d("nearby", String.valueOf(foundLocation));
         if (!foundLocation) {
             Toast.makeText(getApplicationContext(), "Sorry, you're currently not near a location", Toast.LENGTH_LONG).show();
-        } else if (foundLocation && ContextCompat.checkSelfPermission(getActivity().getApplicationContext(), Manifest.permission.CAMERA)
-                == PackageManager.PERMISSION_GRANTED) {
-            openCamera();
-        } else {
-            ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.CAMERA}, 1);
-            if (ContextCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.CAMERA)
-                    == PackageManager.PERMISSION_GRANTED) {
+        } else if (foundLocation) {
+            if (cameraPressed) {
                 openCamera();
+            } else if (videoPressed) {
+                openVideo();
             }
         }
     }
 
-
     private boolean checkPermissions() {
-        return (ContextCompat.checkSelfPermission(getApplicationContext(), android.Manifest.permission.ACCESS_FINE_LOCATION)
-                == PackageManager.PERMISSION_GRANTED || ContextCompat.checkSelfPermission(getApplicationContext(), android.Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED
-                || ContextCompat.checkSelfPermission(getApplicationContext(), android.Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED
-                || ContextCompat.checkSelfPermission(getApplicationContext(), android.Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED);
+        return (
+                ContextCompat.checkSelfPermission(getApplicationContext(), android.Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED &&
+                        ContextCompat.checkSelfPermission(getApplicationContext(), android.Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED &&
+                        ContextCompat.checkSelfPermission(getApplicationContext(), android.Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED &&
+                        ContextCompat.checkSelfPermission(getApplicationContext(), android.Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED);
     }
 
-    private boolean requestPermissions() {
-
-        ActivityCompat.requestPermissions(getActivity(), new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION,
+    private void requestCameraPermissions(int requestCode) {
+        requestPermissions(new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION,
                 android.Manifest.permission.WRITE_EXTERNAL_STORAGE,
                 android.Manifest.permission.READ_EXTERNAL_STORAGE,
-                android.Manifest.permission.CAMERA}, 1);
-        return checkPermissions();
+                android.Manifest.permission.CAMERA}, requestCode);
     }
 
     private File createImageFile() throws IOException {
@@ -208,36 +209,15 @@ public class CreateYourStoryFragment extends Fragment implements View.OnClickLis
         clickedButton(foundLocation);
     }
 
-
-//    private void addContentToDatabase() {
-
-    //first line adds a coordinate, second location adds content to list at that location
-//        mFirebaseDatabase.child("MapPoint").child("Location3").setValue(new Coordinate(40.720398, -74.025452));
-//        mFirebaseDatabase.child("MapPoint").child("Location3").child("ContentList").push().setValue(new Content("Highline", "Historical", "This was the highline a long time ago", "HighLine", "http://oldnyc-assets.nypl.org/600px/712105f-a.jpg", "1920"));
-//        mFirebaseDatabase.child("MapPoint").child("Location3").child("ContentList").push().setValue(new Content("Highline", "Historical", "This was the highline a long time ago", "HighLine", "http://oldnyc-assets.nypl.org/600px/712105f-a.jpg", "1920"));
-//        mFirebaseDatabase.child("MapPoint").child("Location3").child("ContentList").push().setValue(new Content("Highline", "Historical", "This was the highline a long time ago", "HighLine", "http://oldnyc-assets.nypl.org/600px/712105f-a.jpg", "1920"));
-//        mFirebaseDatabase.child("MapPoint").child("Location3").child("ContentList").push().setValue(new Content("Highline", "Historical", "This was the highline a long time ago", "HighLine", "http://oldnyc-assets.nypl.org/600px/712105f-a.jpg", "1920"));
-
-
-//        these two lines of code are super important. this is how you push new contents into the list of data at a point
-//        mFirebaseDatabase.child("MapPoint").child("Location2").child("Content").push().setValue(new Content("Washington Sq", "Historical", "This was the washsq a long time ago", "wash sq", "http://oldnyc-assets.nypl.org/600px/707997f-a.jpg", "1920"));
-//        mFirebaseDatabase.child("MapPoint").child("Location2").child("Content").push().setValue(new Content("Washington Sq", "Historical", "This was the washsq a long time ago", "wash sq22", "http://oldnyc-assets.nypl.org/600px/707997f-a.jpg", "1920"));
-
-//    }
-
-//    private void addImagetomyapartment() {
-//        mFirebaseDatabase.child("MapPoint")
-//                .child("Location101")
-//                .child("ContentList")
-//                .push()
-//                .setValue(new Content("Brooklyn: Broadway between Cornelia and Jefferson Street", "Historical", "Building behind the above ground train", "Broadway between Cornelia and Jefferson Street", "https://3rdeyesolation.files.wordpress.com/2012/02/tumblr_lp3lwpq4ay1qe3h33o1_500.jpg?w=500", "1990"));
-//
-//    }
-
-//    private void saveToFirebase(Location lastLocation) {
-//        Coordinate currLocation = new Coordinate(lastLocation.getLatitude(), lastLocation.getLongitude());
-//        mFirebaseDatabase.child("locations").push().setValue(currLocation);
-//    }
-
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        switch (requestCode) {
+            case Constants.REQUEST_CODE_CAMERAANDLOCATION:
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    setupLocationService();
+                }
+        }
+    }
 }
 
