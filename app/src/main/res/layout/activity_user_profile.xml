@@ -9,19 +9,31 @@
     android:id="@+id/profileContent"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
+    <FrameLayout
+        android:id="@+id/profilePicLayout"
+        android:layout_width="125dp"
+        android:layout_height="125dp"
+        android:layout_marginBottom="30dp">
     <ImageView
         android:id="@+id/user_profile_photo"
         android:layout_width="@dimen/profile_img_wh"
         android:layout_height="@dimen/profile_img_wh"
-        android:background="@color/colorPrimaryDark"
+        android:background="@color/testingGry"
         android:layout_marginBottom="30dp"/>
+        <ImageView
+            android:layout_gravity="center"
+            android:src="@drawable/ic_camera_icon"
+            android:tint="@color/brightBlue"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+    </FrameLayout>
 
     <TextView
         android:id="@+id/user_num_photos"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_toRightOf="@id/user_profile_photo"
-        android:text="200"
+        android:layout_toRightOf="@id/profilePicLayout"
+        android:text="0"
         android:layout_marginLeft="@dimen/user_profile_margin_left"
         android:textSize="18dp" />
 
@@ -41,7 +53,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/user_num_photos"
-        android:layout_toRightOf="@id/user_profile_photo"
+        android:layout_toRightOf="@id/profilePicLayout"
         android:layout_marginLeft="25dp"
         android:text="USERNAME HERE"
         android:layout_marginTop="36dp"
@@ -56,11 +68,11 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
-        android:layout_toRightOf="@id/user_profile_photo"
+        android:layout_toRightOf="@id/profilePicLayout"
         android:layout_marginLeft="@dimen/user_profile_margin_left"
         android:text="Seeing what there is to see"
         android:textSize="12dp"
-        android:layout_alignBottom="@id/user_profile_photo"
+        android:layout_alignBottom="@id/profilePicLayout"
         android:layout_below="@+id/user_profile_name"/>
 </RelativeLayout>
     <!--<Button-->

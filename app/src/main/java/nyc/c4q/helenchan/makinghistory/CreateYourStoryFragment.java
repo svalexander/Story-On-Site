@@ -16,6 +16,7 @@ import android.support.v4.content.ContextCompat;
 import android.support.v4.content.FileProvider;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
@@ -72,11 +73,13 @@ public class CreateYourStoryFragment extends Fragment implements View.OnClickLis
         selectImage = (ImageButton) root.findViewById(R.id.pic_image_create);
         selectImage.setOnClickListener(this);
         setActionBarTitle(root);
+       setHasOptionsMenu(true);
         return root;
     }
 
     private void setActionBarTitle(View v) {
         ((BaseActivity) v.getContext()).getSupportActionBar().setTitle(R.string.share_story);
+        ((BaseActivity) v.getContext()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
 
     @Override
@@ -127,6 +130,25 @@ public class CreateYourStoryFragment extends Fragment implements View.OnClickLis
         FindLocation findLocation = new FindLocation(getApplicationContext(), this);
         findLocation.buildGoogleApiClient();
         findLocation.connectApiClient();
+    }
+
+    //temp workaround
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                Intent intent = new Intent(getContext(), BaseActivity.class);
+                startActivity(intent);
+
+                //this doesnt work because it knows it's in base and wants to find the parent of base
+                //however what we need to do is remove the fragment but adding to backstack crashes b/c of map
+//                NavUtils.navigateUpFromSameTask(getActivity());
+//                return true;
+
+                //this goes back to base
+               // getActivity();
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     private void clickedButton(boolean foundLocation) {
@@ -199,7 +221,6 @@ public class CreateYourStoryFragment extends Fragment implements View.OnClickLis
         photoUri = Uri.fromFile(file);
         galleryIntent.setData(photoUri);
         getApplicationContext().sendBroadcast(galleryIntent);
-
     }
 
     private void openVideo() {

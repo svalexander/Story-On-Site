@@ -49,6 +49,7 @@ public class EditContentActivity extends AppCompatActivity {
     private String userStory;
     private String photoLocationName;
     private String uploadID;
+    private String typeOfUpload;
 
     private DatabaseReference mFirebaseDatabase;
     private FirebaseStorage mFirebaseStorage;
@@ -71,6 +72,7 @@ public class EditContentActivity extends AppCompatActivity {
             if (extras.containsKey(CreateYourStoryFragment.PHOTOURI)) {
                 portraitIV.setVisibility(View.VISIBLE);
                 previewVideoView.setVisibility(View.GONE);
+                typeOfUpload = "story";
                 String stringUri = extras.getString(CreateYourStoryFragment.PHOTOURI);
                 contentUri = Uri.parse(stringUri);
                 Glide.with(getApplicationContext())
@@ -83,6 +85,7 @@ public class EditContentActivity extends AppCompatActivity {
             } else if (extras.containsKey(CreateYourStoryFragment.VIDEOURI)){
                 previewVideoView.setVisibility(View.VISIBLE);
                 portraitIV.setVisibility(View.GONE);
+                typeOfUpload = "video";
                 String stringVideoUrl = extras.getString(CreateYourStoryFragment.VIDEOURI);
                 contentUri = Uri.parse(stringVideoUrl);
                 videoPlay();
@@ -174,7 +177,7 @@ public class EditContentActivity extends AppCompatActivity {
 
     private void addUserContentToDatabase(String userLocationKey, String url, String locationName, String story) {
         String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
-        mFirebaseDatabase.child("MapPoint").child(userLocationKey).child("ContentList").push().setValue(new Content(locationName, "story", story, "wash sq", url, getDate()));
+        mFirebaseDatabase.child("MapPoint").child(userLocationKey).child("ContentList").push().setValue(new Content(locationName, typeOfUpload, story, "wash sq", url, getDate()));
         mFirebaseDatabase.child("Users").child(uid).child("ContentList").push().setValue(new Content(" ", uid, " ", "wash sq", url, "2017"));
     }
 

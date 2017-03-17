@@ -1,10 +1,13 @@
 package nyc.c4q.helenchan.makinghistory.contentrecyclerview;
 
 import android.graphics.Typeface;
+import android.net.Uri;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.MediaController;
 import android.widget.TextView;
+import android.widget.VideoView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
@@ -22,6 +25,7 @@ public class ContentViewHolder extends RecyclerView.ViewHolder {
     private TextView contentDescriptionTextView;
     private TextView contentYearTextView;
     private ImageView expandedImage;
+    private VideoView userVideoView;
 
     public ContentViewHolder(View itemView) {
         super(itemView);
@@ -35,18 +39,15 @@ public class ContentViewHolder extends RecyclerView.ViewHolder {
         contentDescriptionTextView.setTypeface(bodyFont);
         contentYearTextView.setTypeface(bodyFont);
         expandedImage = (ImageView) itemView.findViewById(R.id.expanded_IV);
+        userVideoView = (VideoView) itemView.findViewById(R.id.content_videoview);
     }
 
     public void bind(final Content c) {
-        Glide.with(itemView.getContext())
-                .load(c.getUrl())
-                .centerCrop()
-                .diskCacheStrategy(DiskCacheStrategy.SOURCE)
-                .into(contentImageView);
 
         contentTitleTextView.setText(c.getName());
         contentDescriptionTextView.setText(c.getText());
         checkIfYearIsListed(c);
+        loadVideoOrPhoto(c);
 
         contentImageView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -75,6 +76,26 @@ public class ContentViewHolder extends RecyclerView.ViewHolder {
 //                new TransferAnimation(contentImageView).setDestinationView(expandedImage).animate();
 //            }
 //        });
+    }
+
+    private void loadVideoOrPhoto(Content c) {
+        if(c.getType().equals("video")){
+            userVideoView.setVisibility(View.VISIBLE);
+            contentImageView.setVisibility(View.GONE);
+            Uri videoUri = Uri.parse(c.getUrl());
+            userVideoView.setMediaController(new MediaController(itemView.getContext()));
+            userVideoView.setVideoURI(videoUri);
+            userVideoView.requestFocus();
+            userVideoView.start();
+        }else{
+            userVideoView.setVisibility(View.GONE);
+            contentImageView.setVisibility(View.VISIBLE);
+            Glide.with(itemView.getContext())
+                    .load(c.getUrl())
+                    .centerCrop()
+                    .diskCacheStrategy(DiskCacheStrategy.SOURCE)
+                    .into(contentImageView);
+        }
     }
 
     private void checkIfYearIsListed(Content c) {
