@@ -74,7 +74,7 @@ public class UserProfileActivity extends AppCompatActivity {
         String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
         photoRef = FirebaseDatabase.getInstance().getReference().child("Users").child(uid).child("ContentList");
 
-
+        setFontType();
         initViews();
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
