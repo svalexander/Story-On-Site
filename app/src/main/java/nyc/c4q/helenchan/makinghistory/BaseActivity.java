@@ -1,7 +1,12 @@
 package nyc.c4q.helenchan.makinghistory;
 
+import android.animation.ArgbEvaluator;
+import android.animation.ValueAnimator;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
@@ -9,6 +14,7 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -31,9 +37,6 @@ public class BaseActivity extends AppCompatActivity implements BottomNavigationV
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_base);
 
-//        if(!checkPermissions()){
-//            requestPermissions();
-//        }
         initViews();
         setListeners();
         setFontType();
@@ -43,7 +46,9 @@ public class BaseActivity extends AppCompatActivity implements BottomNavigationV
     private void initViews(){
         bottomNav = (BottomNavigationView) findViewById(R.id.bottom_nav_view);
         baseLayout = (FrameLayout) findViewById(R.id.base_frame_Layout);
-
+        getSupportActionBar().setBackgroundDrawable(new ColorDrawable(Color.parseColor("#5e454b")));
+        getWindow().setNavigationBarColor(Color.parseColor("#3fab9b"));
+        getWindow().setStatusBarColor(Color.parseColor("#5e454b"));
     }
 
     private void inflateDefaultView(){

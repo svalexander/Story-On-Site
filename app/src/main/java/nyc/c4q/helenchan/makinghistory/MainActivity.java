@@ -2,6 +2,8 @@ package nyc.c4q.helenchan.makinghistory;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
@@ -61,6 +63,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         mainPicIV = (ImageView) findViewById(R.id.main_pic_iv);
         mainPicTV = (TextView) findViewById(R.id.main_pic_tv);
         cardView = (CardView) findViewById(R.id.main_card);
+
+        getSupportActionBar().setBackgroundDrawable(new ColorDrawable(Color.parseColor("#1E000D")));
+        getWindow().setNavigationBarColor(Color.parseColor("#1E000D"));
+        getWindow().setStatusBarColor(Color.parseColor("#1E000D"));
+
         getRandomImage();
 
         for (int i = 0; i < picsList.size(); i++) {
