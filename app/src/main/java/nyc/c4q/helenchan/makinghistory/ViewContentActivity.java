@@ -46,6 +46,7 @@ public class ViewContentActivity extends AppCompatActivity {
     private ProgressDialog mProgressDialog;
     private Animator animator;
     private int shortAnimationLength;
+    private String currentKey;
 
 
     @Override
@@ -121,19 +122,32 @@ public class ViewContentActivity extends AppCompatActivity {
         databaseRefToMappoint.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                List<Content> tempList = new ArrayList<>();
+                final List<Content> tempList = new ArrayList<>();
                 for (DataSnapshot ds : dataSnapshot.getChildren()) {
                     MapPoint mp = ds.getValue(MapPoint.class);
                     if (mp.getLatitude() == lat && mp.getLongitude() == lng) {
-                        HashMap<String, Content> contentList = mp.getContentList();
-                        for (String s : contentList.keySet()) {
-                            tempList.add(contentList.get(s));
-                        }
+                        currentKey = ds.getKey();
+                        DatabaseReference databaseRefToMappoint2 = FirebaseDatabase.getInstance().getReference().child("MapPoint").child(currentKey).child("ContentList");
+                        databaseRefToMappoint2.orderByKey();
+                        databaseRefToMappoint2.addListenerForSingleValueEvent(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(DataSnapshot dataSnapshot) {
+                                for(DataSnapshot s : dataSnapshot.getChildren()){
+                                    Content current = s.getValue(Content.class);
+                                    System.out.println(current.getUrl());
+                                    tempList.add(current);
+                                }
+                                viewContentAdapter.setMapContent(tempList);
+                            }
+
+                            @Override
+                            public void onCancelled(DatabaseError databaseError) {
+
+                            }
+                        });
                         break;
                     }
                 }
-
-                viewContentAdapter.setMapContent(tempList);
             }
 
             @Override
@@ -141,6 +155,9 @@ public class ViewContentActivity extends AppCompatActivity {
 
             }
         });
+
+        List<Content> tempList2 = new ArrayList<>();
+
     }
 
 }
