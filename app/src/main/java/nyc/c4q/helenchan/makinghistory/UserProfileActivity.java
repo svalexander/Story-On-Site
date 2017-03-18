@@ -2,39 +2,28 @@ package nyc.c4q.helenchan.makinghistory;
 
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.content.pm.ResolveInfo;
-import android.net.Uri;
+import android.graphics.Bitmap;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.v4.app.NavUtils;
 import android.support.v4.content.ContextCompat;
-import android.support.v4.content.FileProvider;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
-import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.StorageReference;
 
-import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -42,15 +31,11 @@ import me.anwarshahriar.calligrapher.Calligrapher;
 import nyc.c4q.helenchan.makinghistory.models.Content;
 import nyc.c4q.helenchan.makinghistory.usercontentrecyclerview.UserContentAdapter;
 
-import static com.facebook.FacebookSdk.getApplicationContext;
-
 /**
  * Created by Akasha on 3/8/17.
  */
 
 public class UserProfileActivity extends AppCompatActivity {
-
-    private static final int REQUEST_IMAGE_CAPTURE = 3;
     private String TAG = "User Profile Activity: ";
 
     private ImageView userProfilePhoto;
@@ -179,6 +164,14 @@ public class UserProfileActivity extends AppCompatActivity {
             startActivityForResult(takePictureIntent, Constants.REQUEST_IMAGE_CAPTURE);
             //put whatever logic you guys would like here!
         }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        Bundle extras = data.getExtras();
+        Bitmap imageBitmap = (Bitmap) extras.get("data");
+        userProfilePhoto.setImageBitmap(imageBitmap);
     }
 
     @Override

@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
@@ -17,6 +18,8 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -70,9 +73,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 //            mainPicTV.setText(text);
 //        }
 
-//        getSupportActionBar().setBackgroundDrawable(new ColorDrawable(Color.parseColor("#1E000D")));
-//        getWindow().setNavigationBarColor(Color.parseColor("#1E000D"));
-//        getWindow().setStatusBarColor(Color.parseColor("#1E000D"));
+        getSupportActionBar().setBackgroundDrawable(new ColorDrawable(Color.parseColor("#1E000D")));
+        if(Build.VERSION.SDK_INT >= 21) {
+            getWindow().setNavigationBarColor(Color.parseColor("#1E000D"));
+            getWindow().setStatusBarColor(Color.parseColor("#1E000D"));
+        }
     }
 
     @Override

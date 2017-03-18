@@ -49,17 +49,17 @@
         </RelativeLayout>
 
         <!--<View-->
-            <!--android:layout_width="match_parent"-->
-            <!--android:layout_height="3dp"-->
-            <!--android:background="#FF8A65" />-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="3dp"-->
+        <!--android:background="#FF8A65" />-->
 
         <!--#FF8A65 #EF5350-->
 
         <LinearLayout
-            android:background="@color/retro_white"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
+            android:background="@color/retro_white"
             android:gravity="center_vertical">
 
             <LinearLayout
@@ -70,13 +70,13 @@
                 android:orientation="vertical">
 
                 <ImageButton
-                    android:padding="@dimen/img_bttn_padding"
-                    android:scaleType="fitCenter"
                     android:id="@+id/video_button_create"
                     android:layout_width="@dimen/button_size"
                     android:layout_height="@dimen/button_size"
                     android:layout_gravity="center_horizontal|center_vertical"
                     android:background="@drawable/round_button_cream"
+                    android:padding="@dimen/img_bttn_padding"
+                    android:scaleType="fitCenter"
                     android:src="@drawable/ic_retrovideo" />
 
                 <TextView
@@ -124,13 +124,13 @@
                 android:orientation="vertical">
 
                 <ImageButton
-                    android:padding="@dimen/img_bttn_padding"
-                    android:scaleType="fitCenter"
                     android:id="@+id/pic_image_create"
                     android:layout_width="@dimen/button_size"
                     android:layout_height="@dimen/button_size"
                     android:layout_gravity="center_horizontal|center_vertical"
                     android:background="@drawable/round_button_cream"
+                    android:padding="@dimen/img_bttn_padding"
+                    android:scaleType="fitCenter"
                     android:src="@drawable/ic_polaroids" />
 
                 <TextView
