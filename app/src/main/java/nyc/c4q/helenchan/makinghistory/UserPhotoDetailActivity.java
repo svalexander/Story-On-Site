@@ -4,6 +4,7 @@ import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -11,6 +12,13 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
 
 /**
  * Created by akashaarcher on 3/16/17.
@@ -18,8 +26,12 @@ import com.bumptech.glide.Glide;
 
 public class UserPhotoDetailActivity extends AppCompatActivity {
 
-    TextView usernameTextView;
-    ImageView userPhotoDetailImageView;
+    private TextView usernameTextView;
+    private ImageView userPhotoDetailImageView;
+    private DatabaseReference ref;
+
+    private String TAG = "UserPhotoDetailActivity";
+    private String userPhotoDetailUrl;
 
 
     @Override
@@ -33,7 +45,7 @@ public class UserPhotoDetailActivity extends AppCompatActivity {
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
             if (extras.containsKey("UserPhotoUri")) {
-                String userPhotoDetailUrl = extras.getString("UserPhotoUri");
+                userPhotoDetailUrl = extras.getString("UserPhotoUri");
 
                 usernameTextView.setText(SignInActivity.mUsername);
                 Glide.with(getApplicationContext())
@@ -43,36 +55,8 @@ public class UserPhotoDetailActivity extends AppCompatActivity {
                         .into(userPhotoDetailImageView);
             }
         }
-
     }
 
-
-
-    /*
-     public static void deleteUserPhoto(String userPhotoUrl) {
-//
-//        FirebaseStorage photoStorage = FirebaseStorage.getInstance();
-//        StorageReference storageRef = photoStorage.getReference();
-//
-//        StorageReference photoToDeleteRef = storageRef.child(userPhotoUrl);
-//
-//        photoToDeleteRef.delete().addOnSuccessListener(new OnSuccessListener<Void>() {
-//            @Override
-//            public void onSuccess(Void aVoid) {
-//                Log.i("User Profile Activity: ", "photo deleted");
-//            }
-//
-//        }).addOnFailureListener(new OnFailureListener() {
-//            @Override
-//            public void onFailure(@NonNull Exception e) {
-//                Log.i("User Profile Activity: ", "Error occurred");
-//            }
-//        });
-//
-//    }
-
-
-     */
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -98,8 +82,7 @@ public class UserPhotoDetailActivity extends AppCompatActivity {
                         new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialogInterface, int i) {
-                               // UserProfileActivity.deleteUserPhoto(userPhoto);
-                                 dialogInterface.cancel();
+                                deleteUserPhoto();
                             }
                         });
 
@@ -117,4 +100,27 @@ public class UserPhotoDetailActivity extends AppCompatActivity {
         }
         return super.onOptionsItemSelected(item);
     }
+
+    public void deleteUserPhoto() {
+        String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        Log.i(TAG, "photo url: " + userPhotoDetailUrl);
+
+        DatabaseReference ref = FirebaseDatabase.getInstance().getReference();
+        Query photoQuery = ref.child("Users").child(uid).child("ContentList").orderByChild("url").equalTo(userPhotoDetailUrl);
+        photoQuery.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for (DataSnapshot photoSnapshot : dataSnapshot.getChildren()) {
+                    photoSnapshot.getRef().removeValue();
+                    Log.i(TAG, "photo removed " + userPhotoDetailUrl);
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                Log.e(TAG, "onCancelled", databaseError.toException());
+            }
+        });
+    }
+
 }
