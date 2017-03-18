@@ -24,4 +24,11 @@
     <color name="testingGry">#DDDFDF</color>
     <color name="brightPurple">#5603AD</color>
     <color name="forestGreen">#002621</color>
+
+    <color name="retro_pink">#FF8A65</color>
+    <color name="retro_white">#f3f0d7</color>
+    <color name="retro_cream">#d8b384</color>
+    <color name="retro_brown">#5e454b</color>
+    <color name="content_cardview">#cee5d0</color>
+    <color name="retro_teal">#3fab9b</color>
 </resources>

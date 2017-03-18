@@ -13,10 +13,10 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:background="@color/brightBlue"
+        android:background="#fff"
         android:textAlignment="center"
-        app:itemIconTint="@color/white_text"
-        app:itemTextColor="@color/white_text"
+        app:itemIconTint="@color/retro_teal"
+        app:itemTextColor="@color/retro_teal"
         app:menu="@menu/bottom_navigation">
 
     </android.support.design.widget.BottomNavigationView>
