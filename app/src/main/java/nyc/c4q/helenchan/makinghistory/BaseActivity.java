@@ -36,14 +36,14 @@ public class BaseActivity extends AppCompatActivity implements BottomNavigationV
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_base);
-        
+
         initViews();
         setListeners();
         setFontType();
         inflateDefaultView();
     }
 
-    private void initViews() {
+    private void initViews(){
         bottomNav = (BottomNavigationView) findViewById(R.id.bottom_nav_view);
         baseLayout = (FrameLayout) findViewById(R.id.base_frame_Layout);
         getSupportActionBar().setBackgroundDrawable(new ColorDrawable(Color.parseColor("#5e454b")));
@@ -51,16 +51,15 @@ public class BaseActivity extends AppCompatActivity implements BottomNavigationV
         getWindow().setStatusBarColor(Color.parseColor("#5e454b"));
     }
 
-//    #1E000D 3E2723 242325
-
-    private void inflateDefaultView() {
+    private void inflateDefaultView(){
 
         FragmentTransaction exploreFragTransaction = getSupportFragmentManager().beginTransaction();
-        exploreFragTransaction.replace(R.id.base_frame_Layout, exploreMoreFragment);
+        exploreFragTransaction.replace(R.id.base_frame_Layout,exploreMoreFragment);
+      //  exploreFragTransaction.addToBackStack("exploreFrag");
         exploreFragTransaction.commit();
     }
 
-    private void setListeners() {
+    private void setListeners(){
         bottomNav.setOnNavigationItemSelectedListener(this);
     }
 
@@ -71,30 +70,30 @@ public class BaseActivity extends AppCompatActivity implements BottomNavigationV
         calligrapher.setFont(findViewById(R.id.base_frame_Layout), "Raleway-Regular.ttf");
     }
 
-    private void removeView() {
+    private void removeView(){
         baseLayout.removeAllViewsInLayout();
     }
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.suggestedIcon:
-                removeView();
-                FragmentTransaction suggestedFragTransaction = getSupportFragmentManager().beginTransaction();
-                suggestedFragTransaction.replace(R.id.base_frame_Layout, suggestedFragment);
-                suggestedFragTransaction.commit();
-
-                break;
-            case R.id.createIcon:
-
-                removeView();
-                FragmentTransaction createFragTransaction = getSupportFragmentManager().beginTransaction();
-                createFragTransaction.replace(R.id.base_frame_Layout, createYourStoryFragment);
-                createFragTransaction.commit();
-                break;
-            case R.id.exploreIcon:
-                inflateDefaultView();
-        }
+       switch (item.getItemId()){
+           case R.id.suggestedIcon:
+               removeView();
+               FragmentTransaction suggestedFragTransaction = getSupportFragmentManager().beginTransaction();
+               suggestedFragTransaction.replace(R.id.base_frame_Layout, suggestedFragment);
+           //    suggestedFragTransaction.addToBackStack("suggestedFrag");
+               suggestedFragTransaction.commit();
+               break;
+           case R.id.createIcon:
+               removeView();
+               FragmentTransaction createFragTransaction = getSupportFragmentManager().beginTransaction();
+               createFragTransaction.replace(R.id.base_frame_Layout, createYourStoryFragment);
+            //   createFragTransaction.addToBackStack("createFrag");
+               createFragTransaction.commit();
+               break;
+           case R.id.exploreIcon:
+               inflateDefaultView();
+       }
         return true;
     }
 

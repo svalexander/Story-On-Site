@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
+import android.support.v4.app.NavUtils;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.content.FileProvider;
 import android.support.v7.app.AppCompatActivity;
@@ -15,6 +16,7 @@ import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.support.v7.widget.StaggeredGridLayoutManager;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
@@ -48,6 +50,7 @@ import static com.facebook.FacebookSdk.getApplicationContext;
 
 public class UserProfileActivity extends AppCompatActivity {
 
+    private static final int REQUEST_IMAGE_CAPTURE = 3;
     private String TAG = "User Profile Activity: ";
 
     private ImageView userProfilePhoto;
@@ -72,8 +75,9 @@ public class UserProfileActivity extends AppCompatActivity {
         String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
         photoRef = FirebaseDatabase.getInstance().getReference().child("Users").child(uid).child("ContentList");
 
-
+        setFontType();
         initViews();
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         userProfilePhoto.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -85,7 +89,6 @@ public class UserProfileActivity extends AppCompatActivity {
                 }
             }
         });
-
 
         String userName = SignInActivity.mUsername;
         userNameTv.setText(userName);
@@ -144,6 +147,17 @@ public class UserProfileActivity extends AppCompatActivity {
         calligrapher.setFont(this, "ArimaMadurai-Bold.ttf", true);
         calligrapher.setFont(findViewById(R.id.profileContent), "Raleway-Regular.ttf");
     }
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+
+                NavUtils.navigateUpFromSameTask(this);
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
 
     private boolean checkPermissions() {
         return (ContextCompat.checkSelfPermission(getApplicationContext(), android.Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED
