@@ -87,10 +87,8 @@
                         android:layout_weight="0.70"
                         android:paddingLeft="13dp"
                         android:paddingRight="13dp"
-                        android:ellipsize="end"
                         android:gravity="center"
-                        android:maxLength="200"
-                        android:maxLines="4"
+                        android:scrollbars="vertical"
                         android:text="Description of img goes here. Lorem Ipsum dolor sin amet"
                         android:textColor="@color/brightPurple"
                         android:textSize="14sp" />
