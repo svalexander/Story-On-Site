@@ -5,7 +5,7 @@
     android:id="@+id/activity_main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/primaryDark"
+    android:background="@color/testingGry"
     android:orientation="vertical"
     android:paddingBottom="@dimen/activity_vertical_margin"
     android:paddingLeft="@dimen/activity_horizontal_margin"
@@ -13,72 +13,78 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="nyc.c4q.helenchan.makinghistory.MainActivity">
 
-    <android.support.v7.widget.CardView
-    android:id="@+id/main_card"
-    android:layout_width="300dp"
-    android:layout_height="400dp"
-    app:cardPreventCornerOverlap="false"
-    android:layout_gravity="center">
+    <!--<android.support.v7.widget.CardView-->
+    <!--android:id="@+id/main_card"-->
+    <!--android:layout_width="300dp"-->
+    <!--android:layout_height="400dp"-->
+    <!--app:cardPreventCornerOverlap="false"-->
+    <!--android:layout_gravity="center">-->
 
-    <ImageView
-    android:id="@+id/main_pic_iv"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:layout_gravity="center_horizontal"
-    android:paddingTop="@dimen/main_pic_margin" />
+    <!--<ImageView-->
+    <!--android:id="@+id/main_pic_iv"-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="match_parent"-->
+    <!--android:layout_gravity="center_horizontal"-->
+    <!--android:paddingTop="@dimen/main_pic_margin" />-->
 
-    <TextView
-    android:id="@+id/main_pic_tv"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:layout_gravity="bottom"
-    android:layout_marginTop="@dimen/main_pic_margin"
-    android:ellipsize="end"
-    android:maxLines="6"
-    android:text="@string/samuel_ipsum" />
-    </android.support.v7.widget.CardView>
+    <!--<TextView-->
+    <!--android:id="@+id/main_pic_tv"-->
+    <!--android:layout_width="wrap_content"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:layout_gravity="bottom"-->
+    <!--android:layout_marginTop="@dimen/main_pic_margin"-->
+    <!--android:ellipsize="end"-->
+    <!--android:maxLines="6"-->
+    <!--android:text="@string/samuel_ipsum" />-->
+    <!--</android.support.v7.widget.CardView>-->
 
 
     <Button
-    android:id="@+id/skipBtn"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:layout_gravity="center_horizontal"
-    android:background="@color/teal_accent"
-    android:text="@string/skip"
-    android:textColor="@color/white_text" />
-    <!--<FrameLayout-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="match_parent">-->
+        android:id="@+id/skipBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:background="@color/teal_accent"
+        android:text="@string/skip"
+        android:textColor="@color/white_text" />
 
-        <!--<ImageView-->
-            <!--android:id="@+id/old_pic"-->
-            <!--android:layout_width="match_parent"-->
-            <!--android:layout_height="match_parent"-->
-            <!--android:src="@drawable/brownstone"-->
-            <!--android:visibility="gone" />-->
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
-        <!--<ImageView-->
-            <!--android:id="@+id/new_pic"-->
-            <!--android:layout_width="match_parent"-->
-            <!--android:layout_height="match_parent"-->
-            <!--android:src="@drawable/hancock"-->
-            <!--android:visibility="gone" />-->
+        <ImageView
+            android:id="@+id/old_pic"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:alpha="0.4"
+            android:src="@drawable/brownstone" />
+        <ImageView
+            android:id="@+id/new_pic"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:src="@drawable/hancock"
+            android:visibility="gone" />
 
-        <!--<ImageView-->
-            <!--android:id="@+id/logoIV"-->
-            <!--android:layout_width="wrap_content"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:layout_gravity="start"-->
-            <!--android:scaleX="0.7"-->
-            <!--android:scaleY="0.7"-->
-            <!--android:src="@drawable/small_house" />-->
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
 
-        <!--<ImageView-->
-            <!--android:id="@+id/storyIV"-->
-            <!--android:layout_width="wrap_content"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:layout_gravity="center"-->
-            <!--android:src="@drawable/logowhite" />-->
-    <!--</FrameLayout>-->
+            <ImageView
+                android:id="@+id/logoIV"
+                android:layout_width="115dp"
+                android:layout_height="115dp"
+                android:layout_centerVertical="true"
+                android:src="@drawable/sos_small_house_purple" />
+
+            <ImageView
+                android:id="@+id/storyIV"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginTop="300dp"
+                android:layout_toRightOf="@id/logoIV"
+
+                android:src="@drawable/sos_logotype_purple" />
+        </RelativeLayout>
+    </FrameLayout>
 </LinearLayout>

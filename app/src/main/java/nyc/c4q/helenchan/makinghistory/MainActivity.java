@@ -16,8 +16,6 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.squareup.picasso.Picasso;
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -55,20 +53,20 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private void initViews() {
         skipBtn = (Button) findViewById(R.id.skipBtn);
         mainLayout = (LinearLayout) findViewById(R.id.activity_main);
-       // iconIV = (ImageView) findViewById(R.id.logoIV);
-//        oldPic = (ImageView) findViewById(R.id.old_pic);
-//        newPic= (ImageView) findViewById(R.id.new_pic);
-        mainPicIV = (ImageView) findViewById(R.id.main_pic_iv);
-        mainPicTV = (TextView) findViewById(R.id.main_pic_tv);
-        cardView = (CardView) findViewById(R.id.main_card);
-        getRandomImage();
-
-        for (int i = 0; i < picsList.size(); i++) {
-            String url = picsList.get(i).getUrl();
-            String text = picsList.get(i).getText();
-            Picasso.with(getBaseContext()).load(url).resize(1200, 1200).centerCrop().into(mainPicIV);
-            mainPicTV.setText(text);
-        }
+        iconIV = (ImageView) findViewById(R.id.logoIV);
+        oldPic = (ImageView) findViewById(R.id.old_pic);
+        newPic= (ImageView) findViewById(R.id.new_pic);
+//        mainPicIV = (ImageView) findViewById(R.id.main_pic_iv);
+//        mainPicTV = (TextView) findViewById(R.id.main_pic_tv);
+//        cardView = (CardView) findViewById(R.id.main_card);
+//        getRandomImage();
+//
+//        for (int i = 0; i < picsList.size(); i++) {
+//            String url = picsList.get(i).getUrl();
+//            String text = picsList.get(i).getText();
+//            Picasso.with(getBaseContext()).load(url).resize(1200, 1200).centerCrop().into(mainPicIV);
+//            mainPicTV.setText(text);
+//        }
 
 
     }
@@ -99,9 +97,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 //        new FadeInAnimation(oldPic).animate();
 //        new FadeOutAnimation(oldPic).animate();
 
-        cardView.setEnabled(true);
-        cardView.setVisibility(View.VISIBLE);
-        cardView.setAnimation(AnimationUtils.loadAnimation(this, android.R.anim.slide_in_left));
+//        cardView.setEnabled(true);
+//        cardView.setVisibility(View.VISIBLE);
+//        cardView.setAnimation(AnimationUtils.loadAnimation(this, android.R.anim.slide_in_left));
     }
 
     @Override
