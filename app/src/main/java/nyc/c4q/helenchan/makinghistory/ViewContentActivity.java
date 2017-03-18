@@ -53,9 +53,6 @@ public class ViewContentActivity extends AppCompatActivity {
         setContentView(R.layout.activity_viewcontent);
         getSupportActionBar().setBackgroundDrawable(new ColorDrawable(Color.parseColor("#5e454b")));
 
-        getWindow().setNavigationBarColor(Color.parseColor("#3fab9b"));
-        getWindow().setStatusBarColor(Color.parseColor("#5e454b"));
-
         contentRV = (RecyclerView) findViewById(R.id.content_recycler_view);
         contentRV.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
         viewContentAdapter = new ViewContentAdapter();

@@ -76,7 +76,7 @@
                         android:paddingRight="13dp"
                         android:paddingTop="13dp"
                         android:text="1906"
-                        android:textColor="@color/retro_pink"
+                        android:textColor="@color/brightBlue"
                         android:textStyle="bold" />
 
                     <View
@@ -95,7 +95,7 @@
                         android:maxLines="1"
                         android:text="Img title goes here"
                         android:textColor="@color/retro_brown"
-                        android:textSize="24sp" />
+                        android:textSize="18sp" />
 
                     <TextView
                         android:id="@+id/content_description"
