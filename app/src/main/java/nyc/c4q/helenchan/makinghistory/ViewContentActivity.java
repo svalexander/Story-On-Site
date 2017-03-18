@@ -52,6 +52,7 @@ public class ViewContentActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_viewcontent);
         getSupportActionBar().setBackgroundDrawable(new ColorDrawable(Color.parseColor("#5e454b")));
+
         getWindow().setNavigationBarColor(Color.parseColor("#3fab9b"));
         getWindow().setStatusBarColor(Color.parseColor("#5e454b"));
 

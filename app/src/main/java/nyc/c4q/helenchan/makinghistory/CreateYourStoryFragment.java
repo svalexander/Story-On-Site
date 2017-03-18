@@ -115,6 +115,7 @@ public class CreateYourStoryFragment extends Fragment implements View.OnClickLis
     @Override
     public void onClick(View view) {
         if (!checkPermissions()) {
+            requestCameraPermissions(Constants.REQUEST_CODE_CAMERAANDLOCATION);
         } else {
             setupLocationService();
         }
