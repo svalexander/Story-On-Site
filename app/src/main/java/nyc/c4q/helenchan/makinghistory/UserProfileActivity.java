@@ -3,6 +3,8 @@ package nyc.c4q.helenchan.makinghistory;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
+import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
@@ -56,7 +58,9 @@ public class UserProfileActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_profile);
-
+        if(Build.VERSION.SDK_INT >= 21) {
+            getWindow().setStatusBarColor(Color.parseColor("#5e454b"));
+        }
         String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
         photoRef = FirebaseDatabase.getInstance().getReference().child("Users").child(uid).child("ContentList");
 

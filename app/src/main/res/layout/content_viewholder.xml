@@ -93,9 +93,12 @@
                         android:gravity="center"
                         android:ellipsize="end"
                         android:maxLines="1"
+                        android:paddingRight="13dp"
+                        android:paddingLeft="13dp"
+                        android:paddingBottom="13dp"
                         android:text="Img title goes here"
                         android:textColor="@color/retro_brown"
-                        android:textSize="18sp" />
+                        android:textSize="16sp" />
 
                     <TextView
                         android:id="@+id/content_description"

@@ -2,7 +2,9 @@ package nyc.c4q.helenchan.makinghistory;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.graphics.Color;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -64,7 +66,9 @@ public class EditContentActivity extends AppCompatActivity {
         setContentView(R.layout.activity_edit_content);
         setActionBarTitle();
         initialize();
-
+        if(Build.VERSION.SDK_INT >= 21) {
+            getWindow().setStatusBarColor(Color.parseColor("#5e454b"));
+        }
 
         Bundle extras = getIntent().getExtras();
         if (extras != null) {

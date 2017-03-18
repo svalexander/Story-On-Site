@@ -118,7 +118,7 @@ public class ExploreMoreFragment extends Fragment implements OnMapReadyCallback,
     }
 
     private void setActionBarTitle(View v) {
-        ((BaseActivity) v.getContext()).getSupportActionBar().setTitle(R.string.explore_btn_text);
+        ((BaseActivity) v.getContext()).getSupportActionBar().setTitle(R.string.app_name);
         ((BaseActivity) v.getContext()).getSupportActionBar().setDisplayHomeAsUpEnabled(false);
     }
 

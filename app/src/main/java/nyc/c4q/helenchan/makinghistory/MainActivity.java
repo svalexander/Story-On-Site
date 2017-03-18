@@ -3,7 +3,6 @@ package nyc.c4q.helenchan.makinghistory;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -18,8 +17,6 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-
-import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -52,7 +49,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         initViews();
         setListeners();
 
-       // setFontType();
+        // setFontType();
     }
 
     private void initViews() {
@@ -60,7 +57,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         mainLayout = (LinearLayout) findViewById(R.id.activity_main);
         iconIV = (ImageView) findViewById(R.id.logoIV);
         oldPic = (ImageView) findViewById(R.id.old_pic);
-        newPic= (ImageView) findViewById(R.id.new_pic);
+        newPic = (ImageView) findViewById(R.id.new_pic);
 //        mainPicIV = (ImageView) findViewById(R.id.main_pic_iv);
 //        mainPicTV = (TextView) findViewById(R.id.main_pic_tv);
 //        cardView = (CardView) findViewById(R.id.main_card);
@@ -72,17 +69,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 //            Picasso.with(getBaseContext()).load(url).resize(1200, 1200).centerCrop().into(mainPicIV);
 //            mainPicTV.setText(text);
 //        }
-
-        getSupportActionBar().setBackgroundDrawable(new ColorDrawable(Color.parseColor("#1E000D")));
-        if(Build.VERSION.SDK_INT >= 21) {
-            getWindow().setNavigationBarColor(Color.parseColor("#1E000D"));
+        getSupportActionBar().hide();
+        if (Build.VERSION.SDK_INT >= 21) {
             getWindow().setStatusBarColor(Color.parseColor("#1E000D"));
         }
     }
 
     @Override
     public View onCreateView(View parent, String name, Context context, AttributeSet attrs) {
-       // setAnimations();
+        // setAnimations();
         return super.onCreateView(parent, name, context, attrs);
 
     }

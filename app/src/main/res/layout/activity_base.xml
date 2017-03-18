@@ -15,8 +15,8 @@
         android:layout_alignParentBottom="true"
         android:background="@color/retro_teal"
         android:textAlignment="center"
-        app:itemIconTint="@color/white_text"
-        app:itemTextColor="@color/white_text"
+        app:itemIconTint="@color/nav_icon_state"
+        app:itemTextColor="@color/nav_icon_state"
         app:menu="@menu/bottom_navigation">
 
     </android.support.design.widget.BottomNavigationView>

@@ -3,7 +3,6 @@ package nyc.c4q.helenchan.makinghistory;
 import android.animation.Animator;
 import android.app.ProgressDialog;
 import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -13,7 +12,6 @@ import android.support.v7.widget.LinearSnapHelper;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SnapHelper;
 import android.util.Log;
-import android.widget.ImageView;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -52,9 +50,7 @@ public class ViewContentActivity extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_viewcontent);
-        getSupportActionBar().setBackgroundDrawable(new ColorDrawable(Color.parseColor("#5e454b")));
         if(Build.VERSION.SDK_INT >= 21) {
-            getWindow().setNavigationBarColor(Color.parseColor("#3fab9b"));
             getWindow().setStatusBarColor(Color.parseColor("#5e454b"));
         }
 
@@ -70,14 +66,6 @@ public class ViewContentActivity extends AppCompatActivity {
         Log.d("lat", String.valueOf(lat));
         mProgressDialog = new ProgressDialog(this);
 
-//        final ImageView contentImage = (ImageView) findViewById(R.id.content_image);
-//        contentImage.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//
-//            }
-//        });
-
         setFontType();
     }
 
@@ -85,11 +73,6 @@ public class ViewContentActivity extends AppCompatActivity {
         Calligrapher calligrapher = new Calligrapher(this);
         calligrapher.setFont(this, "ArimaMadurai-Bold.ttf", true);
     }
-
-    private void enlargeImage(final ImageView originalImage, int image) {
-
-    }
-
 
     @Override
     protected void onStart() {

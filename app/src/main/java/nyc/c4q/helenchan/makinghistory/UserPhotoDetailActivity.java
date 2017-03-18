@@ -1,6 +1,8 @@
 package nyc.c4q.helenchan.makinghistory;
 
 import android.content.DialogInterface;
+import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.NavUtils;
 import android.support.v7.app.AlertDialog;
@@ -43,7 +45,9 @@ public class UserPhotoDetailActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_photo_detail);
-
+        if(Build.VERSION.SDK_INT >= 21) {
+            getWindow().setStatusBarColor(Color.parseColor("#5e454b"));
+        }
         usernameTextView = (TextView) findViewById(R.id.username);
         userPhotoDetailImageView = (ImageView) findViewById(R.id.user_photo_detail);
         userPhotoDetailLayout = (RelativeLayout) findViewById(R.id.user_photo_activity);
