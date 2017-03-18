@@ -1,13 +1,16 @@
 package nyc.c4q.helenchan.makinghistory;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.v4.app.NavUtils;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -17,6 +20,7 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
@@ -46,8 +50,8 @@ public class UserProfileActivity extends AppCompatActivity {
 
     private RecyclerView userContentRV;
     private UserContentAdapter userContentAdapter;
-    private DatabaseReference photoRef;
-
+    private DatabaseReference contentRef;
+    private DatabaseReference userProfileRef;
 
     private List<Content> userPhotoList = new ArrayList<>();
 
@@ -58,8 +62,8 @@ public class UserProfileActivity extends AppCompatActivity {
         setContentView(R.layout.activity_user_profile);
 
         String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
-        photoRef = FirebaseDatabase.getInstance().getReference().child("Users").child(uid).child("ContentList");
-
+        contentRef = FirebaseDatabase.getInstance().getReference().child("Users").child(uid).child("ContentList");
+        userProfileRef = FirebaseDatabase.getInstance().getReference().child("Users").child(uid).child("Profile");
         setFontType();
         initViews();
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -67,11 +71,12 @@ public class UserProfileActivity extends AppCompatActivity {
         userProfilePhoto.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (!checkPermissions()) {
-                    requestCameraPermissions();
-                } else {
-                    openCamera();
-                }
+                whereToGetPicFromDialogueBox();
+//                if (!checkPermissions()) {
+//                    requestCameraPermissions();
+//                } else {
+//                    openCamera();
+//                }
             }
         });
 
@@ -84,7 +89,7 @@ public class UserProfileActivity extends AppCompatActivity {
         userContentRV.setAdapter(userContentAdapter);
 
 
-        photoRef.addChildEventListener(new ChildEventListener() {
+        contentRef.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
                 Content userPhotoUrl = dataSnapshot.getValue(Content.class);
@@ -117,6 +122,8 @@ public class UserProfileActivity extends AppCompatActivity {
 
             }
         });
+
+
     }
 
 
@@ -132,6 +139,7 @@ public class UserProfileActivity extends AppCompatActivity {
         calligrapher.setFont(this, "ArimaMadurai-Bold.ttf", true);
         calligrapher.setFont(findViewById(R.id.profileContent), "Raleway-Regular.ttf");
     }
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
@@ -161,16 +169,32 @@ public class UserProfileActivity extends AppCompatActivity {
         Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
             startActivityForResult(takePictureIntent, Constants.REQUEST_IMAGE_CAPTURE);
-            //put whatever logic you guys would like here!
         }
     }
+
+    private void pickPicFromGallery() {
+        Intent getFromGallery = new Intent();
+        getFromGallery.setType("image/*");
+        getFromGallery.setAction(Intent.ACTION_GET_CONTENT);
+        startActivityForResult(Intent.createChooser(getFromGallery, "Select Profile Picture"), Constants.REQUEST_PICK_IMAGE);
+    }
+
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        Bundle extras = data.getExtras();
-        Bitmap imageBitmap = (Bitmap) extras.get("data");
-        userProfilePhoto.setImageBitmap(imageBitmap);
+        if (requestCode == Constants.REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
+            Bundle extras = data.getExtras();
+            Bitmap imageBitmap = (Bitmap) extras.get("data");
+            userProfilePhoto.setImageBitmap(imageBitmap);
+        }
+        if(requestCode == Constants.REQUEST_PICK_IMAGE && resultCode == RESULT_OK){
+            Uri selectedUri = data.getData();
+            Glide.with(this)
+                    .load(selectedUri)
+                    .centerCrop()
+                    .into(userProfilePhoto);
+        }
     }
 
     @Override
@@ -182,6 +206,33 @@ public class UserProfileActivity extends AppCompatActivity {
                     openCamera();
                 }
         }
+    }
+
+    private void whereToGetPicFromDialogueBox() {
+        AlertDialog.Builder profilePicAlertDialogBuilder = new AlertDialog.Builder(this);
+        profilePicAlertDialogBuilder.setTitle(R.string.get_profile_pic)
+                .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+                    }
+                })
+                .setItems(R.array.camera_or_gallery, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        if (which == 0) {
+                            if (!checkPermissions()) {
+                                requestCameraPermissions();
+                            } else {
+                                openCamera();
+                            }
+                        } else if (which == 1) {
+                            pickPicFromGallery();
+                        }
+                    }
+                });
+        profilePicAlertDialogBuilder.show();
+
     }
 }
 
