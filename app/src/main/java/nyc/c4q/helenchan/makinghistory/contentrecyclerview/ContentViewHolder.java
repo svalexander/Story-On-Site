@@ -90,7 +90,7 @@ public class ContentViewHolder extends RecyclerView.ViewHolder {
             userVideoView.setVideoURI(videoUri);
             userVideoView.requestFocus();
             userVideoView.start();
-            
+
         } else {
             userVideoView.setVisibility(View.GONE);
             contentImageView.setVisibility(View.VISIBLE);

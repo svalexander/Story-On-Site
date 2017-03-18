@@ -83,7 +83,7 @@ public class CreateYourStoryFragment extends Fragment implements View.OnClickLis
         selectImage = (ImageButton) root.findViewById(R.id.pic_image_create);
         selectImage.setOnClickListener(this);
         setActionBarTitle(root);
-       setHasOptionsMenu(true);
+        setHasOptionsMenu(true);
         return root;
     }
 
@@ -156,7 +156,7 @@ public class CreateYourStoryFragment extends Fragment implements View.OnClickLis
 //                return true;
 
                 //this goes back to base
-               // getActivity();
+                // getActivity();
         }
         return super.onOptionsItemSelected(item);
     }

@@ -33,39 +33,39 @@
             android:layout_height="wrap_content" />
     </FrameLayout>
 
-    <TextView
-        android:id="@+id/user_num_photos"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_toRightOf="@id/profilePicLayout"
-        android:text="0"
-        android:layout_marginLeft="@dimen/user_profile_margin_left"
-        android:textSize="18dp" />
+        <TextView
+            android:id="@+id/user_num_photos"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/user_profile_margin_left"
+            android:layout_toRightOf="@id/profilePicLayout"
+            android:text="0"
+            android:textSize="18dp" />
 
-    <TextView
-        android:id="@+id/user_photos_taken"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="@dimen/activity_vertical_margin"
-        android:layout_marginLeft="5dp"
-        android:layout_marginTop="5dp"
-        android:layout_toRightOf="@id/user_num_photos"
-        android:text="photos"
-        android:textSize="12dp" />
+        <TextView
+            android:id="@+id/user_photos_taken"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/activity_vertical_margin"
+            android:layout_marginLeft="5dp"
+            android:layout_marginTop="5dp"
+            android:layout_toRightOf="@id/user_num_photos"
+            android:text="photos"
+            android:textSize="12dp" />
 
-    <TextView
-        android:id="@+id/user_profile_name"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/user_num_photos"
-        android:layout_toRightOf="@id/profilePicLayout"
-        android:layout_marginLeft="25dp"
-        android:text="USERNAME HERE"
-        android:layout_marginTop="36dp"
-        android:layout_marginBottom="4dp"
-        android:textSize="@dimen/profile_user_name"
-        android:textStyle="bold"
-        android:textAllCaps="true"/>
+        <TextView
+            android:id="@+id/user_profile_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/user_num_photos"
+            android:layout_marginBottom="4dp"
+            android:layout_marginLeft="25dp"
+            android:layout_marginTop="36dp"
+            android:layout_toRightOf="@id/profilePicLayout"
+            android:text="USERNAME HERE"
+            android:textAllCaps="true"
+            android:textSize="@dimen/profile_user_name"
+            android:textStyle="bold" />
 
 
     <TextView
@@ -89,17 +89,17 @@
 </RelativeLayout>
 
     <!--<Button-->
-        <!--android:id="@+id/edit_profile_btn"-->
-        <!--android:layout_width="150dp"-->
-        <!--android:layout_height="35dp"-->
-        <!--android:background="@color/com_facebook_blue"-->
-        <!--android:text="Edit Your Profile"-->
-        <!--android:layout_alignParentRight="true"-->
-        <!--android:layout_marginLeft="40dp"-->
-        <!--android:layout_toRightOf="@id/user_profile_photo"-->
-        <!--android:layout_alignBottom="@id/user_profile_photo"-->
-        <!--android:textAlignment="center"-->
-        <!--android:textColor="@color/white_text" />-->
+    <!--android:id="@+id/edit_profile_btn"-->
+    <!--android:layout_width="150dp"-->
+    <!--android:layout_height="35dp"-->
+    <!--android:background="@color/com_facebook_blue"-->
+    <!--android:text="Edit Your Profile"-->
+    <!--android:layout_alignParentRight="true"-->
+    <!--android:layout_marginLeft="40dp"-->
+    <!--android:layout_toRightOf="@id/user_profile_photo"-->
+    <!--android:layout_alignBottom="@id/user_profile_photo"-->
+    <!--android:textAlignment="center"-->
+    <!--android:textColor="@color/white_text" />-->
 
 
 
