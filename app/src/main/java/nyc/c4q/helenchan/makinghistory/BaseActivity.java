@@ -51,7 +51,6 @@ public class BaseActivity extends AppCompatActivity implements BottomNavigationV
 
         FragmentTransaction exploreFragTransaction = getSupportFragmentManager().beginTransaction();
         exploreFragTransaction.replace(R.id.base_frame_Layout, exploreMoreFragment);
-        //  exploreFragTransaction.addToBackStack("exploreFrag");
         exploreFragTransaction.commit();
     }
 
@@ -77,14 +76,12 @@ public class BaseActivity extends AppCompatActivity implements BottomNavigationV
                 removeView();
                 FragmentTransaction suggestedFragTransaction = getSupportFragmentManager().beginTransaction();
                 suggestedFragTransaction.replace(R.id.base_frame_Layout, suggestedFragment);
-                //    suggestedFragTransaction.addToBackStack("suggestedFrag");
                 suggestedFragTransaction.commit();
                 break;
             case R.id.createIcon:
                 removeView();
                 FragmentTransaction createFragTransaction = getSupportFragmentManager().beginTransaction();
                 createFragTransaction.replace(R.id.base_frame_Layout, createYourStoryFragment);
-                //   createFragTransaction.addToBackStack("createFrag");
                 createFragTransaction.commit();
                 break;
             case R.id.exploreIcon:
@@ -118,12 +115,6 @@ public class BaseActivity extends AppCompatActivity implements BottomNavigationV
                 return super.onOptionsItemSelected(item);
         }
     }
-
-//    @Override
-//    public boolean onPrepareOptionsMenu(Menu menu) {
-//
-//        return super.onPrepareOptionsMenu(menu);
-//    }
 
     private boolean checkPermissions() {
         return (ContextCompat.checkSelfPermission(getApplicationContext(), android.Manifest.permission.ACCESS_FINE_LOCATION)
