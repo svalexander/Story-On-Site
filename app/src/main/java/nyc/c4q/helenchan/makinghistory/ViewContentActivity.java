@@ -4,6 +4,7 @@ import android.animation.Animator;
 import android.app.ProgressDialog;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
@@ -52,8 +53,10 @@ public class ViewContentActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_viewcontent);
         getSupportActionBar().setBackgroundDrawable(new ColorDrawable(Color.parseColor("#5e454b")));
-        getWindow().setNavigationBarColor(Color.parseColor("#3fab9b"));
-        getWindow().setStatusBarColor(Color.parseColor("#5e454b"));
+        if(Build.VERSION.SDK_INT >= 21) {
+            getWindow().setNavigationBarColor(Color.parseColor("#3fab9b"));
+            getWindow().setStatusBarColor(Color.parseColor("#5e454b"));
+        }
 
         contentRV = (RecyclerView) findViewById(R.id.content_recycler_view);
         contentRV.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
