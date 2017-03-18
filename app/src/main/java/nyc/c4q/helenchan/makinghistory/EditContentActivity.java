@@ -10,9 +10,12 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.MediaController;
 import android.widget.Toast;
+import android.widget.VideoView;
 
 import com.bumptech.glide.Glide;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -37,17 +40,21 @@ import nyc.c4q.helenchan.makinghistory.models.Content;
 public class EditContentActivity extends AppCompatActivity {
     public static final String PICLATLONG = "PICLATLONG";
     private ImageView portraitIV;
+    private VideoView previewVideoView;
     private EditText storyEditText;
     private EditText locationEditText;
-    private Uri photoUri;
+    private Uri contentUri;
     private Uri downloadUri;
     private String userLocationKey;
     private String userStory;
     private String photoLocationName;
+    private String uploadID;
+    private String typeOfUpload;
 
     private DatabaseReference mFirebaseDatabase;
     private FirebaseStorage mFirebaseStorage;
     private StorageReference myStorageRef;
+    StorageReference fileStorageReference;
     private ProgressDialog mProgressDialog;
 
 
@@ -63,13 +70,27 @@ public class EditContentActivity extends AppCompatActivity {
         if (extras != null) {
             userLocationKey = extras.getString("userLocation");
             if (extras.containsKey(CreateYourStoryFragment.PHOTOURI)) {
+                portraitIV.setVisibility(View.VISIBLE);
+                previewVideoView.setVisibility(View.GONE);
+                typeOfUpload = "story";
                 String stringUri = extras.getString(CreateYourStoryFragment.PHOTOURI);
-                photoUri = Uri.parse(stringUri);
+                contentUri = Uri.parse(stringUri);
                 Glide.with(getApplicationContext())
-                        .load(photoUri.getPath())
+                        .load(contentUri.getPath())
                         .override(1200, 1200)
                         .centerCrop()
                         .into(portraitIV);
+                uploadID = contentUri.getLastPathSegment();
+                fileStorageReference = myStorageRef.child("photos").child(uploadID);
+            } else if (extras.containsKey(CreateYourStoryFragment.VIDEOURI)){
+                previewVideoView.setVisibility(View.VISIBLE);
+                portraitIV.setVisibility(View.GONE);
+                typeOfUpload = "video";
+                String stringVideoUrl = extras.getString(CreateYourStoryFragment.VIDEOURI);
+                contentUri = Uri.parse(stringVideoUrl);
+                videoPlay();
+                uploadID = contentUri.getLastPathSegment();
+                fileStorageReference = myStorageRef.child("videos").child(uploadID);
             }
         }
     }
@@ -79,6 +100,7 @@ public class EditContentActivity extends AppCompatActivity {
         mFirebaseStorage = FirebaseStorage.getInstance();
         myStorageRef = mFirebaseStorage.getReference();
         portraitIV = (ImageView) findViewById(R.id.preview_portrait_iv);
+        previewVideoView = (VideoView) findViewById(R.id.preview_videoview);
         storyEditText = (EditText) findViewById(R.id.user_story_edittext);
         locationEditText = (EditText) findViewById(R.id.location_name_edittext);
         mProgressDialog = new ProgressDialog(EditContentActivity.this);
@@ -124,12 +146,17 @@ public class EditContentActivity extends AppCompatActivity {
         }
     }
 
+    private void videoPlay(){
+        previewVideoView.setVideoURI(contentUri);
+        previewVideoView.setMediaController(new MediaController(this));
+        previewVideoView.requestFocus();
+        previewVideoView.start();
+    }
+
     private void uploadingToFireBase() {
         mProgressDialog.setMessage("Uploading Image");
         mProgressDialog.show();
-        String photoID = photoUri.getLastPathSegment();
-        StorageReference photoStorageReference = myStorageRef.child("photos").child(photoID);
-        UploadTask uploadTask = photoStorageReference.putFile(photoUri);
+        UploadTask uploadTask = fileStorageReference.putFile(contentUri);
         uploadTask.addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
             @Override
             public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
@@ -150,7 +177,7 @@ public class EditContentActivity extends AppCompatActivity {
 
     private void addUserContentToDatabase(String userLocationKey, String url, String locationName, String story) {
         String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
-        mFirebaseDatabase.child("MapPoint").child(userLocationKey).child("ContentList").push().setValue(new Content(locationName, "story", story, "wash sq", url, getDate()));
+        mFirebaseDatabase.child("MapPoint").child(userLocationKey).child("ContentList").push().setValue(new Content(locationName, typeOfUpload, story, "wash sq", url, getDate()));
         mFirebaseDatabase.child("Users").child(uid).child("ContentList").push().setValue(new Content(" ", uid, " ", "wash sq", url, "2017"));
     }
 
