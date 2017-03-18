@@ -67,6 +67,7 @@
             android:value=".BaseActivity" />
         </activity>
         <activity android:name=".EditContentActivity" />
+        <activity android:name=".UserPhotoDetailActivity" />
     </application>
 
 </manifest>

@@ -3,6 +3,7 @@ package nyc.c4q.helenchan.makinghistory.contentrecyclerview;
 import android.graphics.Typeface;
 import android.net.Uri;
 import android.support.v7.widget.RecyclerView;
+import android.text.method.ScrollingMovementMethod;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.MediaController;
@@ -32,6 +33,8 @@ public class ContentViewHolder extends RecyclerView.ViewHolder {
         contentImageView = (ImageView) itemView.findViewById(R.id.content_image);
         contentTitleTextView = (TextView) itemView.findViewById(R.id.content_title);
         contentDescriptionTextView = (TextView) itemView.findViewById(R.id.content_description);
+        contentDescriptionTextView.setMovementMethod(new ScrollingMovementMethod());
+
         contentYearTextView = (TextView) itemView.findViewById(R.id.content_year);
         Typeface titleFont = Typeface.createFromAsset(itemView.getContext().getAssets(), "ArimaMadurai-Regular.ttf");
         Typeface bodyFont = Typeface.createFromAsset(itemView.getContext().getAssets(), "Raleway-Regular.ttf");
