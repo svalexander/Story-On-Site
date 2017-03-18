@@ -5,6 +5,7 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
+import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -12,6 +13,7 @@ import android.os.StrictMode;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
@@ -20,7 +22,9 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.ImageButton;
+import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.VideoView;
 
@@ -49,6 +53,8 @@ public class CreateYourStoryFragment extends Fragment implements View.OnClickLis
     private ImageButton takePhoto;
     private ImageButton takeVideo;
     private ImageButton selectImage;
+    private TextView title;
+    private TextView prompt;
 
     private String userLocationKey;
     private String mCurrentPhotoPath;
@@ -70,6 +76,12 @@ public class CreateYourStoryFragment extends Fragment implements View.OnClickLis
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.activity_create_content, container, false);
+        title = (TextView) root.findViewById(R.id.create_title_tv);
+        Typeface titleFont = Typeface.createFromAsset(root.getContext().getAssets(), "ArimaMadurai-Regular.ttf");
+        title.setTypeface(titleFont);
+        Typeface bodyFont = Typeface.createFromAsset(root.getContext().getAssets(), "Raleway-Regular.ttf");
+        prompt = (TextView) root.findViewById(R.id.create_prompt_tv);
+        prompt.setTypeface(bodyFont);
         takePhoto = (ImageButton) root.findViewById(R.id.camera_button_create);
         takePhoto.setOnClickListener(this);
         takeVideo = (ImageButton) root.findViewById(R.id.video_button_create);
@@ -99,7 +111,6 @@ public class CreateYourStoryFragment extends Fragment implements View.OnClickLis
     @Override
     public void onClick(View view) {
         if (!checkPermissions()) {
-            requestCameraPermissions(Constants.REQUEST_CODE_CAMERAANDLOCATION);
         } else {
             setupLocationService();
         }
