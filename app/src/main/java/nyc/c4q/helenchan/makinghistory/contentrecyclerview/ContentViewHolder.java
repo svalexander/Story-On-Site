@@ -1,8 +1,5 @@
 package nyc.c4q.helenchan.makinghistory.contentrecyclerview;
 
-import android.animation.Animator;
-import android.animation.ObjectAnimator;
-import android.graphics.Color;
 import android.graphics.Typeface;
 import android.net.Uri;
 import android.support.v7.widget.RecyclerView;
@@ -39,7 +36,7 @@ public class ContentViewHolder extends RecyclerView.ViewHolder {
         contentTitleTextView = (TextView) itemView.findViewById(R.id.content_title);
         contentDescriptionTextView = (TextView) itemView.findViewById(R.id.content_description);
         contentDescriptionTextView.setMovementMethod(new ScrollingMovementMethod());
-        likeBttn = (ImaggeView) itemView.findViewById(R.id.like_bttn);
+        likeBttn = (ImageView) itemView.findViewById(R.id.like_bttn);
         contentYearTextView = (TextView) itemView.findViewById(R.id.content_year);
         Typeface titleFont = Typeface.createFromAsset(itemView.getContext().getAssets(), "ArimaMadurai-Regular.ttf");
         Typeface bodyFont = Typeface.createFromAsset(itemView.getContext().getAssets(), "Raleway-Regular.ttf");
