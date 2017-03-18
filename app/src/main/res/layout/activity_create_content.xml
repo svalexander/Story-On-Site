@@ -1,70 +1,83 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
-
-    <ImageView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@drawable/brownstone" />
-
-    <ImageView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@color/primaryMediumTintOverlay" />
+    android:layout_height="match_parent"
+    android:background="@color/white_text">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_gravity="center_horizontal|center_vertical"
-        android:orientation="vertical"
-        android:weightSum="3">
+        android:orientation="vertical">
 
-        <LinearLayout
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:gravity="bottom"
-            android:orientation="vertical">
+            android:layout_height="0dp"
+            android:layout_weight="1">
 
-            <ImageButton
-                android:id="@+id/camera_button_create"
-                android:layout_width="@dimen/round_button_size"
-                android:layout_height="@dimen/round_button_size"
-                android:layout_gravity="center_horizontal|center_vertical"
-                android:layout_marginTop="30dp"
-                android:background="@drawable/round_button_teal"
-                android:src="@drawable/ic_camera_icon" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal|center_vertical"
-                android:paddingTop="@dimen/round_button_textpadding"
-                android:text="@string/camera"
-                android:textColor="@color/white_text" />
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:orientation="horizontal">
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/retro_brown" />
 
             <LinearLayout
                 android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/create_title_tv"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:padding="12dp"
+                    android:text="@string/create_your_own_story"
+                    android:textColor="@color/retro_cream"
+                    android:textSize="30sp" />
+
+                <TextView
+                    android:id="@+id/create_prompt_tv"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="15dp"
+                    android:gravity="center"
+                    android:padding="6dp"
+                    android:text="@string/create_prompt"
+                    android:textColor="@color/retro_cream"
+                    android:textSize="18sp" />
+            </LinearLayout>
+        </RelativeLayout>
+
+        <!--<View-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="3dp"-->
+            <!--android:background="#FF8A65" />-->
+
+        <!--#FF8A65 #EF5350-->
+
+        <LinearLayout
+            android:background="@color/retro_white"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:gravity="center_vertical">
+
+            <LinearLayout
+                android:id="@+id/videosection"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:orientation="vertical">
 
                 <ImageButton
+                    android:padding="@dimen/img_bttn_padding"
+                    android:scaleType="fitCenter"
                     android:id="@+id/video_button_create"
-                    android:layout_width="@dimen/round_button_size"
-                    android:layout_height="@dimen/round_button_size"
+                    android:layout_width="@dimen/button_size"
+                    android:layout_height="@dimen/button_size"
                     android:layout_gravity="center_horizontal|center_vertical"
-                    android:background="@drawable/round_button_blue"
-                    android:src="@drawable/ic_video_icon" />
+                    android:background="@drawable/round_button_cream"
+                    android:src="@drawable/ic_retrovideo" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -72,22 +85,53 @@
                     android:layout_gravity="center_horizontal|center_vertical"
                     android:paddingTop="@dimen/round_button_textpadding"
                     android:text="@string/video"
-                    android:textColor="@color/white_text" />
+                    android:textColor="@color/retro_pink" />
             </LinearLayout>
 
             <LinearLayout
-                android:layout_width="match_parent"
+                android:id="@+id/camerasection"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="bottom"
+                android:orientation="vertical">
+
+                <ImageButton
+                    android:id="@+id/camera_button_create"
+                    android:layout_width="@dimen/button_size"
+                    android:layout_height="@dimen/button_size"
+                    android:layout_gravity="center_horizontal|center_vertical"
+                    android:background="@drawable/round_button_cream"
+                    android:padding="@dimen/img_bttn_padding"
+                    android:scaleType="fitCenter"
+                    android:src="@drawable/ic_retrocamera" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal|center_vertical"
+                    android:paddingTop="@dimen/round_button_textpadding"
+                    android:text="@string/camera"
+                    android:textColor="@color/retro_pink" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/gallery"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:orientation="vertical">
 
                 <ImageButton
+                    android:padding="@dimen/img_bttn_padding"
+                    android:scaleType="fitCenter"
                     android:id="@+id/pic_image_create"
-                    android:layout_width="@dimen/round_button_size"
-                    android:layout_height="@dimen/round_button_size"
+                    android:layout_width="@dimen/button_size"
+                    android:layout_height="@dimen/button_size"
                     android:layout_gravity="center_horizontal|center_vertical"
-                    android:background="@drawable/round_button_gray"
-                    android:src="@drawable/ic_image_icon" />
+                    android:background="@drawable/round_button_cream"
+                    android:src="@drawable/ic_polaroids" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -95,29 +139,10 @@
                     android:layout_gravity="center_horizontal|center_vertical"
                     android:paddingTop="@dimen/round_button_textpadding"
                     android:text="@string/select_image"
-                    android:textColor="@color/white_text" />
+                    android:textColor="@color/retro_pink" />
             </LinearLayout>
+
+
         </LinearLayout>
-
-        <TextView
-            android:id="@+id/create_title_tv"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:text="@string/create_your_own_story"
-            android:textColor="@color/white_text"
-            android:textSize="30sp" />
-
-        <TextView
-            android:id="@+id/create_prompt_tv"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="15dp"
-            android:gravity="center"
-            android:text="@string/create_prompt"
-            android:textColor="@color/white_text"
-            android:textSize="18sp" />
     </LinearLayout>
-
-
 </FrameLayout>

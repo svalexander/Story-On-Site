@@ -2,6 +2,8 @@ package nyc.c4q.helenchan.makinghistory;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
@@ -68,7 +70,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 //            mainPicTV.setText(text);
 //        }
 
-
+//        getSupportActionBar().setBackgroundDrawable(new ColorDrawable(Color.parseColor("#1E000D")));
+//        getWindow().setNavigationBarColor(Color.parseColor("#1E000D"));
+//        getWindow().setStatusBarColor(Color.parseColor("#1E000D"));
     }
 
     @Override

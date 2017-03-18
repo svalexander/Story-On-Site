@@ -2,6 +2,8 @@ package nyc.c4q.helenchan.makinghistory;
 
 import android.animation.Animator;
 import android.app.ProgressDialog;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
@@ -49,7 +51,10 @@ public class ViewContentActivity extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_viewcontent);
+        getSupportActionBar().setBackgroundDrawable(new ColorDrawable(Color.parseColor("#5e454b")));
 
+        getWindow().setNavigationBarColor(Color.parseColor("#3fab9b"));
+        getWindow().setStatusBarColor(Color.parseColor("#5e454b"));
 
         contentRV = (RecyclerView) findViewById(R.id.content_recycler_view);
         contentRV.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
@@ -79,9 +84,9 @@ public class ViewContentActivity extends AppCompatActivity {
         calligrapher.setFont(this, "ArimaMadurai-Bold.ttf", true);
     }
 
-private void enlargeImage(final ImageView originalImage, int image){
+    private void enlargeImage(final ImageView originalImage, int image) {
 
-}
+    }
 
 
     @Override
@@ -89,7 +94,7 @@ private void enlargeImage(final ImageView originalImage, int image){
         super.onStart();
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
-            if(extras.containsKey(EditContentActivity.PICLATLONG)){
+            if (extras.containsKey(EditContentActivity.PICLATLONG)) {
                 String location = extras.getString(EditContentActivity.PICLATLONG);
                 refToLocationOfPicTaken = FirebaseDatabase.getInstance().getReference().child("MapPoint").child(location);
                 refToLocationOfPicTaken.addListenerForSingleValueEvent(new ValueEventListener() {
