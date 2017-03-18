@@ -78,14 +78,14 @@ public class BaseActivity extends AppCompatActivity implements BottomNavigationV
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
             case R.id.suggestedIcon:
-                removeView();
+                //removeView();
                 FragmentTransaction suggestedFragTransaction = getSupportFragmentManager().beginTransaction();
                 suggestedFragTransaction.replace(R.id.base_frame_Layout, suggestedFragment);
                 //    suggestedFragTransaction.addToBackStack("suggestedFrag");
                 suggestedFragTransaction.commit();
                 break;
             case R.id.createIcon:
-                removeView();
+                //removeView();
                 FragmentTransaction createFragTransaction = getSupportFragmentManager().beginTransaction();
                 createFragTransaction.replace(R.id.base_frame_Layout, createYourStoryFragment);
                 //   createFragTransaction.addToBackStack("createFrag");
