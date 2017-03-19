@@ -34,6 +34,7 @@
     <string name="get_profile_pic">Select Profile Picture From</string>
     <string name="cancel">Cancel</string>
     <string name="share">SHARE</string>
+    <string name="bio">Bio</string>
 
     <string-array name="camera_or_gallery">
         <item>Camera</item>

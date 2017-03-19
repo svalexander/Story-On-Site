@@ -45,6 +45,7 @@
             android:layout_marginTop="5dp"
             android:layout_toRightOf="@id/user_num_photos"
             android:text="photos"
+            android:textColor="@color/retro_brown"
             android:textSize="12dp" />
 
         <TextView
@@ -54,9 +55,9 @@
             android:layout_below="@id/user_num_photos"
             android:layout_marginBottom="4dp"
             android:layout_marginLeft="25dp"
-            android:layout_marginTop="15dp"
             android:layout_toRightOf="@id/profilePicLayout"
             android:textAllCaps="true"
+            android:textColor="@color/brightBlue"
             android:textSize="@dimen/profile_user_name"
             android:textStyle="bold" />
 
@@ -67,23 +68,26 @@
             android:layout_alignParentRight="true"
             android:layout_below="@+id/user_profile_name"
             android:layout_marginLeft="@dimen/user_profile_margin_left"
-            android:layout_marginTop="15dp"
             android:layout_toRightOf="@id/profilePicLayout">
 
             <TextView
                 android:id="@+id/user_profile_bio"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:ellipsize="end"
+                android:maxLines="4"
+                android:textColor="@color/retro_brown"
                 android:textSize="15sp" />
 
             <EditText
                 android:id="@+id/user_bio_edittext"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:hint="@string/bio"
+                android:imeOptions="actionDone"
                 android:inputType="textCapSentences|textImeMultiLine"
-                android:visibility="invisible"
                 android:textSize="15sp"
-                android:imeOptions="actionDone"/>
+                android:visibility="invisible" />
 
         </FrameLayout>
 
