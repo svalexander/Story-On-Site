@@ -12,8 +12,6 @@ import android.util.AttributeSet;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.Animation.AnimationListener;
-import android.view.animation.AnimationUtils;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -53,7 +51,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     private void initViews() {
-        skipBtn = (Button) findViewById(R.id.skipBtn);
+       // skipBtn = (Button) findViewById(R.id.skipBtn);
         mainLayout = (LinearLayout) findViewById(R.id.activity_main);
         iconIV = (ImageView) findViewById(R.id.logoIV);
         oldPic = (ImageView) findViewById(R.id.old_pic);
@@ -83,7 +81,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     private void setListeners() {
-        skipBtn.setOnClickListener(this);
+       // skipBtn.setOnClickListener(this);
+        mainLayout.setOnClickListener(this);
     }
 
     private void setAnimations() {
@@ -109,11 +108,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
-            case R.id.skipBtn:
-                fadeOutAnimation = AnimationUtils.loadAnimation(MainActivity.this, R.anim.fade_out);
-                Intent skipIntent = new Intent(MainActivity.this, BaseActivity.class);
-                startActivity(skipIntent);
-                //     overridePendingTransition(fadeOutAnimation,fadeInAnimation );
+//            case R.id.skipBtn:
+//                fadeOutAnimation = AnimationUtils.loadAnimation(MainActivity.this, R.anim.fade_out);
+//                Intent skipIntent = new Intent(MainActivity.this, BaseActivity.class);
+//                startActivity(skipIntent);
+//                //     overridePendingTransition(fadeOutAnimation,fadeInAnimation );
+//                break;
+            case R.id.activity_main:
+                Intent goToBaseActivityIntent = new Intent(MainActivity.this, BaseActivity.class);
+                startActivity(goToBaseActivityIntent);
         }
     }
 
