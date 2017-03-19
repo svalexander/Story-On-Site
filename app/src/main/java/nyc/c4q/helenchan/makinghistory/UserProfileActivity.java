@@ -19,6 +19,7 @@ import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -47,22 +48,28 @@ import nyc.c4q.helenchan.makinghistory.models.Content;
 import nyc.c4q.helenchan.makinghistory.models.Profile;
 import nyc.c4q.helenchan.makinghistory.usercontentrecyclerview.UserContentAdapter;
 
+import static nyc.c4q.helenchan.makinghistory.R.id.user_bio_edittext;
+import static nyc.c4q.helenchan.makinghistory.R.id.user_profile_bio;
+import static nyc.c4q.helenchan.makinghistory.R.id.user_profile_photo;
+
 /**
  * Created by Akasha on 3/8/17.
  */
 
-public class UserProfileActivity extends AppCompatActivity {
+public class UserProfileActivity extends AppCompatActivity implements View.OnClickListener {
     private String TAG = "User Profile Activity: ";
 
     private ImageView userProfilePhoto;
     private TextView userNameTv;
     private TextView userPhotoCountTv;
     private TextView userProfileBio;
+    private EditText userProfileEdittext;
     private int numUserPhotos = 0;
     private RelativeLayout userContentLayout;
 
     private RecyclerView userContentRV;
-    private UserContentAdapter userContentAdapter;
+    public static UserContentAdapter userContentAdapter;
+
     private DatabaseReference contentRef;
     private DatabaseReference userProfileRef;
     private FirebaseStorage firebaseStorage;
@@ -70,6 +77,7 @@ public class UserProfileActivity extends AppCompatActivity {
     private Uri uploadedPhotoUri;
     private String imageUrl;
     private String userBio;
+
 
     private List<Content> userPhotoList = new ArrayList<>();
 
@@ -91,7 +99,6 @@ public class UserProfileActivity extends AppCompatActivity {
         loadSavedPicAndText();
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setTitle("Your Profile");
-        profileOnClick();
 
         String userName = SignInActivity.mUsername;
         userNameTv.setText(userName);
@@ -120,9 +127,7 @@ public class UserProfileActivity extends AppCompatActivity {
 
             @Override
             public void onChildRemoved(DataSnapshot dataSnapshot) {
-                Content userPhotoUrl = dataSnapshot.getValue(Content.class);
-                userPhotoList.add(userPhotoUrl);
-                userContentAdapter.setUserPhotoContent(userPhotoList);
+
             }
 
             @Override
@@ -139,22 +144,17 @@ public class UserProfileActivity extends AppCompatActivity {
 
     }
 
-    private void profileOnClick() {
-        userProfilePhoto.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                whereToGetPicFromDialogueBox();
-            }
-        });
-    }
-
 
     private void initViews() {
-        userProfilePhoto = (ImageView) findViewById(R.id.user_profile_photo);
+        userProfilePhoto = (ImageView) findViewById(user_profile_photo);
+        userProfilePhoto.setOnClickListener(this);
         userNameTv = (TextView) findViewById(R.id.user_profile_name);
         userPhotoCountTv = (TextView) findViewById(R.id.user_num_photos);
         userContentLayout = (RelativeLayout) findViewById(R.id.profileContent);
-        userProfileBio = (TextView) findViewById(R.id.user_profile_bio);
+        userProfileBio = (TextView) findViewById(user_profile_bio);
+        userProfileBio.setOnClickListener(this);
+        userProfileEdittext = (EditText) findViewById(user_bio_edittext);
+        userProfileEdittext.setOnClickListener(this);
     }
 
     private void setFontType() {
@@ -336,6 +336,33 @@ public class UserProfileActivity extends AppCompatActivity {
         profilePicAlertDialogBuilder.show();
 
     }
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case user_profile_photo:
+                whereToGetPicFromDialogueBox();
+                break;
+            case user_profile_bio:
+                userProfileBio.setVisibility(View.INVISIBLE);
+                if(userProfileBio.length() != 0){
+                    userBio = userProfileBio.getText().toString();
+                    userProfileEdittext.setText(userBio);
+                }
+                userProfileEdittext.setVisibility(View.VISIBLE);
+                break;
+            case user_bio_edittext:
+                userProfileEdittext.setVisibility(View.INVISIBLE);
+                userProfileBio.setVisibility(View.VISIBLE);
+                if(userProfileEdittext.length() != 0){
+                    userBio = userProfileEdittext.getText().toString();
+                    userProfileBio.setText(userBio);
+                    userProfileRef.child("bio").setValue(userBio);
+                }
+                break;
+        }
+    }
+
 }
 
 
