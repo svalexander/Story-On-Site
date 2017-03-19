@@ -3,7 +3,6 @@ package nyc.c4q.helenchan.makinghistory;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -43,9 +42,7 @@ public class BaseActivity extends AppCompatActivity implements BottomNavigationV
     private void initViews() {
         bottomNav = (BottomNavigationView) findViewById(R.id.bottom_nav_view);
         baseLayout = (FrameLayout) findViewById(R.id.base_frame_Layout);
-        getSupportActionBar().setBackgroundDrawable(new ColorDrawable(Color.parseColor("#5e454b")));
         if(Build.VERSION.SDK_INT >= 21) {
-            getWindow().setNavigationBarColor(Color.parseColor("#3fab9b"));
             getWindow().setStatusBarColor(Color.parseColor("#5e454b"));
         }
     }
@@ -54,7 +51,6 @@ public class BaseActivity extends AppCompatActivity implements BottomNavigationV
 
         FragmentTransaction exploreFragTransaction = getSupportFragmentManager().beginTransaction();
         exploreFragTransaction.replace(R.id.base_frame_Layout, exploreMoreFragment);
-        //  exploreFragTransaction.addToBackStack("exploreFrag");
         exploreFragTransaction.commit();
     }
 
@@ -80,14 +76,12 @@ public class BaseActivity extends AppCompatActivity implements BottomNavigationV
                 //removeView();
                 FragmentTransaction suggestedFragTransaction = getSupportFragmentManager().beginTransaction();
                 suggestedFragTransaction.replace(R.id.base_frame_Layout, suggestedFragment);
-                //    suggestedFragTransaction.addToBackStack("suggestedFrag");
                 suggestedFragTransaction.commit();
                 break;
             case R.id.createIcon:
                 //removeView();
                 FragmentTransaction createFragTransaction = getSupportFragmentManager().beginTransaction();
                 createFragTransaction.replace(R.id.base_frame_Layout, createYourStoryFragment);
-                //   createFragTransaction.addToBackStack("createFrag");
                 createFragTransaction.commit();
                 break;
             case R.id.exploreIcon:

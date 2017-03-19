@@ -1,6 +1,7 @@
 package nyc.c4q.helenchan.makinghistory;
 
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -79,6 +80,10 @@ public class UserFavoriteDetailActivity extends AppCompatActivity {
                             @Override
                             public void onClick(DialogInterface dialogInterface, int i) {
                                 unfavoriteUserPhoto();
+
+                                Intent intent = new Intent(getApplicationContext(), UserProfileActivity.class);
+                                startActivity(intent);
+                                finish();
                             }
                         });
 

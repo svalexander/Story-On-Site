@@ -24,6 +24,7 @@
     <color name="testingGry">#DDDFDF</color>
     <color name="brightPurple">#5603AD</color>
     <color name="forestGreen">#002621</color>
+    <color name="transparent_white">#80FFFFFF</color>
 
     <color name="retro_pink">#FF8A65</color>
     <color name="retro_white">#f3f0d7</color>

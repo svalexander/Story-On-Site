@@ -9,6 +9,7 @@ public class Constants {
     static final int REQUEST_CODE_CAMERAANDLOCATION = 312;
     static final int REQUEST_CODE_PROFILEPIC = 232;
     static final int REQUEST_IMAGE_CAPTURE = 94;
+    static final int REQUEST_PICK_IMAGE = 999;
 
     //    private void addContentToDatabase() {
 

@@ -15,7 +15,7 @@
     <string name="location_label">Location:</string>
     <string name="points_of_interest">Points of Interest</string>
     <string name="create">Create</string>
-    <string name="suggested">Suggested</string>
+    <string name="featured">Featured</string>
     <string name="profile">My Profile</string>
     <string name="preview_your_story_here">Preview Your Story Here</string>
     <string name="create_your_own_story">Create Your Own Story</string>
@@ -31,5 +31,12 @@
     <string name="share_user_photo">Share</string>
     <string name="delete_user_photo">Delete</string>
     <string name="location_name">Location Name</string>
+    <string name="get_profile_pic">Select Profile Picture From</string>
+    <string name="cancel">Cancel</string>
+
+    <string-array name="camera_or_gallery">
+        <item>Camera</item>
+        <item>Gallery</item>
+    </string-array>
     <string name="start_with_a_video">Start with a video</string>
 </resources>

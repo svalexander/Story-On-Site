@@ -2,25 +2,20 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
-        android:id="@+id/createIcon"
-        android:enabled="true"
-        android:icon="@drawable/pen"
-        android:title="@string/create" />
-    <item
         android:id="@+id/exploreIcon"
         android:enabled="true"
         android:icon="@drawable/map"
         android:title="@string/explore_btn_text" />
     <item
+        android:id="@+id/createIcon"
+        android:enabled="true"
+        android:icon="@drawable/pen"
+        android:title="@string/create" />
+    
+    <item
         android:id="@+id/suggestedIcon"
         android:enabled="true"
         android:icon="@drawable/pin"
-        android:title="@string/suggested" />
+        android:title="@string/featured" />
 
-
-    <!--<item-->
-        <!--android:id="@+id/profileIcon"-->
-        <!--android:enabled="true"-->
-        <!--android:icon="@drawable/profile_pic"-->
-        <!--android:title="@string/profile" />-->
 </menu>

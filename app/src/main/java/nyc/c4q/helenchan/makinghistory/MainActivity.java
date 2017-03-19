@@ -3,7 +3,6 @@ package nyc.c4q.helenchan.makinghistory;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -13,13 +12,9 @@ import android.util.AttributeSet;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.Animation.AnimationListener;
-import android.view.animation.AnimationUtils;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-
-import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -52,46 +47,42 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         initViews();
         setListeners();
 
-       // setFontType();
+        // setFontType();
     }
 
     private void initViews() {
-        skipBtn = (Button) findViewById(R.id.skipBtn);
+       // skipBtn = (Button) findViewById(R.id.skipBtn);
         mainLayout = (LinearLayout) findViewById(R.id.activity_main);
-       // iconIV = (ImageView) findViewById(R.id.logoIV);
-//        oldPic = (ImageView) findViewById(R.id.old_pic);
-//        newPic= (ImageView) findViewById(R.id.new_pic);
-        mainPicIV = (ImageView) findViewById(R.id.main_pic_iv);
-        mainPicTV = (TextView) findViewById(R.id.main_pic_tv);
-        cardView = (CardView) findViewById(R.id.main_card);
-
-        getSupportActionBar().setBackgroundDrawable(new ColorDrawable(Color.parseColor("#1E000D")));
-        if(Build.VERSION.SDK_INT >= 21) {
-            getWindow().setNavigationBarColor(Color.parseColor("#1E000D"));
+        iconIV = (ImageView) findViewById(R.id.logoIV);
+        oldPic = (ImageView) findViewById(R.id.old_pic);
+        newPic = (ImageView) findViewById(R.id.new_pic);
+//        mainPicIV = (ImageView) findViewById(R.id.main_pic_iv);
+//        mainPicTV = (TextView) findViewById(R.id.main_pic_tv);
+//        cardView = (CardView) findViewById(R.id.main_card);
+//        getRandomImage();
+//
+//        for (int i = 0; i < picsList.size(); i++) {
+//            String url = picsList.get(i).getUrl();
+//            String text = picsList.get(i).getText();
+//            Picasso.with(getBaseContext()).load(url).resize(1200, 1200).centerCrop().into(mainPicIV);
+//            mainPicTV.setText(text);
+//        }
+        getSupportActionBar().hide();
+        if (Build.VERSION.SDK_INT >= 21) {
             getWindow().setStatusBarColor(Color.parseColor("#1E000D"));
         }
-
-        getRandomImage();
-
-        for (int i = 0; i < picsList.size(); i++) {
-            String url = picsList.get(i).getUrl();
-            String text = picsList.get(i).getText();
-            Picasso.with(getBaseContext()).load(url).resize(1200, 1200).centerCrop().into(mainPicIV);
-            mainPicTV.setText(text);
-        }
-
-
     }
 
     @Override
     public View onCreateView(View parent, String name, Context context, AttributeSet attrs) {
-       // setAnimations();
+        // setAnimations();
         return super.onCreateView(parent, name, context, attrs);
 
     }
 
     private void setListeners() {
-        skipBtn.setOnClickListener(this);
+       // skipBtn.setOnClickListener(this);
+        mainLayout.setOnClickListener(this);
     }
 
     private void setAnimations() {
@@ -109,19 +100,23 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 //        new FadeInAnimation(oldPic).animate();
 //        new FadeOutAnimation(oldPic).animate();
 
-        cardView.setEnabled(true);
-        cardView.setVisibility(View.VISIBLE);
-        cardView.setAnimation(AnimationUtils.loadAnimation(this, android.R.anim.slide_in_left));
+//        cardView.setEnabled(true);
+//        cardView.setVisibility(View.VISIBLE);
+//        cardView.setAnimation(AnimationUtils.loadAnimation(this, android.R.anim.slide_in_left));
     }
 
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
-            case R.id.skipBtn:
-                fadeOutAnimation = AnimationUtils.loadAnimation(MainActivity.this, R.anim.fade_out);
-                Intent skipIntent = new Intent(MainActivity.this, BaseActivity.class);
-                startActivity(skipIntent);
-                //     overridePendingTransition(fadeOutAnimation,fadeInAnimation );
+//            case R.id.skipBtn:
+//                fadeOutAnimation = AnimationUtils.loadAnimation(MainActivity.this, R.anim.fade_out);
+//                Intent skipIntent = new Intent(MainActivity.this, BaseActivity.class);
+//                startActivity(skipIntent);
+//                //     overridePendingTransition(fadeOutAnimation,fadeInAnimation );
+//                break;
+            case R.id.activity_main:
+                Intent goToBaseActivityIntent = new Intent(MainActivity.this, BaseActivity.class);
+                startActivity(goToBaseActivityIntent);
         }
     }
 

@@ -60,32 +60,45 @@
                 android:text="photos"
                 android:textSize="12dp" />
 
-            <TextView
-                android:id="@+id/user_profile_name"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/user_num_photos"
-                android:layout_marginBottom="4dp"
-                android:layout_marginLeft="25dp"
-                android:layout_marginTop="36dp"
-                android:layout_toRightOf="@id/profilePicLayout"
-                android:text="USERNAME HERE"
-                android:textAllCaps="true"
-                android:textSize="@dimen/profile_user_name"
-                android:textStyle="bold" />
+        <TextView
+            android:id="@+id/user_profile_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/user_num_photos"
+            android:layout_marginBottom="4dp"
+            android:layout_marginLeft="25dp"
+            android:layout_marginTop="15dp"
+            android:layout_toRightOf="@id/profilePicLayout"
+            android:textAllCaps="true"
+            android:textSize="@dimen/profile_user_name"
+            android:textStyle="bold" />
 
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_alignBottom="@id/profilePicLayout"
+            android:layout_alignParentRight="true"
+            android:layout_below="@+id/user_profile_name"
+            android:layout_marginLeft="@dimen/user_profile_margin_left"
+            android:layout_marginTop="15dp"
+            android:layout_toRightOf="@id/profilePicLayout">
 
             <TextView
                 android:id="@+id/user_profile_bio"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignBottom="@id/profilePicLayout"
-                android:layout_alignParentRight="true"
-                android:layout_below="@+id/user_profile_name"
-                android:layout_marginLeft="@dimen/user_profile_margin_left"
-                android:layout_toRightOf="@id/profilePicLayout"
-                android:text="Seeing what there is to see"
-                android:textSize="12dp" />
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:textSize="15sp" />
+
+            <EditText
+                android:id="@+id/user_bio_edittext"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:inputType="textCapSentences|textImeMultiLine"
+                android:visibility="invisible"
+                android:textSize="15sp"
+                android:imeOptions="actionDone"/>
+
+        </FrameLayout>
 
         </RelativeLayout>
 
@@ -112,19 +125,5 @@
         <!--android:layout_below="@id/profilePicLayout" />-->
 
     </RelativeLayout>
-
-    <!--<Button-->
-    <!--android:id="@+id/edit_profile_btn"-->
-    <!--android:layout_width="150dp"-->
-    <!--android:layout_height="35dp"-->
-    <!--android:background="@color/com_facebook_blue"-->
-    <!--android:text="Edit Your Profile"-->
-    <!--android:layout_alignParentRight="true"-->
-    <!--android:layout_marginLeft="40dp"-->
-    <!--android:layout_toRightOf="@id/user_profile_photo"-->
-    <!--android:layout_alignBottom="@id/user_profile_photo"-->
-    <!--android:textAlignment="center"-->
-    <!--android:textColor="@color/white_text" />-->
-
 
 </RelativeLayout>
