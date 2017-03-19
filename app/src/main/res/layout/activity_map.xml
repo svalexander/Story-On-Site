@@ -55,7 +55,7 @@
         android:layout_marginBottom="16dp"
         android:layout_marginRight="16dp"
         android:src="@drawable/search"
-        android:tint="@color/retro_cream"
+        android:tint="@color/white_text"
         app:backgroundTint="@color/retro_brown" />
     <fragment
         android:id="@+id/map"

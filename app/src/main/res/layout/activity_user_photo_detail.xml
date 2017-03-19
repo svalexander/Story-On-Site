@@ -1,18 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent" android:layout_height="match_parent">
+    android:id="@+id/user_photo_activity"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
 
 
     <TextView
         android:id="@+id/username"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Username"
-        android:textSize="16sp"
-        android:textColor="@color/primaryDark"
         android:paddingLeft="@dimen/activity_horizontal_margin"
         android:paddingTop="@dimen/activity_horizontal_margin"
-        />
+        android:text="Username"
+        android:textAllCaps="true"
+        android:textColor="@color/brightBlue"
+        android:textSize="18sp" />
 
     <View
         android:id="@+id/description_divider"
@@ -20,8 +22,8 @@
         android:layout_height="1dp"
         android:layout_below="@id/username"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="12dp"
         android:layout_marginBottom="@dimen/activity_horizontal_margin"
+        android:layout_marginTop="12dp"
         android:background="@color/divider" />
 
     <ImageView
@@ -29,40 +31,33 @@
         android:layout_width="350dp"
         android:layout_height="350dp"
         android:layout_below="@id/description_divider"
-        android:background="@color/colorAccent"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="@dimen/activity_horizontal_margin" />
-
+        android:layout_marginTop="@dimen/activity_horizontal_margin"
+        android:background="@color/colorAccent" />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
         android:layout_below="@id/user_photo_detail"
         android:layout_marginTop="@dimen/activity_horizontal_margin"
-        android:gravity="center">
+        android:gravity="center"
+        android:orientation="horizontal">
 
         <ImageView
             android:id="@+id/user_photo_delete"
             android:layout_width="28dp"
             android:layout_height="28dp"
             android:layout_marginRight="32dp"
-            android:src="@drawable/delete"
-            android:alpha="0.6"/>
+            android:alpha="0.6"
+            android:src="@drawable/delete" />
 
         <ImageView
             android:id="@+id/user_photo_share"
             android:layout_width="28dp"
             android:layout_height="28dp"
-            android:src="@drawable/share"
-            android:alpha="0.6"/>
-
-
-
-
-
+            android:alpha="0.6"
+            android:src="@drawable/share" />
+        
     </LinearLayout>
-
-
 
 </RelativeLayout>

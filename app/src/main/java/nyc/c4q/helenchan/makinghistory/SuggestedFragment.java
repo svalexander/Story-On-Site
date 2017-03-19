@@ -38,7 +38,7 @@ public class SuggestedFragment extends Fragment {
     }
 
     private void setActionBarTitle(View v) {
-        ((BaseActivity) v.getContext()).getSupportActionBar().setTitle(R.string.suggested);
+        ((BaseActivity) v.getContext()).getSupportActionBar().setTitle(R.string.featured);
         ((BaseActivity) v.getContext()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
 
