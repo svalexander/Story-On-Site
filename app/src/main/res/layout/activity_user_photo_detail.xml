@@ -29,8 +29,39 @@
         android:layout_width="350dp"
         android:layout_height="350dp"
         android:layout_below="@id/description_divider"
+        android:background="@color/colorAccent"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="@dimen/activity_horizontal_margin" />
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_below="@id/user_photo_detail"
+        android:layout_marginTop="@dimen/activity_horizontal_margin"
+        android:gravity="center">
+
+        <ImageView
+            android:id="@+id/user_photo_delete"
+            android:layout_width="28dp"
+            android:layout_height="28dp"
+            android:layout_marginRight="32dp"
+            android:src="@drawable/delete"
+            android:alpha="0.6"/>
+
+        <ImageView
+            android:id="@+id/user_photo_share"
+            android:layout_width="28dp"
+            android:layout_height="28dp"
+            android:src="@drawable/share"
+            android:alpha="0.6"/>
+
+
+
+
+
+    </LinearLayout>
 
 
 
