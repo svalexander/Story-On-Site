@@ -200,7 +200,6 @@ public class ExploreMoreFragment extends Fragment implements OnMapReadyCallback,
 
     @Override
     public void onConnected(@Nullable Bundle bundle) {
-        Toast.makeText(getActivity(), "Map working!!", Toast.LENGTH_SHORT).show();
         mapListener.zoomToUserLocation(mMap);
     }
 

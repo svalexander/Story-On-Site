@@ -27,14 +27,16 @@ public class ContentViewHolder extends RecyclerView.ViewHolder {
     private TextView contentYearTextView;
     private ImageView expandedImage;
     private VideoView userVideoView;
+    private ImageView likeBttn;
 
     public ContentViewHolder(View itemView) {
         super(itemView);
+
         contentImageView = (ImageView) itemView.findViewById(R.id.content_image);
         contentTitleTextView = (TextView) itemView.findViewById(R.id.content_title);
         contentDescriptionTextView = (TextView) itemView.findViewById(R.id.content_description);
         contentDescriptionTextView.setMovementMethod(new ScrollingMovementMethod());
-
+        likeBttn = (ImageView) itemView.findViewById(R.id.like_bttn);
         contentYearTextView = (TextView) itemView.findViewById(R.id.content_year);
         Typeface titleFont = Typeface.createFromAsset(itemView.getContext().getAssets(), "ArimaMadurai-Regular.ttf");
         Typeface bodyFont = Typeface.createFromAsset(itemView.getContext().getAssets(), "Raleway-Regular.ttf");
@@ -46,7 +48,6 @@ public class ContentViewHolder extends RecyclerView.ViewHolder {
     }
 
     public void bind(final Content c) {
-
         contentTitleTextView.setText(c.getName());
         contentDescriptionTextView.setText(c.getText());
         checkIfYearIsListed(c);
