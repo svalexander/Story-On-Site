@@ -77,6 +77,7 @@ public class UserProfileActivity extends AppCompatActivity implements View.OnCli
     private Uri uploadedPhotoUri;
     private String imageUrl;
     private String userBio;
+    private String dbBio;
 
 
     private List<Content> userPhotoList = new ArrayList<>();
@@ -275,19 +276,21 @@ public class UserProfileActivity extends AppCompatActivity implements View.OnCli
                 Profile profile = dataSnapshot.getValue(Profile.class);
                 if (profile != null) {
                     imageUrl = profile.getPicUrl();
-                    userBio = profile.getUserBio();
+                    dbBio = profile.getBio();
                 }
                 if (imageUrl != null) {
                     Glide.with(UserProfileActivity.this)
                             .load(imageUrl)
                             .centerCrop()
                             .into(userProfilePhoto);
-                }
-                if (userBio != null) {
-                    if (userBio != null) {
-                        userProfileBio.setText(userBio);
                     }
+                if (dbBio != null) {
+                        userProfileBio.setText(dbBio);
+                    }else{
+                        userProfileBio.setText("Let's Explore");
+                    
                 }
+
 
             }
 

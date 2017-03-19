@@ -72,15 +72,14 @@
 
             <TextView
                 android:id="@+id/user_profile_bio"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Seeing what there is to see"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
                 android:textSize="15sp" />
 
             <EditText
                 android:id="@+id/user_bio_edittext"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
                 android:inputType="textCapSentences|textImeMultiLine"
                 android:visibility="invisible"
                 android:textSize="15sp"

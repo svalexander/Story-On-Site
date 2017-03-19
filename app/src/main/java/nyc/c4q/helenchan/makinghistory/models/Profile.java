@@ -6,12 +6,12 @@ package nyc.c4q.helenchan.makinghistory.models;
 
 public class Profile {
     private String picUrl;
-    private String userBio;
+    private String bio;
 
 
-    public Profile(String picUrl, String userBio) {
+    public Profile(String picUrl, String bio) {
         this.picUrl = picUrl;
-        this.userBio = userBio;
+        this.bio = bio;
     }
 
     public Profile() {
@@ -25,11 +25,12 @@ public class Profile {
         this.picUrl = picUrl;
     }
 
-    public String getUserBio() {
-        return userBio;
+    public String getBio() {
+        return bio;
     }
 
-    public void setUserBio(String userBio) {
-        this.userBio = userBio;
+    public void setBio(String bio) {
+        this.bio = bio;
     }
+
 }
