@@ -15,6 +15,7 @@ import android.support.v7.widget.SnapHelper;
 import android.util.Log;
 import android.widget.ImageView;
 
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -117,6 +118,28 @@ public class ViewContentActivity extends AppCompatActivity {
 
             }
         }
+
+        DatabaseReference databaseRefGetFaves = FirebaseDatabase.getInstance().getReference().child("Users").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("UserFavorites");
+        databaseRefGetFaves.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                final List<Content> favesList = new ArrayList<>();
+                if (dataSnapshot != null) {
+                    for (DataSnapshot ds : dataSnapshot.getChildren()) {
+                        System.out.println(ds.getKey());
+                        Content currentValue = ds.getValue(Content.class);
+                        favesList.add(currentValue);
+                    }
+                }
+                viewContentAdapter.setUserFavorites(favesList);
+            }
+
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
 
         databaseRefToMappoint = FirebaseDatabase.getInstance().getReference().child("MapPoint");
         databaseRefToMappoint.addListenerForSingleValueEvent(new ValueEventListener() {

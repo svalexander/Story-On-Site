@@ -17,6 +17,7 @@ import nyc.c4q.helenchan.makinghistory.models.Content;
 
 public class ViewContentAdapter extends RecyclerView.Adapter<ContentViewHolder> {
     private List<Content> mapContent = new ArrayList<>();
+    private List<Content> userFavorites = new ArrayList<>();
 
     @Override
     public ContentViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -27,7 +28,7 @@ public class ViewContentAdapter extends RecyclerView.Adapter<ContentViewHolder> 
     @Override
     public void onBindViewHolder(ContentViewHolder holder, int position) {
         Content c = mapContent.get(position);
-        holder.bind(c);
+        holder.bind(c, userFavorites);
     }
 
     @Override
@@ -37,6 +38,11 @@ public class ViewContentAdapter extends RecyclerView.Adapter<ContentViewHolder> 
 
     public void setMapContent(List<Content> mapContent) {
         this.mapContent = mapContent;
+        notifyDataSetChanged();
+    }
+
+    public void setUserFavorites(List<Content> userFaves){
+        userFavorites = userFaves;
         notifyDataSetChanged();
     }
 }
