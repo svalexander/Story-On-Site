@@ -33,6 +33,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
@@ -43,6 +44,7 @@ import java.util.List;
 
 import me.anwarshahriar.calligrapher.Calligrapher;
 import nyc.c4q.helenchan.makinghistory.models.Content;
+import nyc.c4q.helenchan.makinghistory.models.Profile;
 import nyc.c4q.helenchan.makinghistory.usercontentrecyclerview.UserContentAdapter;
 
 /**
@@ -55,6 +57,7 @@ public class UserProfileActivity extends AppCompatActivity {
     private ImageView userProfilePhoto;
     private TextView userNameTv;
     private TextView userPhotoCountTv;
+    private TextView userProfileBio;
     private int numUserPhotos = 0;
     private RelativeLayout userContentLayout;
 
@@ -63,8 +66,10 @@ public class UserProfileActivity extends AppCompatActivity {
     private DatabaseReference contentRef;
     private DatabaseReference userProfileRef;
     private FirebaseStorage firebaseStorage;
-    private StorageReference profilePicRef;
+    private StorageReference storageProfilePicRef;
     private Uri uploadedPhotoUri;
+    private String imageUrl;
+    private String userBio;
 
     private List<Content> userPhotoList = new ArrayList<>();
 
@@ -73,30 +78,20 @@ public class UserProfileActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_profile);
-        if(Build.VERSION.SDK_INT >= 21) {
+        if (Build.VERSION.SDK_INT >= 21) {
             getWindow().setStatusBarColor(Color.parseColor("#5e454b"));
         }
         String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
         contentRef = FirebaseDatabase.getInstance().getReference().child("Users").child(uid).child("ContentList");
         userProfileRef = FirebaseDatabase.getInstance().getReference().child("Users").child(uid).child("Profile");
         firebaseStorage = FirebaseStorage.getInstance();
-        profilePicRef = firebaseStorage.getReference().child("profilepic");
+        storageProfilePicRef = firebaseStorage.getReference().child("profilepic");
         setFontType();
         initViews();
+        loadSavedPicAndText();
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setTitle("Your Profile");
-
-        userProfilePhoto.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                whereToGetPicFromDialogueBox();
-//                if (!checkPermissions()) {
-//                    requestCameraPermissions();
-//                } else {
-//                    openCamera();
-//                }
-            }
-        });
+        profileOnClick();
 
         String userName = SignInActivity.mUsername;
         userNameTv.setText(userName);
@@ -144,12 +139,22 @@ public class UserProfileActivity extends AppCompatActivity {
 
     }
 
+    private void profileOnClick() {
+        userProfilePhoto.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                whereToGetPicFromDialogueBox();
+            }
+        });
+    }
+
 
     private void initViews() {
         userProfilePhoto = (ImageView) findViewById(R.id.user_profile_photo);
         userNameTv = (TextView) findViewById(R.id.user_profile_name);
         userPhotoCountTv = (TextView) findViewById(R.id.user_num_photos);
         userContentLayout = (RelativeLayout) findViewById(R.id.profileContent);
+        userProfileBio = (TextView) findViewById(R.id.user_profile_bio);
     }
 
     private void setFontType() {
@@ -217,7 +222,7 @@ public class UserProfileActivity extends AppCompatActivity {
                     .into(userProfilePhoto);
 
         }
-        if(requestCode == Constants.REQUEST_PICK_IMAGE && resultCode == RESULT_OK){
+        if (requestCode == Constants.REQUEST_PICK_IMAGE && resultCode == RESULT_OK) {
             Uri selectedUri = data.getData();
             uploadingGalleryPicToStorage(picuploadProgress, selectedUri);
             Glide.with(this)
@@ -229,11 +234,11 @@ public class UserProfileActivity extends AppCompatActivity {
 
     private void uploadingCamPicToStorage(final ProgressDialog picuploadProgress, ByteArrayOutputStream byteArrayOutputStream) {
         String randomID = java.util.UUID.randomUUID().toString();
-        profilePicRef.child(randomID);
+        storageProfilePicRef.child(randomID);
         picuploadProgress.setMessage("Setting Picture");
         picuploadProgress.show();
         byte[] photoByteArray = byteArrayOutputStream.toByteArray();
-        final UploadTask uploadTask = profilePicRef.putBytes(photoByteArray);
+        final UploadTask uploadTask = storageProfilePicRef.putBytes(photoByteArray);
         uploadTask.addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
             @Override
             public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
@@ -247,13 +252,13 @@ public class UserProfileActivity extends AppCompatActivity {
     private void uploadingGalleryPicToStorage(final ProgressDialog picuploadProgress, Uri picUri) {
         picuploadProgress.setMessage("Setting Picture");
         picuploadProgress.show();
-        UploadTask uploadTask = profilePicRef.child(picUri.getLastPathSegment()).putFile(picUri);
+        UploadTask uploadTask = storageProfilePicRef.child(picUri.getLastPathSegment()).putFile(picUri);
         uploadTask.addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
             @Override
             public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
                 picuploadProgress.dismiss();
                 uploadedPhotoUri = taskSnapshot.getDownloadUrl();
-                userProfileRef.child("picUrl").setValue(uploadedPhotoUri);
+                userProfileRef.child("picUrl").setValue(uploadedPhotoUri.toString());
             }
         }).addOnFailureListener(new OnFailureListener() {
             @Override
@@ -262,6 +267,37 @@ public class UserProfileActivity extends AppCompatActivity {
             }
         });
     }
+
+    private void loadSavedPicAndText() {
+        userProfileRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                Profile profile = dataSnapshot.getValue(Profile.class);
+                if (profile != null) {
+                    imageUrl = profile.getPicUrl();
+                }
+                if (imageUrl != null) {
+                    Glide.with(UserProfileActivity.this)
+                            .load(imageUrl)
+                            .centerCrop()
+                            .into(userProfilePhoto);
+                }
+                if (userBio != null) {
+                    userBio = profile.getUserBio();
+                    if (userBio != null) {
+                        userProfileBio.setText(userBio);
+                    }
+                }
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+    }
+
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
