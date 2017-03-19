@@ -47,7 +47,7 @@ public class UserProfileActivity extends AppCompatActivity {
     private RelativeLayout userContentLayout;
 
     private RecyclerView userContentRV;
-    private UserContentAdapter userContentAdapter;
+    public static UserContentAdapter userContentAdapter;
     private DatabaseReference photoRef;
 
 
@@ -107,9 +107,7 @@ public class UserProfileActivity extends AppCompatActivity {
 
             @Override
             public void onChildRemoved(DataSnapshot dataSnapshot) {
-                Content userPhotoUrl = dataSnapshot.getValue(Content.class);
-                userPhotoList.add(userPhotoUrl);
-                userContentAdapter.setUserPhotoContent(userPhotoList);
+
             }
 
             @Override
@@ -137,6 +135,7 @@ public class UserProfileActivity extends AppCompatActivity {
         calligrapher.setFont(this, "ArimaMadurai-Bold.ttf", true);
         calligrapher.setFont(findViewById(R.id.profileContent), "Raleway-Regular.ttf");
     }
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {

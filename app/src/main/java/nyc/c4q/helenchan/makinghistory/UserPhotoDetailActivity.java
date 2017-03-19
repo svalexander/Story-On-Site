@@ -1,21 +1,25 @@
 package nyc.c4q.helenchan.makinghistory;
 
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.NavUtils;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
-import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -23,8 +27,11 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
 import me.anwarshahriar.calligrapher.Calligrapher;
+
 
 /**
  * Created by akashaarcher on 3/16/17.
@@ -34,6 +41,9 @@ public class UserPhotoDetailActivity extends AppCompatActivity {
 
     private TextView usernameTextView;
     private ImageView userPhotoDetailImageView;
+    private ImageView userSharePhotoBtn;
+    private ImageView userDeletePhotoBtn;
+
     private DatabaseReference ref;
 
     private String TAG = "UserPhotoDetailActivity";
@@ -45,11 +55,13 @@ public class UserPhotoDetailActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_photo_detail);
-        if(Build.VERSION.SDK_INT >= 21) {
+        if (Build.VERSION.SDK_INT >= 21) {
             getWindow().setStatusBarColor(Color.parseColor("#5e454b"));
         }
         usernameTextView = (TextView) findViewById(R.id.username);
         userPhotoDetailImageView = (ImageView) findViewById(R.id.user_photo_detail);
+        userSharePhotoBtn = (ImageView) findViewById(R.id.user_photo_share);
+        userDeletePhotoBtn = (ImageView) findViewById(R.id.user_photo_delete);
         userPhotoDetailLayout = (RelativeLayout) findViewById(R.id.user_photo_activity);
 
         setFontType();
@@ -69,34 +81,11 @@ public class UserPhotoDetailActivity extends AppCompatActivity {
                         .into(userPhotoDetailImageView);
             }
         }
-    }
 
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.user_photo_detail_menu, menu);
-        return super.onCreateOptionsMenu(menu);
-    }
-    private void setFontType() {
-        Calligrapher calligrapher = new Calligrapher(this);
-        calligrapher.setFont(this, "ArimaMadurai-Bold.ttf", true);
-        calligrapher.setFont(findViewById(R.id.user_photo_activity), "Raleway-Regular.ttf");
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case (R.id.user_photo_share):
-                //do stuff
-                return true;
-            case android.R.id.home:
-
-                NavUtils.navigateUpFromSameTask(this);
-                return true;
-
-            case (R.id.user_photo_delete):
-                AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        userDeletePhotoBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(view.getContext());
                 builder.setMessage("Are you sure you want to delete this picture?");
                 builder.setCancelable(true);
 
@@ -105,6 +94,7 @@ public class UserPhotoDetailActivity extends AppCompatActivity {
                         new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialogInterface, int i) {
+                                deleteUserPhotoFromStorage(userPhotoDetailUrl);
                                 deleteUserPhoto();
                             }
                         });
@@ -120,6 +110,22 @@ public class UserPhotoDetailActivity extends AppCompatActivity {
 
                 AlertDialog deleteAlert = builder.create();
                 deleteAlert.show();
+            }
+        });
+    }
+
+    private void setFontType() {
+        Calligrapher calligrapher = new Calligrapher(this);
+        calligrapher.setFont(this, "ArimaMadurai-Bold.ttf", true);
+        calligrapher.setFont(findViewById(R.id.user_photo_activity), "Raleway-Regular.ttf");
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                NavUtils.navigateUpFromSameTask(this);
+                return true;
         }
         return super.onOptionsItemSelected(item);
     }
@@ -136,12 +142,43 @@ public class UserPhotoDetailActivity extends AppCompatActivity {
                 for (DataSnapshot photoSnapshot : dataSnapshot.getChildren()) {
                     photoSnapshot.getRef().removeValue();
                     Log.i(TAG, "photo removed " + userPhotoDetailUrl);
+
+                    UserProfileActivity.userContentAdapter.notifyDataSetChanged();
+                    Toast.makeText(UserPhotoDetailActivity.this, "Your photo has been deleted", Toast.LENGTH_SHORT).show();
                 }
             }
 
             @Override
             public void onCancelled(DatabaseError databaseError) {
                 Log.e(TAG, "onCancelled", databaseError.toException());
+            }
+        });
+
+        Intent intent = new Intent(getApplicationContext(), UserProfileActivity.class);
+        startActivity(intent);
+        finish();
+    }
+
+    // ******** DELETE PHOTO FROM STORAGE -- NEEDS FIXING!!!! // *******
+    public void deleteUserPhotoFromStorage(String userPhotoUrl) {
+
+        Log.i(TAG, "photo url in delete storage method: " + userPhotoDetailUrl);
+
+        FirebaseStorage photoStorage = FirebaseStorage.getInstance();
+        StorageReference storageRef = photoStorage.getReference();
+
+        StorageReference photoToDeleteRef = storageRef.child(userPhotoUrl);
+
+        photoToDeleteRef.delete().addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void aVoid) {
+                Log.i("User Profile Activity: ", "photo deleted");
+            }
+
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Log.i("User Profile Activity: ", "Error occurred");
             }
         });
     }
