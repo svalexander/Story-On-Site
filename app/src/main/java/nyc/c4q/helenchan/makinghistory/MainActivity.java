@@ -1,5 +1,7 @@
 package nyc.c4q.helenchan.makinghistory;
 
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
@@ -47,7 +49,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         initViews();
         setListeners();
 
+        newPic.setVisibility(View.GONE);
+        shortAnimLength = getResources().getInteger(android.R.integer.config_shortAnimTime);
         // setFontType();
+        crossfadeAnimation();
     }
 
     private void initViews() {
@@ -71,6 +76,21 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         if (Build.VERSION.SDK_INT >= 21) {
             getWindow().setStatusBarColor(Color.parseColor("#1E000D"));
         }
+    }
+
+    private void crossfadeAnimation(){
+        newPic.setAlpha(0f);
+        newPic.setVisibility(View.VISIBLE);
+        newPic.animate().alpha(1f).setDuration(shortAnimLength).setListener(null);
+
+        oldPic.animate().alpha(0f).setDuration(shortAnimLength).setListener(new AnimatorListenerAdapter() {
+            @Override
+            public void onAnimationEnd(Animator animation) {
+                oldPic.setVisibility(View.GONE);
+            }
+        });
+
+
     }
 
     @Override
