@@ -6,19 +6,23 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.res.AssetFileDescriptor;
 import android.content.res.Resources;
+import android.location.Address;
+import android.location.Geocoder;
 import android.location.Location;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
-import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AnimationUtils;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
@@ -31,7 +35,6 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
-import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MapStyleOptions;
@@ -61,13 +64,17 @@ public class ExploreMoreFragment extends Fragment implements OnMapReadyCallback,
     private DatabaseReference mFirebaseDatabase;
     private DatabaseReference mFirebaseDatabase2;
 
+    private FloatingActionButton searchFabBtn;
+    private Button searchAddressBtn;
+    private EditText locationAddressSearch;
+
     private MapListener mapListener;
     private static final String TAG = "Main Activity";
     private final static int PLAY_SERVICES_RESOLUTION_REQUEST = 9000;
     private GoogleApiClient mLocationClient;
     GoogleMap mMap;
     private float zoomLevel = 15;
-    private Button searchAddressBtn;
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -98,17 +105,30 @@ public class ExploreMoreFragment extends Fragment implements OnMapReadyCallback,
         }
         mFirebaseDatabase2 = FirebaseDatabase.getInstance().getReference();
 
-//        searchAddressBtn = (Button) root.findViewById(R.id.location_search_btn);
-//        searchAddressBtn.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                try {
-//                    locateFromAddress(view);
-//                } catch (IOException e) {
-//                    e.printStackTrace();
-//                }
-//            }
-//        });
+        searchAddressBtn = (Button) root.findViewById(R.id.location_search_btn);
+        locationAddressSearch = (EditText) root.findViewById(R.id.location_search_input);
+        searchFabBtn = (FloatingActionButton) root.findViewById(R.id.search_fab);
+        searchFabBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                locationAddressSearch.setVisibility(View.VISIBLE);
+                locationAddressSearch.startAnimation(AnimationUtils.loadAnimation(view.getContext(), android.R.anim.slide_in_left));
+                searchAddressBtn.setVisibility(View.VISIBLE);
+                searchAddressBtn.startAnimation(AnimationUtils.loadAnimation(view.getContext(), android.R.anim.slide_in_left));
+            }
+        });
+
+
+        searchAddressBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                try {
+                    locateFromAddress(view);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
 
         setActionBarTitle(root);
 
@@ -178,25 +198,25 @@ public class ExploreMoreFragment extends Fragment implements OnMapReadyCallback,
         imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
     }
 
-//    public void locateFromAddress(View v) throws IOException {
-//        hideSoftKeyboard(v);
-//
-//        EditText locationInput = (EditText) v.findViewById(R.id.location_search_input);
-//        String searchString = locationInput.getText().toString();
-//
-//        Geocoder gc = new Geocoder(getActivity());
-//        List<Address> list = gc.getFromLocationName(searchString, 1);
-//
-//        if (list.size() > 0) {
-//            Address add = list.get(0);
-//            String locality = add.getLocality();
-//            Toast.makeText(getActivity(), "Found: " + locality, Toast.LENGTH_SHORT).show();
-//
-//            double lat = add.getLatitude();
-//            double lng = add.getLongitude();
-//            gotoLocation(lat, lng, zoomLevel);
-//        }
-//    }
+    public void locateFromAddress(View v) throws IOException {
+        hideSoftKeyboard(v);
+
+        String searchString = locationAddressSearch.getText().toString();
+
+        Geocoder gc = new Geocoder(getActivity());
+        List<Address> list = gc.getFromLocationName(searchString, 1);
+
+        if (list.size() > 0) {
+            Address add = list.get(0);
+            String locality = add.getLocality();
+            Toast.makeText(getActivity(), "Found: " + locality, Toast.LENGTH_SHORT).show();
+
+            double lat = add.getLatitude();
+            double lng = add.getLongitude();
+            gotoLocation(lat, lng, zoomLevel);
+        }
+    }
+
 
     @Override
     public void onConnected(@Nullable Bundle bundle) {

@@ -7,46 +7,48 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <!--<RelativeLayout-->
-    <!--android:layout_width="fill_parent"-->
-    <!--android:layout_height="wrap_content"-->
-    <!--android:layout_marginBottom="6dp"-->
-    <!--android:gravity="center_vertical"-->
-    <!--android:orientation="horizontal">-->
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="6dp"
+        android:gravity="center_vertical">
 
-    <!--<TextView-->
-    <!--android:id="@+id/locationTV"-->
-    <!--android:layout_width="wrap_content"-->
-    <!--android:layout_height="wrap_content"-->
-    <!--android:text="@string/location_label"-->
-    <!--android:textSize="20sp" />-->
+        <fragment
+            android:id="@+id/map"
+            android:name="com.google.android.gms.maps.SupportMapFragment"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
 
-    <!--<EditText-->
-    <!--android:id="@+id/location_search_input"-->
-    <!--android:layout_width="wrap_content"-->
-    <!--android:layout_height="wrap_content"-->
-    <!--android:layout_alignBaseline="@+id/locationTV"-->
-    <!--android:layout_toEndOf="@+id/locationTV"-->
-    <!--android:layout_toLeftOf="@+id/location_search_btn"-->
-    <!--android:layout_toRightOf="@+id/locationTV"-->
-    <!--android:layout_toStartOf="@+id/location_search_btn"-->
-    <!--android:ems="10"-->
-    <!--android:inputType="textCapWords">-->
 
-    <!--<requestFocus />-->
-    <!--</EditText>-->
+        <EditText
+            android:id="@+id/location_search_input"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@color/colorAccent"
+            android:layout_toLeftOf="@+id/location_search_btn"
+            android:ems="10"
+            android:inputType="textCapWords"
+            android:layout_alignBottom="@+id/location_search_btn"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:visibility="invisible">
 
-    <!--<Button-->
-    <!--android:background="@color/teal_accent"-->
-    <!--android:textColor="@color/white_text"-->
-    <!--android:id="@+id/location_search_btn"-->
-    <!--android:layout_width="wrap_content"-->
-    <!--android:layout_height="wrap_content"-->
-    <!--android:layout_alignBaseline="@+id/locationTV"-->
-    <!--android:layout_alignParentEnd="true"-->
-    <!--android:layout_alignParentRight="true"-->
-    <!--android:text="Search" />-->
-    <!--</RelativeLayout>-->
+            <requestFocus />
+        </EditText>
+
+        <Button
+            android:id="@+id/location_search_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:background="@color/teal_accent"
+            android:text="Search"
+            android:textColor="@color/white_text"
+            android:visibility="invisible"/>
+    </RelativeLayout>
+
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/search_fab"
         android:layout_width="wrap_content"
@@ -57,10 +59,6 @@
         android:src="@drawable/search"
         android:tint="@color/white_text"
         app:backgroundTint="@color/retro_brown" />
-    <fragment
-        android:id="@+id/map"
-        android:name="com.google.android.gms.maps.SupportMapFragment"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+
 
 </android.support.design.widget.CoordinatorLayout>

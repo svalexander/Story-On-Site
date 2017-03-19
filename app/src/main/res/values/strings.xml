@@ -33,6 +33,7 @@
     <string name="location_name">Location Name</string>
     <string name="get_profile_pic">Select Profile Picture From</string>
     <string name="cancel">Cancel</string>
+    <string name="chooser_title">Choose how you want to share</string>
 
     <string-array name="camera_or_gallery">
         <item>Camera</item>
