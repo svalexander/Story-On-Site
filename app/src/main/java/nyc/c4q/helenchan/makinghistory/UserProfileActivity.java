@@ -283,12 +283,16 @@ public class UserProfileActivity extends AppCompatActivity implements View.OnCli
                             .load(imageUrl)
                             .centerCrop()
                             .into(userProfilePhoto);
-                    }
+                } else {
+                    Glide.with(UserProfileActivity.this)
+                            .load(R.drawable.chinchibi)
+                            .into(userProfilePhoto);
+                }
                 if (dbBio != null) {
-                        userProfileBio.setText(dbBio);
-                    }else{
-                        userProfileBio.setText("Let's Explore");
-                    
+                    userProfileBio.setText(dbBio);
+                } else {
+                    userProfileBio.setText("Let's Explore");
+
                 }
 
 
@@ -348,7 +352,7 @@ public class UserProfileActivity extends AppCompatActivity implements View.OnCli
                 break;
             case user_profile_bio:
                 userProfileBio.setVisibility(View.INVISIBLE);
-                if(userProfileBio.length() != 0){
+                if (userProfileBio.length() != 0) {
                     userBio = userProfileBio.getText().toString();
                     userProfileEdittext.setText(userBio);
                 }
@@ -357,7 +361,7 @@ public class UserProfileActivity extends AppCompatActivity implements View.OnCli
             case user_bio_edittext:
                 userProfileEdittext.setVisibility(View.INVISIBLE);
                 userProfileBio.setVisibility(View.VISIBLE);
-                if(userProfileEdittext.length() != 0){
+                if (userProfileEdittext.length() != 0) {
                     userBio = userProfileEdittext.getText().toString();
                     userProfileBio.setText(userBio);
                     userProfileRef.child("bio").setValue(userBio);
