@@ -39,4 +39,5 @@
         <item>Camera</item>
         <item>Gallery</item>
     </string-array>
+    <string name="start_with_a_video">Start with a video</string>
 </resources>
