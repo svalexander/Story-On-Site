@@ -14,6 +14,7 @@ import android.util.AttributeSet;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.Animation.AnimationListener;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -39,6 +40,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private ImageView oldPic;
     private ImageView newPic;
     private int shortAnimLength;
+    private int medAnimLength;
 
     List<Content> picsList = new ArrayList<>();
 
@@ -52,11 +54,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         newPic.setVisibility(View.GONE);
         shortAnimLength = getResources().getInteger(android.R.integer.config_shortAnimTime);
         // setFontType();
-        crossfadeAnimation();
+        medAnimLength = getResources().getInteger(android.R.integer.config_mediumAnimTime);
+       // crossfadeAnimation();
     }
 
     private void initViews() {
-       // skipBtn = (Button) findViewById(R.id.skipBtn);
+        skipBtn = (Button) findViewById(R.id.skipBtn);
         mainLayout = (LinearLayout) findViewById(R.id.activity_main);
         iconIV = (ImageView) findViewById(R.id.logoIV);
         oldPic = (ImageView) findViewById(R.id.old_pic);
@@ -81,9 +84,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private void crossfadeAnimation(){
         newPic.setAlpha(0f);
         newPic.setVisibility(View.VISIBLE);
-        newPic.animate().alpha(1f).setDuration(shortAnimLength).setListener(null);
+        newPic.animate().alpha(1f).setDuration(medAnimLength).setListener(null);
 
-        oldPic.animate().alpha(0f).setDuration(shortAnimLength).setListener(new AnimatorListenerAdapter() {
+        oldPic.animate().alpha(0f).setDuration(medAnimLength).setListener(new AnimatorListenerAdapter() {
             @Override
             public void onAnimationEnd(Animator animation) {
                 oldPic.setVisibility(View.GONE);
@@ -101,7 +104,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     private void setListeners() {
-       // skipBtn.setOnClickListener(this);
+        skipBtn.setOnClickListener(this);
         mainLayout.setOnClickListener(this);
     }
 
@@ -128,12 +131,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
-//            case R.id.skipBtn:
+            case R.id.skipBtn:
 //                fadeOutAnimation = AnimationUtils.loadAnimation(MainActivity.this, R.anim.fade_out);
 //                Intent skipIntent = new Intent(MainActivity.this, BaseActivity.class);
 //                startActivity(skipIntent);
-//                //     overridePendingTransition(fadeOutAnimation,fadeInAnimation );
-//                break;
+                crossfadeAnimation();
+                //     overridePendingTransition(fadeOutAnimation,fadeInAnimation );
+                break;
             case R.id.activity_main:
                 Intent goToBaseActivityIntent = new Intent(MainActivity.this, BaseActivity.class);
                 startActivity(goToBaseActivityIntent);
