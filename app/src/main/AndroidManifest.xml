@@ -67,7 +67,12 @@
             android:value=".BaseActivity" />
         </activity>
         <activity android:name=".EditContentActivity" />
-        <activity android:name=".UserPhotoDetailActivity" />
+        <activity android:name=".UserPhotoDetailActivity"
+            android:parentActivityName=".UserProfileActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".UserProfileActivity"/>
+        </activity>
     </application>
 
 </manifest>

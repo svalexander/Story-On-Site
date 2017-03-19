@@ -15,12 +15,6 @@
         android:id="@+id/suggestedIcon"
         android:enabled="true"
         android:icon="@drawable/pin"
-        android:title="@string/suggested" />
+        android:title="@string/featured" />
 
-
-    <!--<item-->
-        <!--android:id="@+id/profileIcon"-->
-        <!--android:enabled="true"-->
-        <!--android:icon="@drawable/profile_pic"-->
-        <!--android:title="@string/profile" />-->
 </menu>

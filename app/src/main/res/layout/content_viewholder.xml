@@ -74,26 +74,28 @@
                             android:id="@+id/content_year"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_gravity=""
-                            android:paddingEnd="13dp"
+                            android:layout_gravity="start"
+                            android:paddingStart="13dp"
                             android:paddingLeft="13dp"
-                            android:paddingRight="13dp"
                             android:paddingTop="13dp"
                             android:text="1906"
-                            android:textColor="@color/retro_pink"
+                            android:textColor="@color/brightBlue"
                             android:textStyle="bold" />
 
                         <ImageView
-                            android:src="@drawable/ic_heart"
                             android:id="@+id/like_bttn"
-                            android:layout_width="24dp"
-                            android:layout_height="24dp"
+                            android:layout_width="30dp"
+                            android:layout_height="30dp"
                             android:layout_alignParentEnd="true"
                             android:layout_alignParentRight="true"
                             android:layout_gravity="end"
-                            android:layout_margin="4dp" />
+                            android:paddingTop="13dp"
+                            android:paddingRight="13dp"
+                            android:paddingBottom="2dp"
+                            android:src="@drawable/ic_heart" />
 
                     </RelativeLayout>
+
 
                     <View
                         android:layout_width="280dp"
@@ -109,9 +111,12 @@
                         android:ellipsize="end"
                         android:gravity="center"
                         android:maxLines="1"
+                        android:paddingBottom="13dp"
+                        android:paddingLeft="13dp"
+                        android:paddingRight="13dp"
                         android:text="Img title goes here"
                         android:textColor="@color/retro_brown"
-                        android:textSize="24sp" />
+                        android:textSize="16sp" />
 
                     <TextView
                         android:id="@+id/content_description"

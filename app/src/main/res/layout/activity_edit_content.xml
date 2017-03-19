@@ -9,7 +9,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/primaryDark"
+        android:background="@color/testingGry"
         android:orientation="vertical">
 
         <RelativeLayout
@@ -43,8 +43,8 @@
             android:gravity="center_vertical"
             android:hint="@string/location_name"
             android:inputType="textImeMultiLine|textCapSentences"
-            android:textColor="@color/white_text"
-            android:textColorHint="@color/teal_accent" />
+            android:textColor="@color/retro_brown"
+            android:textColorHint="@color/brightBlue" />
 
         <EditText
             android:id="@+id/user_story_edittext"
@@ -57,8 +57,8 @@
             android:inputType="textCapSentences|textMultiLine|textAutoCorrect"
             android:padding="8dp"
             android:textAlignment="center"
-            android:textColor="@color/white_text"
-            android:textColorHint="@color/teal_accent"
+            android:textColor="@color/retro_brown"
+            android:textColorHint="@color/brightBlue"
             android:textSize="16dp" />
 
     </LinearLayout>

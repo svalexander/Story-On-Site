@@ -5,7 +5,9 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
@@ -20,8 +22,10 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.ChildEventListener;
@@ -69,7 +73,9 @@ public class UserProfileActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_profile);
-
+        if(Build.VERSION.SDK_INT >= 21) {
+            getWindow().setStatusBarColor(Color.parseColor("#5e454b"));
+        }
         String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
         contentRef = FirebaseDatabase.getInstance().getReference().child("Users").child(uid).child("ContentList");
         userProfileRef = FirebaseDatabase.getInstance().getReference().child("Users").child(uid).child("Profile");
@@ -78,6 +84,7 @@ public class UserProfileActivity extends AppCompatActivity {
         setFontType();
         initViews();
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setTitle("Your Profile");
 
         userProfilePhoto.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -201,7 +208,7 @@ public class UserProfileActivity extends AppCompatActivity {
             Bitmap imageBitmap = (Bitmap) extras.get("data");
             ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
             imageBitmap.compress(Bitmap.CompressFormat.JPEG, 100, byteArrayOutputStream);
-            uploadingProfilePicToStorage(picuploadProgress, byteArrayOutputStream);
+            uploadingCamPicToStorage(picuploadProgress, byteArrayOutputStream);
 
             Glide.with(this)
                     .load(byteArrayOutputStream.toByteArray())
@@ -212,6 +219,7 @@ public class UserProfileActivity extends AppCompatActivity {
         }
         if(requestCode == Constants.REQUEST_PICK_IMAGE && resultCode == RESULT_OK){
             Uri selectedUri = data.getData();
+            uploadingGalleryPicToStorage(picuploadProgress, selectedUri);
             Glide.with(this)
                     .load(selectedUri)
                     .centerCrop()
@@ -219,10 +227,11 @@ public class UserProfileActivity extends AppCompatActivity {
         }
     }
 
-    private void uploadingProfilePicToStorage(final ProgressDialog picuploadProgress, ByteArrayOutputStream byteArrayOutputStream) {
+    private void uploadingCamPicToStorage(final ProgressDialog picuploadProgress, ByteArrayOutputStream byteArrayOutputStream) {
         String randomID = java.util.UUID.randomUUID().toString();
-        profilePicRef = profilePicRef.child(randomID);
+        profilePicRef.child(randomID);
         picuploadProgress.setMessage("Setting Picture");
+        picuploadProgress.show();
         byte[] photoByteArray = byteArrayOutputStream.toByteArray();
         final UploadTask uploadTask = profilePicRef.putBytes(photoByteArray);
         uploadTask.addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
@@ -231,6 +240,25 @@ public class UserProfileActivity extends AppCompatActivity {
                 picuploadProgress.dismiss();
                 uploadedPhotoUri = taskSnapshot.getDownloadUrl();
                 userProfileRef.child("picUrl").setValue(uploadedPhotoUri);
+            }
+        });
+    }
+
+    private void uploadingGalleryPicToStorage(final ProgressDialog picuploadProgress, Uri picUri) {
+        picuploadProgress.setMessage("Setting Picture");
+        picuploadProgress.show();
+        UploadTask uploadTask = profilePicRef.child(picUri.getLastPathSegment()).putFile(picUri);
+        uploadTask.addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+            @Override
+            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                picuploadProgress.dismiss();
+                uploadedPhotoUri = taskSnapshot.getDownloadUrl();
+                userProfileRef.child("picUrl").setValue(uploadedPhotoUri);
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Toast.makeText(getApplicationContext(), "Upload Failed! Try Again", Toast.LENGTH_LONG).show();
             }
         });
     }
