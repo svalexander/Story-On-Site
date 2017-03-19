@@ -244,7 +244,7 @@ public class UserProfileActivity extends AppCompatActivity {
             public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
                 picuploadProgress.dismiss();
                 uploadedPhotoUri = taskSnapshot.getDownloadUrl();
-                userProfileRef.child("picUrl").setValue(uploadedPhotoUri);
+                userProfileRef.child("picUrl").setValue(uploadedPhotoUri.toString());
             }
         });
     }
@@ -275,6 +275,7 @@ public class UserProfileActivity extends AppCompatActivity {
                 Profile profile = dataSnapshot.getValue(Profile.class);
                 if (profile != null) {
                     imageUrl = profile.getPicUrl();
+                    userBio = profile.getUserBio();
                 }
                 if (imageUrl != null) {
                     Glide.with(UserProfileActivity.this)
@@ -283,7 +284,6 @@ public class UserProfileActivity extends AppCompatActivity {
                             .into(userProfilePhoto);
                 }
                 if (userBio != null) {
-                    userBio = profile.getUserBio();
                     if (userBio != null) {
                         userProfileBio.setText(userBio);
                     }
@@ -293,7 +293,7 @@ public class UserProfileActivity extends AppCompatActivity {
 
             @Override
             public void onCancelled(DatabaseError databaseError) {
-
+                Toast.makeText(UserProfileActivity.this, "Unable to Load Profile Picture", Toast.LENGTH_LONG).show();
             }
         });
     }
