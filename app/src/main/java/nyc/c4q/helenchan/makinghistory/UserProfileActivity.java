@@ -67,7 +67,7 @@ public class UserProfileActivity extends AppCompatActivity {
         setFontType();
         initViews();
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setTitle("Your Profile");
+        getSupportActionBar().setTitle("My Profile");
 
         userProfilePhoto.setOnClickListener(new View.OnClickListener() {
             @Override
