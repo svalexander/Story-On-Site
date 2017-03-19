@@ -59,7 +59,9 @@
             android:textAlignment="center"
             android:textColor="@color/retro_brown"
             android:textColorHint="@color/brightBlue"
-            android:textSize="16dp" />
+            android:textSize="16dp"
+            android:maxLines="5"
+            android:imeOptions="actionDone" />
 
     </LinearLayout>
 
