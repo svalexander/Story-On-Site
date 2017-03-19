@@ -31,5 +31,12 @@
     <string name="share_user_photo">Share</string>
     <string name="delete_user_photo">Delete</string>
     <string name="location_name">Location Name</string>
+    <string name="get_profile_pic">Select Profile Picture From</string>
+    <string name="cancel">Cancel</string>
     <string name="share">SHARE</string>
+
+    <string-array name="camera_or_gallery">
+        <item>Camera</item>
+        <item>Gallery</item>
+    </string-array>
 </resources>

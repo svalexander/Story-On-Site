@@ -25,12 +25,6 @@
                 android:background="@color/testingGry" />
 
 
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:src="@drawable/ic_camera_icon"
-                android:tint="@color/retro_brown" />
         </FrameLayout>
 
         <TextView
@@ -40,7 +34,6 @@
             android:layout_marginLeft="@dimen/user_profile_margin_left"
             android:layout_toRightOf="@id/profilePicLayout"
             android:text="0"
-            android:textColor="@color/retro_brown"
             android:textSize="18dp" />
 
         <TextView
@@ -52,7 +45,6 @@
             android:layout_marginTop="5dp"
             android:layout_toRightOf="@id/user_num_photos"
             android:text="photos"
-            android:textColor="@color/retro_brown"
             android:textSize="12dp" />
 
         <TextView
@@ -62,26 +54,38 @@
             android:layout_below="@id/user_num_photos"
             android:layout_marginBottom="4dp"
             android:layout_marginLeft="25dp"
-            android:layout_marginTop="36dp"
+            android:layout_marginTop="15dp"
             android:layout_toRightOf="@id/profilePicLayout"
-            android:text="USERNAME HERE"
             android:textAllCaps="true"
-            android:textColor="@color/brightBlue"
             android:textSize="@dimen/profile_user_name"
             android:textStyle="bold" />
 
-
-        <TextView
-            android:id="@+id/user_profile_bio"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
             android:layout_alignBottom="@id/profilePicLayout"
             android:layout_alignParentRight="true"
             android:layout_below="@+id/user_profile_name"
             android:layout_marginLeft="@dimen/user_profile_margin_left"
-            android:layout_toRightOf="@id/profilePicLayout"
-            android:text="Seeing what there is to see"
-            android:textSize="12dp" />
+            android:layout_marginTop="15dp"
+            android:layout_toRightOf="@id/profilePicLayout">
+
+            <TextView
+                android:id="@+id/user_profile_bio"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:textSize="15sp" />
+
+            <EditText
+                android:id="@+id/user_bio_edittext"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:inputType="textCapSentences|textImeMultiLine"
+                android:visibility="invisible"
+                android:textSize="15sp"
+                android:imeOptions="actionDone"/>
+
+        </FrameLayout>
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/user_profile_recycler_view"
@@ -90,19 +94,5 @@
             android:layout_below="@id/profilePicLayout" />
 
     </RelativeLayout>
-
-    <!--<Button-->
-    <!--android:id="@+id/edit_profile_btn"-->
-    <!--android:layout_width="150dp"-->
-    <!--android:layout_height="35dp"-->
-    <!--android:background="@color/com_facebook_blue"-->
-    <!--android:text="Edit Your Profile"-->
-    <!--android:layout_alignParentRight="true"-->
-    <!--android:layout_marginLeft="40dp"-->
-    <!--android:layout_toRightOf="@id/user_profile_photo"-->
-    <!--android:layout_alignBottom="@id/user_profile_photo"-->
-    <!--android:textAlignment="center"-->
-    <!--android:textColor="@color/white_text" />-->
-
 
 </RelativeLayout>
