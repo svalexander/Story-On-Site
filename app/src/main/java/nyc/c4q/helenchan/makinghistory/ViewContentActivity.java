@@ -4,6 +4,7 @@ import android.animation.Animator;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -17,6 +18,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 
+import com.google.firebase.auth.FirebaseAuth;
 import com.firebase.ui.auth.AuthUI;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -105,6 +107,28 @@ public class ViewContentActivity extends AppCompatActivity {
 
             }
         }
+
+        DatabaseReference databaseRefGetFaves = FirebaseDatabase.getInstance().getReference().child("Users").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("UserFavorites");
+        databaseRefGetFaves.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                final List<Content> favesList = new ArrayList<>();
+                if (dataSnapshot != null) {
+                    for (DataSnapshot ds : dataSnapshot.getChildren()) {
+                        System.out.println(ds.getKey());
+                        Content currentValue = ds.getValue(Content.class);
+                        favesList.add(currentValue);
+                    }
+                }
+                viewContentAdapter.setUserFavorites(favesList);
+            }
+
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
 
         databaseRefToMappoint = FirebaseDatabase.getInstance().getReference().child("MapPoint");
         databaseRefToMappoint.addListenerForSingleValueEvent(new ValueEventListener() {

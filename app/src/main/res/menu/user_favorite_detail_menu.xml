@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/user_share"
+        android:title="@string/share_user_photo"
+        android:visible="true"
+        app:showAsAction="never" />
+
+    <item
+        android:id="@+id/user_unfavorite"
+        android:title="Unfavorite"
+        android:visible="true"
+        app:showAsAction="never" />
+
+</menu>
