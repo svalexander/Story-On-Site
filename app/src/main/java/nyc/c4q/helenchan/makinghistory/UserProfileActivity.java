@@ -249,7 +249,7 @@ public class UserProfileActivity extends AppCompatActivity implements UserPicsFr
                             .into(userProfilePhoto);
                 } else {
                     Glide.with(UserProfileActivity.this)
-                            .load(R.drawable.chinchibi)
+                            .load(R.drawable.ic_camera_icon)
                             .into(userProfilePhoto);
                 }
                 if (dbBio != null) {
