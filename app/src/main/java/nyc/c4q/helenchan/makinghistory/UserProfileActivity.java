@@ -235,11 +235,10 @@ public class UserProfileActivity extends AppCompatActivity implements View.OnCli
 
     private void uploadingCamPicToStorage(final ProgressDialog picuploadProgress, ByteArrayOutputStream byteArrayOutputStream) {
         String randomID = java.util.UUID.randomUUID().toString();
-        storageProfilePicRef.child(randomID);
         picuploadProgress.setMessage("Setting Picture");
         picuploadProgress.show();
         byte[] photoByteArray = byteArrayOutputStream.toByteArray();
-        final UploadTask uploadTask = storageProfilePicRef.putBytes(photoByteArray);
+        final UploadTask uploadTask = storageProfilePicRef.child(randomID).putBytes(photoByteArray);
         uploadTask.addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
             @Override
             public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
