@@ -349,6 +349,7 @@ public class UserProfileActivity extends AppCompatActivity implements View.OnCli
             case user_profile_photo:
                 whereToGetPicFromDialogueBox();
                 break;
+
             case user_profile_bio:
                 userProfileBio.setVisibility(View.INVISIBLE);
                 if (userProfileBio.length() != 0) {
@@ -357,6 +358,7 @@ public class UserProfileActivity extends AppCompatActivity implements View.OnCli
                 }
                 userProfileEdittext.setVisibility(View.VISIBLE);
                 break;
+
             case user_bio_edittext:
                 userProfileEdittext.setVisibility(View.INVISIBLE);
                 userProfileBio.setVisibility(View.VISIBLE);
