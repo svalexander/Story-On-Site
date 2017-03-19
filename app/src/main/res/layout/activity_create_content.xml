@@ -1,148 +1,187 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@color/white_text">
+    android:layout_height="match_parent">
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scaleType="centerCrop"
+        android:src="@drawable/highline3"
+        />
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scaleType="centerCrop"
+        android:background="@drawable/rectangle"
+        android:layout_margin="30dp"
+        />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_gravity="center_vertical"
+        android:layout_margin="20dp"
+        android:background="#99FFFFFF"
+        android:gravity="center"
         android:orientation="vertical">
 
         <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1">
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:paddingLeft="50dp"
+            android:paddingRight="50dp">
 
             <ImageView
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="@color/retro_brown" />
+                android:id="@+id/logoIV"
+                android:layout_width="75dp"
+                android:layout_height="75dp"
+                android:layout_centerVertical="true"
+                android:src="@drawable/sos_small_house_purple"
+                android:tint="@color/retro_brown" />
 
-            <LinearLayout
-                android:layout_width="match_parent"
+            <ImageView
+                android:id="@+id/storyIV"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_centerInParent="true"
-                android:orientation="vertical">
+                android:layout_alignBottom="@+id/logoIV"
+                android:layout_alignTop="@+id/logoIV"
+                android:layout_toRightOf="@id/logoIV"
+                android:src="@drawable/sos_logotype_purple"
+                android:tint="@color/retro_brown" />
 
-                <TextView
-                    android:id="@+id/create_title_tv"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="center"
-                    android:padding="12dp"
-                    android:text="@string/create_your_own_story"
-                    android:textColor="@color/retro_cream"
-                    android:textSize="30sp" />
-
-                <TextView
-                    android:id="@+id/create_prompt_tv"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="15dp"
-                    android:gravity="center"
-                    android:padding="6dp"
-                    android:text="@string/create_prompt"
-                    android:textColor="@color/retro_cream"
-                    android:textSize="18sp" />
-            </LinearLayout>
         </RelativeLayout>
 
-        <!--<View-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="3dp"-->
-        <!--android:background="#FF8A65" />-->
-
-        <!--#FF8A65 #EF5350-->
-
-        <LinearLayout
+        <android.support.v7.widget.CardView
+            android:backgroundTint="@color/retro_teal"
+            android:id="@+id/video_card_view"
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"
-            android:background="@color/retro_white"
-            android:gravity="center_vertical">
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="5dp"
+            android:layout_marginLeft="40dp"
+            android:layout_marginRight="40dp"
+            android:layout_marginTop="20dp"
+            app:cardCornerRadius="3dp">
 
-            <LinearLayout
-                android:id="@+id/videosection"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:orientation="vertical">
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
 
-                <ImageButton
+                <ImageView
+                    android:layout_marginBottom="6dp"
+                    android:layout_marginTop="6dp"
                     android:id="@+id/video_button_create"
                     android:layout_width="@dimen/button_size"
                     android:layout_height="@dimen/button_size"
-                    android:layout_gravity="center_horizontal|center_vertical"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginStart="20dp"
                     android:background="@drawable/round_button_cream"
                     android:padding="@dimen/img_bttn_padding"
                     android:scaleType="fitCenter"
                     android:src="@drawable/ic_retrovideo" />
 
                 <TextView
-                    android:layout_width="wrap_content"
+                    android:id="@+id/share_video_tv"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center_horizontal|center_vertical"
-                    android:paddingTop="@dimen/round_button_textpadding"
-                    android:text="@string/video"
-                    android:textColor="@color/retro_pink" />
-            </LinearLayout>
+                    android:layout_centerVertical="true"
+                    android:layout_toEndOf="@id/video_button_create"
+                    android:layout_toRightOf="@id/video_button_create"
+                    android:gravity="center"
+                    android:text="Share a video"
+                    android:textColor="@color/white_text"
+                    android:textSize="@dimen/share_text_size" />
 
-            <LinearLayout
-                android:id="@+id/camerasection"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:gravity="bottom"
-                android:orientation="vertical">
+            </RelativeLayout>
+        </android.support.v7.widget.CardView>
 
-                <ImageButton
+        <android.support.v7.widget.CardView
+            android:backgroundTint="@color/retro_teal"
+            android:id="@+id/picture_card_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="5dp"
+            android:layout_marginLeft="40dp"
+            android:layout_marginRight="40dp"
+            android:layout_marginTop="10dp"
+            app:cardCornerRadius="3dp">
+
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+                <ImageView
+                    android:layout_marginBottom="6dp"
+                    android:layout_marginTop="6dp"
                     android:id="@+id/camera_button_create"
                     android:layout_width="@dimen/button_size"
                     android:layout_height="@dimen/button_size"
-                    android:layout_gravity="center_horizontal|center_vertical"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginStart="20dp"
                     android:background="@drawable/round_button_cream"
                     android:padding="@dimen/img_bttn_padding"
                     android:scaleType="fitCenter"
                     android:src="@drawable/ic_retrocamera" />
 
                 <TextView
-                    android:layout_width="wrap_content"
+                    android:id="@+id/share_photo_tv"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center_horizontal|center_vertical"
-                    android:paddingTop="@dimen/round_button_textpadding"
-                    android:text="@string/camera"
-                    android:textColor="@color/retro_pink" />
+                    android:layout_centerInParent="true"
+                    android:layout_toEndOf="@id/camera_button_create"
+                    android:layout_toRightOf="@id/camera_button_create"
+                    android:gravity="center"
+                    android:text="Share a photo"
+                    android:textColor="@color/white_text"
+                    android:textSize="@dimen/share_text_size" />
+            </RelativeLayout>
 
-            </LinearLayout>
+        </android.support.v7.widget.CardView>
 
-            <LinearLayout
-                android:id="@+id/gallery"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:orientation="vertical">
+        <android.support.v7.widget.CardView
+            android:backgroundTint="@color/retro_teal"
+            android:id="@+id/upload_card_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="20dp"
+            android:layout_marginLeft="40dp"
+            android:layout_marginRight="40dp"
+            android:layout_marginTop="10dp"
+            app:cardCornerRadius="3dp">
 
-                <ImageButton
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+                <ImageView
+                    android:layout_marginTop="6dp"
+                    android:layout_marginBottom="6dp"
                     android:id="@+id/pic_image_create"
                     android:layout_width="@dimen/button_size"
                     android:layout_height="@dimen/button_size"
-                    android:layout_gravity="center_horizontal|center_vertical"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginStart="20dp"
                     android:background="@drawable/round_button_cream"
                     android:padding="@dimen/img_bttn_padding"
                     android:scaleType="fitCenter"
                     android:src="@drawable/ic_polaroids" />
 
                 <TextView
-                    android:layout_width="wrap_content"
+                    android:id="@+id/upload_photo_tv"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center_horizontal|center_vertical"
-                    android:paddingTop="@dimen/round_button_textpadding"
-                    android:text="@string/select_image"
-                    android:textColor="@color/retro_pink" />
-            </LinearLayout>
-
-
-        </LinearLayout>
+                    android:layout_centerInParent="true"
+                    android:layout_toEndOf="@id/pic_image_create"
+                    android:layout_toRightOf="@id/pic_image_create"
+                    android:gravity="center"
+                    android:text="Upload a photo"
+                    android:textColor="@color/white_text"
+                    android:textSize="@dimen/share_text_size" />
+            </RelativeLayout>
+        </android.support.v7.widget.CardView>
     </LinearLayout>
-</FrameLayout>
+
+
+</RelativeLayout>

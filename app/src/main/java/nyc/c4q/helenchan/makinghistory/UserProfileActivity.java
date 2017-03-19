@@ -6,11 +6,11 @@ import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
+import android.support.design.widget.TabLayout;
 import android.support.v4.app.NavUtils;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
@@ -18,24 +18,18 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.ChildEventListener;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import me.anwarshahriar.calligrapher.Calligrapher;
-import nyc.c4q.helenchan.makinghistory.models.Content;
-import nyc.c4q.helenchan.makinghistory.usercontentrecyclerview.UserContentAdapter;
+import nyc.c4q.helenchan.makinghistory.userprofileviewpager.UserPicsFragment;
+import nyc.c4q.helenchan.makinghistory.userprofileviewpager.UserViewPagerAdapter;
 
 /**
  * Created by Akasha on 3/8/17.
  */
 
-public class UserProfileActivity extends AppCompatActivity {
+public class UserProfileActivity extends AppCompatActivity implements UserPicsFragment.OnPictureCountListener {
     private String TAG = "User Profile Activity: ";
 
     private ImageView userProfilePhoto;
@@ -44,12 +38,11 @@ public class UserProfileActivity extends AppCompatActivity {
     private int numUserPhotos = 0;
     private RelativeLayout userContentLayout;
 
-    private RecyclerView userContentRV;
-    private UserContentAdapter userContentAdapter;
     private DatabaseReference photoRef;
 
-
-    private List<Content> userPhotoList = new ArrayList<>();
+    private UserViewPagerAdapter userViewPagerAdapter;
+    private TabLayout tl;
+    private ViewPager vp;
 
 
     @Override
@@ -78,47 +71,12 @@ public class UserProfileActivity extends AppCompatActivity {
         String userName = SignInActivity.mUsername;
         userNameTv.setText(userName);
 
-        userContentRV = (RecyclerView) findViewById(R.id.user_profile_recycler_view);
-        userContentRV.setLayoutManager((new GridLayoutManager(this, 2)));
-        userContentAdapter = new UserContentAdapter();
-        userContentRV.setAdapter(userContentAdapter);
-
-
-        photoRef.addChildEventListener(new ChildEventListener() {
-            @Override
-            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-                Content userPhotoUrl = dataSnapshot.getValue(Content.class);
-                userPhotoList.add(userPhotoUrl);
-                userContentAdapter.setUserPhotoContent(userPhotoList);
-
-                numUserPhotos = userPhotoList.size();
-                userPhotoCountTv.setText(String.valueOf(numUserPhotos));
-            }
-
-            @Override
-            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-
-            }
-
-            @Override
-            public void onChildRemoved(DataSnapshot dataSnapshot) {
-                Content userPhotoUrl = dataSnapshot.getValue(Content.class);
-                userPhotoList.add(userPhotoUrl);
-                userContentAdapter.setUserPhotoContent(userPhotoList);
-            }
-
-            @Override
-            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
-
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });
+        tl = (TabLayout) findViewById(R.id.content_tabs);
+        vp = (ViewPager) findViewById(R.id.content_vp);
+        userViewPagerAdapter = new UserViewPagerAdapter(getSupportFragmentManager());
+        vp.setAdapter(userViewPagerAdapter);
+        tl.setupWithViewPager(vp);
     }
-
 
     private void initViews() {
         userProfilePhoto = (ImageView) findViewById(R.id.user_profile_photo);
@@ -132,6 +90,7 @@ public class UserProfileActivity extends AppCompatActivity {
         calligrapher.setFont(this, "ArimaMadurai-Bold.ttf", true);
         calligrapher.setFont(findViewById(R.id.profileContent), "Raleway-Regular.ttf");
     }
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
@@ -182,6 +141,11 @@ public class UserProfileActivity extends AppCompatActivity {
                     openCamera();
                 }
         }
+    }
+
+    @Override
+    public void updatePhotoCount(int count) {
+        userPhotoCountTv.setText(String.valueOf(count));
     }
 }
 

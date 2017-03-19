@@ -68,6 +68,8 @@
         </activity>
         <activity android:name=".EditContentActivity" />
         <activity android:name=".UserPhotoDetailActivity" />
+        <activity android:name=".UserFavoriteDetailActivity" />
+
     </application>
 
 </manifest>

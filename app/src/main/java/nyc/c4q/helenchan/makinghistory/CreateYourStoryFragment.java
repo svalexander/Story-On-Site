@@ -15,6 +15,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.content.FileProvider;
+import android.support.v7.widget.CardView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -23,6 +24,8 @@ import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.twitter.sdk.android.core.models.Card;
 
 import java.io.File;
 import java.io.IOException;
@@ -57,6 +60,13 @@ public class CreateYourStoryFragment extends Fragment implements View.OnClickLis
     private boolean videoPressed;
     private Uri photoUri;
     private Uri videoUri;
+    private CardView sharePic;
+    private CardView shareVideo;
+    private CardView uploadPic;
+    private TextView sharePicTv;
+    private TextView shareVideoTv;
+    private TextView uploadPicTv;
+
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -70,18 +80,31 @@ public class CreateYourStoryFragment extends Fragment implements View.OnClickLis
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.activity_create_content, container, false);
-        title = (TextView) root.findViewById(R.id.create_title_tv);
+        sharePic = (CardView) root.findViewById(R.id.picture_card_view);
+        shareVideo = (CardView) root.findViewById(R.id.video_card_view);
+        uploadPic = (CardView) root.findViewById(R.id.upload_card_view);
+
+        sharePicTv = (TextView) root.findViewById(R.id.share_photo_tv);
+        shareVideoTv = (TextView) root.findViewById(R.id.share_video_tv);
+        uploadPicTv = (TextView) root.findViewById(R.id.upload_photo_tv);
+
+//        title = (TextView) root.findViewById(R.id.create_title_tv);
         Typeface titleFont = Typeface.createFromAsset(root.getContext().getAssets(), "ArimaMadurai-Regular.ttf");
-        title.setTypeface(titleFont);
+//        title.setTypeface(titleFont);
         Typeface bodyFont = Typeface.createFromAsset(root.getContext().getAssets(), "Raleway-Regular.ttf");
-        prompt = (TextView) root.findViewById(R.id.create_prompt_tv);
-        prompt.setTypeface(bodyFont);
-        takePhoto = (ImageButton) root.findViewById(R.id.camera_button_create);
-        takePhoto.setOnClickListener(this);
-        takeVideo = (ImageButton) root.findViewById(R.id.video_button_create);
-        takeVideo.setOnClickListener(this);
-        selectImage = (ImageButton) root.findViewById(R.id.pic_image_create);
-        selectImage.setOnClickListener(this);
+//        prompt = (TextView) root.findViewById(R.id.create_prompt_tv);
+//        prompt.setTypeface(bodyFont);
+
+        sharePicTv.setTypeface(titleFont);
+        shareVideoTv.setTypeface(titleFont);
+        uploadPicTv.setTypeface(titleFont);
+
+//        takePhoto = (ImageButton) root.findViewById(R.id.camera_button_create);
+        sharePic.setOnClickListener(this);
+//        takeVideo = (ImageButton) root.findViewById(R.id.video_button_create);
+        shareVideo.setOnClickListener(this);
+//        selectImage = (ImageButton) root.findViewById(R.id.pic_image_create);
+        uploadPic.setOnClickListener(this);
         setActionBarTitle(root);
         setHasOptionsMenu(true);
         return root;
@@ -122,11 +145,11 @@ public class CreateYourStoryFragment extends Fragment implements View.OnClickLis
 
         switch (view.getId()) {
 
-            case R.id.camera_button_create:
+            case R.id.picture_card_view:
                 cameraPressed = true;
                 videoPressed = false;
                 break;
-            case R.id.video_button_create:
+            case R.id.video_card_view:
                 videoPressed = true;
                 cameraPressed = false;
                 break;

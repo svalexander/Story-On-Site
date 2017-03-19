@@ -1,92 +1,117 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:paddingLeft="@dimen/activity_vertical_margin"
-                android:paddingTop="@dimen/activity_vertical_margin"
-                android:paddingRight="@dimen/activity_vertical_margin">
-
-<RelativeLayout
-    android:id="@+id/profileContent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="match_parent"
+    android:background="@color/tw__composer_white">
 
-    <FrameLayout
-        android:id="@+id/profilePicLayout"
-        android:layout_width="125dp"
-        android:layout_height="125dp"
-        android:layout_marginBottom="30dp">
-
-    <ImageView
-        android:id="@+id/user_profile_photo"
-        android:layout_width="@dimen/profile_img_wh"
-        android:layout_height="@dimen/profile_img_wh"
-        android:background="@color/testingGry"
-        android:layout_marginBottom="30dp"/>
-
-
-        <ImageView
-            android:layout_gravity="center"
-            android:src="@drawable/ic_camera_icon"
-            android:tint="@color/brightBlue"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
-    </FrameLayout>
-
-        <TextView
-            android:id="@+id/user_num_photos"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/user_profile_margin_left"
-            android:layout_toRightOf="@id/profilePicLayout"
-            android:text="0"
-            android:textSize="18dp" />
-
-        <TextView
-            android:id="@+id/user_photos_taken"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/activity_vertical_margin"
-            android:layout_marginLeft="5dp"
-            android:layout_marginTop="5dp"
-            android:layout_toRightOf="@id/user_num_photos"
-            android:text="photos"
-            android:textSize="12dp" />
-
-        <TextView
-            android:id="@+id/user_profile_name"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/user_num_photos"
-            android:layout_marginBottom="4dp"
-            android:layout_marginLeft="25dp"
-            android:layout_marginTop="36dp"
-            android:layout_toRightOf="@id/profilePicLayout"
-            android:text="USERNAME HERE"
-            android:textAllCaps="true"
-            android:textSize="@dimen/profile_user_name"
-            android:textStyle="bold" />
-
-
-    <TextView
-        android:id="@+id/user_profile_bio"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
-        android:layout_toRightOf="@id/profilePicLayout"
-        android:layout_marginLeft="@dimen/user_profile_margin_left"
-        android:text="Seeing what there is to see"
-        android:textSize="12dp"
-        android:layout_alignBottom="@id/profilePicLayout"
-        android:layout_below="@+id/user_profile_name"/>
-
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/user_profile_recycler_view"
+    <RelativeLayout
+        android:id="@+id/profileContent"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_below="@id/profilePicLayout" />
+        android:layout_height="wrap_content">
 
-</RelativeLayout>
+        <RelativeLayout
+            android:id="@+id/profileContent2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingLeft="@dimen/activity_vertical_margin"
+            android:paddingRight="@dimen/activity_vertical_margin"
+            android:paddingTop="@dimen/activity_vertical_margin">
+
+            <FrameLayout
+                android:id="@+id/profilePicLayout"
+                android:layout_width="125dp"
+                android:layout_height="125dp"
+                android:layout_marginBottom="30dp">
+
+                <ImageView
+                    android:id="@+id/user_profile_photo"
+                    android:layout_width="@dimen/profile_img_wh"
+                    android:layout_height="@dimen/profile_img_wh"
+                    android:layout_marginBottom="30dp"
+                    android:background="@color/testingGry" />
+
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:src="@drawable/ic_camera_icon"
+                    android:tint="@color/brightBlue" />
+            </FrameLayout>
+
+            <TextView
+                android:id="@+id/user_num_photos"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/user_profile_margin_left"
+                android:layout_toRightOf="@id/profilePicLayout"
+                android:text="0"
+                android:textSize="18dp" />
+
+            <TextView
+                android:id="@+id/user_photos_taken"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/activity_vertical_margin"
+                android:layout_marginLeft="5dp"
+                android:layout_marginTop="5dp"
+                android:layout_toRightOf="@id/user_num_photos"
+                android:text="photos"
+                android:textSize="12dp" />
+
+            <TextView
+                android:id="@+id/user_profile_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/user_num_photos"
+                android:layout_marginBottom="4dp"
+                android:layout_marginLeft="25dp"
+                android:layout_marginTop="36dp"
+                android:layout_toRightOf="@id/profilePicLayout"
+                android:text="USERNAME HERE"
+                android:textAllCaps="true"
+                android:textSize="@dimen/profile_user_name"
+                android:textStyle="bold" />
+
+
+            <TextView
+                android:id="@+id/user_profile_bio"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBottom="@id/profilePicLayout"
+                android:layout_alignParentRight="true"
+                android:layout_below="@+id/user_profile_name"
+                android:layout_marginLeft="@dimen/user_profile_margin_left"
+                android:layout_toRightOf="@id/profilePicLayout"
+                android:text="Seeing what there is to see"
+                android:textSize="12dp" />
+
+        </RelativeLayout>
+
+        <android.support.design.widget.TabLayout
+            android:id="@+id/content_tabs"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/profileContent2"
+            android:background="@color/tw__composer_white"
+            app:tabMode="fixed"
+            app:tabSelectedTextColor="@color/retro_brown"
+            app:tabTextColor="@color/secondary_text" />
+
+        <android.support.v4.view.ViewPager
+            android:id="@+id/content_vp"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@id/content_tabs" />
+
+        <!--<android.support.v7.widget.RecyclerView-->
+        <!--android:id="@+id/user_profile_recycler_view"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="match_parent"-->
+        <!--android:layout_below="@id/profilePicLayout" />-->
+
+    </RelativeLayout>
 
     <!--<Button-->
     <!--android:id="@+id/edit_profile_btn"-->
@@ -100,7 +125,6 @@
     <!--android:layout_alignBottom="@id/user_profile_photo"-->
     <!--android:textAlignment="center"-->
     <!--android:textColor="@color/white_text" />-->
-
 
 
 </RelativeLayout>

@@ -178,8 +178,5 @@ public class ContentViewHolder extends RecyclerView.ViewHolder {
         }
     }
 
-    public void setFavoritesList() {
-
-    }
 }
 
