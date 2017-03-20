@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/prompt_card"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_margin="40dp"
+    app:cardBackgroundColor="@color/retro_brown">
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        app:backgroundTint="@color/retro_brown">
+
+        <ImageButton
+            android:id="@+id/xbttn"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:scaleType="fitXY"
+            android:padding="12dp"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_marginTop="6dp"
+            android:background="@null"
+            android:src="@drawable/ic_001_access_denied"
+            android:tint="#aaffffff" />
+
+        <TextView
+            android:id="@+id/prompt_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/xbttn"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="10dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:layout_marginTop="20dp"
+            android:gravity="center_horizontal"
+            android:text="@string/create_btn_state"
+            android:textColor="@color/white_text"
+            android:textSize="24sp" />
+
+        <View
+            android:id="@+id/prompt_divider"
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:layout_below="@id/prompt_title"
+            android:layout_marginEnd="12dp"
+            android:layout_marginLeft="12dp"
+            android:layout_marginRight="12dp"
+            android:layout_marginStart="12dp"
+            android:layout_marginTop="6dp"
+            android:background="@color/retro_cream" />
+
+        <TextView
+            android:id="@+id/prompt_message"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/prompt_divider"
+            android:layout_marginBottom="40dp"
+            android:layout_marginEnd="12dp"
+            android:layout_marginLeft="12dp"
+            android:layout_marginRight="12dp"
+            android:layout_marginStart="12dp"
+            android:padding="12sp"
+            android:text="@string/create_prompt"
+            android:textColor="@color/white_text" />
+    </RelativeLayout>
+</android.support.v7.widget.CardView>
