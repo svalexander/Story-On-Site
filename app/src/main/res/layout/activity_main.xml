@@ -18,14 +18,17 @@
             android:id="@+id/old_pic"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:alpha="0.4"
-            android:src="@drawable/brownstone" />
+            android:scaleType="centerCrop"
+            android:alpha="0.5"
+            android:src="@drawable/old_highline" />
         <ImageView
             android:id="@+id/new_pic"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:src="@drawable/hancock"
-            android:visibility="gone" />
+            android:src="@drawable/highline_in_use"
+            android:scaleType="centerCrop"
+            android:alpha="0.8"
+            android:visibility="gone"/>
 
         <RelativeLayout
             android:id="@+id/sliding_logo"
@@ -54,15 +57,6 @@
                 android:src="@drawable/sos_logotype_purple" />
         </RelativeLayout>
 
-        <Button
-            android:layout_marginBottom="16dp"
-            android:id="@+id/skipBtn"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal|bottom"
-            android:background="@color/teal_accent"
-            android:text="@string/skip"
-            android:textColor="@color/white_text" />
     </FrameLayout>
 
 

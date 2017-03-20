@@ -91,7 +91,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:hint="@string/bio"
-                android:imeOptions="actionDone"
                 android:inputType="textCapSentences|textImeMultiLine"
                 android:visibility="invisible"
                 android:textSize="15sp"

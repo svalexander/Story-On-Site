@@ -15,34 +15,23 @@ import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.Animation.AnimationListener;
 import android.view.animation.AnimationUtils;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
-import android.widget.TextView;
-
-import java.util.ArrayList;
-import java.util.List;
-
-import nyc.c4q.helenchan.makinghistory.models.Content;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener, AnimationListener {
 
     private static final String TAG = "Main Activity";
-    private TextView skipBtn;
-    private Animation fadeOutAnimation;
     private LinearLayout mainLayout;
-    private Animation fadeInAnimation;
     private ImageView iconIV;
     private ImageView oldPic;
     private ImageView newPic;
     private int shortAnimLength;
     private int medAnimLength;
-    private Handler handler;
+    private Handler animationHandler;
+    private Handler intentHandler;
     private RelativeLayout slidingLogo;
 
-
-    List<Content> picsList = new ArrayList<>();
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -51,29 +40,38 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         initViews();
         setListeners();
 
-        handler = new Handler();
+        newPic.setVisibility(View.GONE);
+        shortAnimLength = getResources().getInteger(android.R.integer.config_shortAnimTime);
+        medAnimLength = getResources().getInteger(android.R.integer.config_mediumAnimTime);
 
-        handler.postDelayed(new Runnable() {
+        animationHandler = new Handler();
+
+        animationHandler.postDelayed(new Runnable() {
             @Override
             public void run() {
-                // slidingLogo.setVisibility(View.VISIBLE);
                 slidingLogo.startAnimation(AnimationUtils.loadAnimation(getApplicationContext(), android.R.anim.slide_out_right));
                 slidingLogo.setVisibility(View.GONE);
                  crossfadeAnimation();
             }
+        }, 1000);
+
+        intentHandler = new Handler();
+
+        animationHandler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                //go to baseactivity if logged in, otherwise go to log in
+
+                Intent intent = new Intent(MainActivity.this, SignInActivity.class);
+                startActivity(intent);
+            }
         }, 2000);
 
 
-        newPic.setVisibility(View.GONE);
-        shortAnimLength = getResources().getInteger(android.R.integer.config_shortAnimTime);
-        // setFontType();
-        medAnimLength = getResources().getInteger(android.R.integer.config_mediumAnimTime);
-        // crossfadeAnimation();
     }
 
     private void initViews() {
 
-        skipBtn = (Button) findViewById(R.id.skipBtn);
         mainLayout = (LinearLayout) findViewById(R.id.activity_main);
         iconIV = (ImageView) findViewById(R.id.logoIV);
         oldPic = (ImageView) findViewById(R.id.old_pic);
@@ -110,20 +108,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     private void setListeners() {
-        skipBtn.setOnClickListener(this);
         mainLayout.setOnClickListener(this);
-    }
-
-    private void setAnimations() {
-
     }
 
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
-            case R.id.skipBtn:
-                crossfadeAnimation();
-                break;
             case R.id.activity_main:
                 Intent goToBaseActivityIntent = new Intent(MainActivity.this, BaseActivity.class);
                 startActivity(goToBaseActivityIntent);
