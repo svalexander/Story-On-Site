@@ -74,7 +74,7 @@ public class CreateYourStoryFragment extends Fragment implements View.OnClickLis
         StrictMode.VmPolicy.Builder builder = new StrictMode.VmPolicy.Builder();
         StrictMode.setVmPolicy(builder.build());
         mProgressDialog = new ProgressDialog(getActivity());
-        
+
         FragmentManager fragmentManager = getChildFragmentManager();
         PromptDiaglog newFragment = new PromptDiaglog();
         newFragment.show(fragmentManager, "dialog");
