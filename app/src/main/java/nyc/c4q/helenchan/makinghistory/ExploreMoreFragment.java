@@ -19,11 +19,11 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.AnimationUtils;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.Toolbar;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
@@ -43,6 +43,7 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.gson.Gson;
+import com.konifar.fab_transformation.FabTransformation;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -59,14 +60,17 @@ import static com.facebook.FacebookSdk.getApplicationContext;
  * Created by shannonalexander-navarro on 3/7/17.
  */
 
-public class ExploreMoreFragment extends Fragment implements OnMapReadyCallback, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, GoogleMap.OnMarkerClickListener, LocationListener, MapListener {
+public class ExploreMoreFragment extends Fragment implements OnMapReadyCallback, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, GoogleMap.OnMarkerClickListener, LocationListener, MapListener, View.OnClickListener {
 
     private DatabaseReference mFirebaseDatabase;
     private DatabaseReference mFirebaseDatabase2;
 
     private FloatingActionButton searchFabBtn;
-    private Button searchAddressBtn;
+    private android.support.v7.widget.Toolbar fabToolBar;
+
     private EditText locationAddressSearch;
+    private TextView toolBarSearch;
+    private TextView toolBarCancel;
 
     private MapListener mapListener;
     private static final String TAG = "Main Activity";
@@ -105,36 +109,43 @@ public class ExploreMoreFragment extends Fragment implements OnMapReadyCallback,
         }
         mFirebaseDatabase2 = FirebaseDatabase.getInstance().getReference();
 
-        searchAddressBtn = (Button) root.findViewById(R.id.location_search_btn);
+        toolBarSearch = (TextView) root.findViewById(R.id.search_location_map);
+        toolBarSearch.setOnClickListener(this);
+        toolBarCancel = (TextView) root.findViewById(R.id.cancel_search_map);
+        toolBarCancel.setOnClickListener(this);
         locationAddressSearch = (EditText) root.findViewById(R.id.location_search_input);
         searchFabBtn = (FloatingActionButton) root.findViewById(R.id.search_fab);
-        searchFabBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                locationAddressSearch.setVisibility(View.VISIBLE);
-                locationAddressSearch.startAnimation(AnimationUtils.loadAnimation(view.getContext(), android.R.anim.slide_in_left));
-                searchAddressBtn.setVisibility(View.VISIBLE);
-                searchAddressBtn.startAnimation(AnimationUtils.loadAnimation(view.getContext(), android.R.anim.slide_in_left));
-            }
-        });
+        searchFabBtn.setOnClickListener(this);
+        fabToolBar = (android.support.v7.widget.Toolbar) root.findViewById(R.id.toolbar_fab);
 
-
-        searchAddressBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                try {
-                    locateFromAddress(view);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-        });
 
         setActionBarTitle(root);
 
         setHasOptionsMenu(false);
 
         return root;
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()){
+            case R.id.search_fab:
+                FabTransformation.with(searchFabBtn)
+                        .transformTo(fabToolBar);
+                break;
+            case R.id.cancel_search_map:
+                FabTransformation.with(searchFabBtn)
+                        .transformFrom(fabToolBar);
+                break;
+            case R.id.search_location_map:
+                try {
+                    locateFromAddress(v);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                break;
+
+        }
     }
 
     private void setActionBarTitle(View v) {
@@ -209,7 +220,6 @@ public class ExploreMoreFragment extends Fragment implements OnMapReadyCallback,
         if (list.size() > 0) {
             Address add = list.get(0);
             String locality = add.getLocality();
-            Toast.makeText(getActivity(), "Found: " + locality, Toast.LENGTH_SHORT).show();
 
             double lat = add.getLatitude();
             double lng = add.getLongitude();
@@ -310,5 +320,7 @@ public class ExploreMoreFragment extends Fragment implements OnMapReadyCallback,
     public void onLocationChanged(Location location) {
 
     }
+
+
 }
 
