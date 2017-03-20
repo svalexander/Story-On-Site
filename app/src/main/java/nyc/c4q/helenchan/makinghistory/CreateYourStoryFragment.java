@@ -12,7 +12,9 @@ import android.os.StrictMode;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.content.FileProvider;
 import android.support.v7.widget.CardView;
@@ -47,11 +49,9 @@ public class CreateYourStoryFragment extends Fragment implements View.OnClickLis
     static int REQUEST_VIDEO_CAPTURE = 22;
 
     private ProgressDialog mProgressDialog;
-    private ImageButton takePhoto;
-    private ImageButton takeVideo;
-    private ImageButton selectImage;
     private TextView title;
     private TextView prompt;
+    private FloatingActionButton promptBttn;
 
     private String userLocationKey;
     private String mCurrentPhotoPath;
@@ -74,6 +74,10 @@ public class CreateYourStoryFragment extends Fragment implements View.OnClickLis
         StrictMode.VmPolicy.Builder builder = new StrictMode.VmPolicy.Builder();
         StrictMode.setVmPolicy(builder.build());
         mProgressDialog = new ProgressDialog(getActivity());
+        
+        FragmentManager fragmentManager = getChildFragmentManager();
+        PromptDiaglog newFragment = new PromptDiaglog();
+        newFragment.show(fragmentManager, "dialog");
     }
 
     @Nullable
@@ -83,27 +87,29 @@ public class CreateYourStoryFragment extends Fragment implements View.OnClickLis
         sharePic = (CardView) root.findViewById(R.id.picture_card_view);
         shareVideo = (CardView) root.findViewById(R.id.video_card_view);
         uploadPic = (CardView) root.findViewById(R.id.upload_card_view);
-
+        promptBttn = (FloatingActionButton) root.findViewById(R.id.prompt_fab);
+        promptBttn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                    FragmentManager fragmentManager = getChildFragmentManager();
+                    PromptDiaglog newFragment = new PromptDiaglog();
+                    newFragment.show(fragmentManager, "dialog");
+                }
+        });
         sharePicTv = (TextView) root.findViewById(R.id.share_photo_tv);
         shareVideoTv = (TextView) root.findViewById(R.id.share_video_tv);
         uploadPicTv = (TextView) root.findViewById(R.id.upload_photo_tv);
 
-//        title = (TextView) root.findViewById(R.id.create_title_tv);
         Typeface titleFont = Typeface.createFromAsset(root.getContext().getAssets(), "ArimaMadurai-Regular.ttf");
-//        title.setTypeface(titleFont);
         Typeface bodyFont = Typeface.createFromAsset(root.getContext().getAssets(), "Raleway-Regular.ttf");
-//        prompt = (TextView) root.findViewById(R.id.create_prompt_tv);
-//        prompt.setTypeface(bodyFont);
+
 
         sharePicTv.setTypeface(titleFont);
         shareVideoTv.setTypeface(titleFont);
         uploadPicTv.setTypeface(titleFont);
 
-//        takePhoto = (ImageButton) root.findViewById(R.id.camera_button_create);
         sharePic.setOnClickListener(this);
-//        takeVideo = (ImageButton) root.findViewById(R.id.video_button_create);
         shareVideo.setOnClickListener(this);
-//        selectImage = (ImageButton) root.findViewById(R.id.pic_image_create);
         uploadPic.setOnClickListener(this);
         setActionBarTitle(root);
         setHasOptionsMenu(true);
