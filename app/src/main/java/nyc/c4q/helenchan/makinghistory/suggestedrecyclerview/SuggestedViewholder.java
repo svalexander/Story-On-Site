@@ -1,20 +1,12 @@
 package nyc.c4q.helenchan.makinghistory.suggestedrecyclerview;
 
-import android.content.Intent;
-import android.graphics.Color;
 import android.graphics.Typeface;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.squareup.picasso.Picasso;
-
-import org.w3c.dom.Text;
-
 import nyc.c4q.helenchan.makinghistory.R;
-import nyc.c4q.helenchan.makinghistory.ViewContentActivity;
 import nyc.c4q.helenchan.makinghistory.suggestedrecyclerview.models.SuggestedItem;
 
 /**
@@ -22,6 +14,7 @@ import nyc.c4q.helenchan.makinghistory.suggestedrecyclerview.models.SuggestedIte
  */
 
 public class SuggestedViewholder extends RecyclerView.ViewHolder {
+
     private ImageView sggstdBttn;
     public TextView sggstdTitle;
     public View overlay;
@@ -43,8 +36,5 @@ public class SuggestedViewholder extends RecyclerView.ViewHolder {
         sggstdTitle.setText(suggestedItem.getCity());
     }
 
-    public void initViews() {
-
-    }
 }
 

@@ -148,7 +148,6 @@ public class UserProfileActivity extends AppCompatActivity implements UserPicsFr
                 startActivity(intent);
                 return true;
             case android.R.id.home:
-
                 NavUtils.navigateUpFromSameTask(this);
                 return true;
             default:
