@@ -22,7 +22,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
 
-        <activity android:name=".SignInActivity">
+        <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -48,8 +48,7 @@
                 android:resource="@xml/file_paths" />
         </provider>
 
-        <activity android:name=".MainActivity" />
-        <activity android:name=".SplashActivity" />
+        <activity android:name=".SignInActivity" />
         <activity
             android:name=".BaseActivity"
             android:screenOrientation="portrait" />
@@ -73,6 +72,8 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".UserProfileActivity"/>
         </activity>
+        <activity android:name=".UserFavoriteDetailActivity" />
+
     </application>
 
 </manifest>

@@ -41,7 +41,7 @@ public class SignInActivity extends AppCompatActivity {
                 FirebaseUser user = firebaseAuth.getCurrentUser();
                 if (user != null) {
                     mUsername = user.getDisplayName();
-                    Intent intent = new Intent(SignInActivity.this, MainActivity.class);
+                    Intent intent = new Intent(SignInActivity.this, BaseActivity.class);
                     intent.putExtra(USERNAME, mUsername);
                     startActivity(intent);
 
