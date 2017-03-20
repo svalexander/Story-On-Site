@@ -19,15 +19,6 @@
             android:layout_height="match_parent" />
 
 
-        <Button
-            android:id="@+id/location_search_btn"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentRight="true"
-
-            android:visibility="invisible" />
-
         <android.support.design.widget.FloatingActionButton
             android:id="@+id/search_fab"
             android:layout_width="wrap_content"
@@ -67,8 +58,8 @@
                         android:layout_weight="3"
                         android:background="@color/retro_white"
                         android:ems="10"
-                        android:imeOptions="actionDone"
                         android:hint="@string/Enter_search_loc"
+                        android:imeOptions="actionDone"
                         android:inputType="textCapSentences|textImeMultiLine">
 
                         <requestFocus />
