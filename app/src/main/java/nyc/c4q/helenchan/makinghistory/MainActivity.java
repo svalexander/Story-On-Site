@@ -54,18 +54,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             }
         }, 1500);
 
-//        intentHandler = new Handler();
-//
-//        intentHandler.postDelayed(new Runnable() {
-//            @Override
-//            public void run() {
-//
-//                Intent intent = new Intent(MainActivity.this, SignInActivity.class);
-//                startActivity(intent);
-//            }
-//        }, 3000);
-
-
     }
 
     private void initViews() {
@@ -87,10 +75,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         newPic.setVisibility(View.VISIBLE);
         newPic.animate().alpha(1f).setDuration(medAnimLength).setStartDelay(1500).setListener(null);
 
-        oldPic.animate().alpha(0f).setDuration(medAnimLength).setStartDelay(2000).setListener(new AnimatorListenerAdapter() {
+        oldPic.animate().alpha(0f).setDuration(medAnimLength).setStartDelay(1500).setListener(new AnimatorListenerAdapter() {
             @Override
             public void onAnimationEnd(Animator animation) {
                 oldPic.setVisibility(View.GONE);
+                Intent intent = new Intent(MainActivity.this, SignInActivity.class);
+                startActivity(intent);
             }
         });
 
