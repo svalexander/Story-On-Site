@@ -19,7 +19,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:scaleType="centerCrop"
-            android:src="@drawable/highline_construction_smaller" />
+            android:src="@drawable/highline_construction_three" />
         <ImageView
             android:id="@+id/new_pic"
             android:layout_width="match_parent"

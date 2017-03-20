@@ -99,8 +99,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.activity_main:
-                Intent goToBaseActivityIntent = new Intent(MainActivity.this, BaseActivity.class);
-                startActivity(goToBaseActivityIntent);
+                Intent skipAheadIntent = new Intent(MainActivity.this, SignInActivity.class);
+                startActivity(skipAheadIntent);
         }
     }
 
