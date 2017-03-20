@@ -37,7 +37,7 @@
     <string name="bio">Bio</string>
     <string name="chooser_title">Choose how you want to share</string>
     <string name="search">Search</string>
-    <string name="Enter_search_loc"> Enter Search Location Here</string>
+    <string name="Enter_search_loc"> Enter Location To Search</string>
 
     <string-array name="camera_or_gallery">
         <item>Camera</item>

@@ -199,11 +199,10 @@ public class UserProfileActivity extends AppCompatActivity implements UserPicsFr
 
     private void uploadingCamPicToStorage(final ProgressDialog picuploadProgress, ByteArrayOutputStream byteArrayOutputStream) {
         String randomID = java.util.UUID.randomUUID().toString();
-        storageProfilePicRef.child(randomID);
         picuploadProgress.setMessage("Setting Picture");
         picuploadProgress.show();
         byte[] photoByteArray = byteArrayOutputStream.toByteArray();
-        final UploadTask uploadTask = storageProfilePicRef.putBytes(photoByteArray);
+        final UploadTask uploadTask = storageProfilePicRef.child(randomID).putBytes(photoByteArray);
         uploadTask.addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
             @Override
             public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
@@ -319,6 +318,7 @@ public class UserProfileActivity extends AppCompatActivity implements UserPicsFr
             case R.id.user_profile_photo:
                 whereToGetPicFromDialogueBox();
                 break;
+
             case R.id.user_profile_bio:
                 userProfileBio.setVisibility(View.INVISIBLE);
                 if (userProfileBio.length() != 0) {
@@ -327,6 +327,7 @@ public class UserProfileActivity extends AppCompatActivity implements UserPicsFr
                 }
                 userProfileEdittext.setVisibility(View.VISIBLE);
                 break;
+
             case R.id.user_bio_edittext:
                 userProfileEdittext.setVisibility(View.INVISIBLE);
                 userProfileBio.setVisibility(View.VISIBLE);
