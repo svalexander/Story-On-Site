@@ -28,7 +28,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private int shortAnimLength;
     private int medAnimLength;
     private Handler animationHandler;
-    private Handler intentHandler;
     private RelativeLayout slidingLogo;
 
 
@@ -75,7 +74,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         newPic.setVisibility(View.VISIBLE);
         newPic.animate().alpha(1f).setDuration(medAnimLength).setStartDelay(1500).setListener(null);
 
-        oldPic.animate().alpha(0f).setDuration(medAnimLength).setStartDelay(1500).setListener(new AnimatorListenerAdapter() {
+        oldPic.animate().alpha(0f).setDuration(medAnimLength).setStartDelay(1250).setListener(new AnimatorListenerAdapter() {
             @Override
             public void onAnimationEnd(Animator animation) {
                 oldPic.setVisibility(View.GONE);
