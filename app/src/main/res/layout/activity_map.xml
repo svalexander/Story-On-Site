@@ -7,23 +7,11 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <!--<RelativeLayout-->
-        <!--android:layout_width="fill_parent"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:gravity="center_vertical">-->
-
         <fragment
             android:id="@+id/map"
             android:name="com.google.android.gms.maps.SupportMapFragment"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
-
-        <!--<LinearLayout-->
-            <!--android:layout_width="match_parent"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:layout_alignParentBottom="true"-->
-            <!--android:gravity="end|bottom">-->
-
 
             <android.support.design.widget.FloatingActionButton
                 android:id="@+id/search_fab"
@@ -102,8 +90,5 @@
                 </android.support.v7.widget.Toolbar>
 
             </io.codetail.widget.RevealFrameLayout>
-
-        <!--</LinearLayout>-->
-    <!--</RelativeLayout>-->
 
 </android.support.design.widget.CoordinatorLayout>
