@@ -23,7 +23,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     private static final String TAG = "Main Activity";
     private LinearLayout mainLayout;
-    private ImageView iconIV;
     private ImageView oldPic;
     private ImageView newPic;
     private int shortAnimLength;
@@ -51,21 +50,20 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             public void run() {
                 slidingLogo.startAnimation(AnimationUtils.loadAnimation(getApplicationContext(), android.R.anim.slide_out_right));
                 slidingLogo.setVisibility(View.GONE);
-                 crossfadeAnimation();
+                crossfadeAnimation();
             }
-        }, 1000);
+        }, 1500);
 
         intentHandler = new Handler();
 
-        animationHandler.postDelayed(new Runnable() {
+        intentHandler.postDelayed(new Runnable() {
             @Override
             public void run() {
-                //go to baseactivity if logged in, otherwise go to log in
 
                 Intent intent = new Intent(MainActivity.this, SignInActivity.class);
                 startActivity(intent);
             }
-        }, 2500);
+        }, 3000);
 
 
     }
@@ -73,7 +71,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private void initViews() {
 
         mainLayout = (LinearLayout) findViewById(R.id.activity_main);
-        iconIV = (ImageView) findViewById(R.id.logoIV);
         oldPic = (ImageView) findViewById(R.id.old_pic);
         newPic = (ImageView) findViewById(R.id.new_pic);
         slidingLogo = (RelativeLayout) findViewById(R.id.sliding_logo);
@@ -88,7 +85,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         newPic.setAlpha(0f);
         newPic.setVisibility(View.VISIBLE);
-        newPic.animate().alpha(1f).setDuration(medAnimLength).setStartDelay(1000).setListener(null);
+        newPic.animate().alpha(1f).setDuration(medAnimLength).setStartDelay(1500).setListener(null);
 
         oldPic.animate().alpha(0f).setDuration(medAnimLength).setStartDelay(2000).setListener(new AnimatorListenerAdapter() {
             @Override
@@ -102,9 +99,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     @Override
     public View onCreateView(View parent, String name, Context context, AttributeSet attrs) {
-        // setAnimations();
         return super.onCreateView(parent, name, context, attrs);
-
     }
 
     private void setListeners() {
@@ -127,7 +122,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     @Override
     public void onAnimationEnd(Animation animation) {
-     //   crossfadeAnimation();
 
     }
 

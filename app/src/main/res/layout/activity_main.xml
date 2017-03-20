@@ -19,7 +19,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:scaleType="centerCrop"
-            android:alpha="0.5"
+            android:alpha="0.9"
             android:src="@drawable/highline_construction_three" />
         <ImageView
             android:id="@+id/new_pic"
@@ -42,7 +42,7 @@
                 android:layout_width="115dp"
                 android:layout_height="115dp"
                 android:layout_centerVertical="true"
-                android:tint="@color/retro_brown"
+                android:tint="@color/white_text"
                 android:src="@drawable/sos_small_house_purple" />
 
             <ImageView
@@ -50,7 +50,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
-                android:tint="@color/retro_brown"
+                android:tint="@color/white_text"
                 android:layout_marginTop="300dp"
                 android:layout_toRightOf="@id/logoIV"
 
