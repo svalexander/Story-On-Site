@@ -8,54 +8,75 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:scaleType="centerCrop"
-        android:src="@drawable/highline3"
-        />
+        android:src="@drawable/highline3" />
+
     <ImageView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:scaleType="centerCrop"
-        android:background="@drawable/rectangle"
         android:layout_margin="30dp"
-        />
+        android:background="@drawable/rectangle"
+        android:scaleType="centerCrop" />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
         android:layout_gravity="center_vertical"
-        android:layout_margin="20dp"
         android:background="#99FFFFFF"
         android:gravity="center"
         android:orientation="vertical">
 
         <RelativeLayout
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="15dp"
-            android:paddingLeft="50dp"
-            android:paddingRight="50dp">
+            android:layout_height="wrap_content">
 
-            <ImageView
-                android:id="@+id/logoIV"
-                android:layout_width="75dp"
-                android:layout_height="75dp"
-                android:layout_centerVertical="true"
-                android:src="@drawable/sos_small_house_purple"
-                android:tint="@color/retro_brown" />
-
-            <ImageView
-                android:id="@+id/storyIV"
+            <RelativeLayout
+                android:id="@+id/logoSet"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignBottom="@+id/logoIV"
-                android:layout_alignTop="@+id/logoIV"
-                android:layout_toRightOf="@id/logoIV"
-                android:src="@drawable/sos_logotype_purple"
-                android:tint="@color/retro_brown" />
+                android:layout_marginLeft="50dp"
+                android:layout_marginRight="50dp"
+                android:layout_marginTop="15dp">
+
+                <ImageView
+                    android:id="@+id/logoIV"
+                    android:layout_width="75dp"
+                    android:layout_height="75dp"
+                    android:layout_centerVertical="true"
+                    android:src="@drawable/sos_small_house_purple"
+                    android:tint="@color/retro_brown" />
+
+                <ImageView
+                    android:id="@+id/storyIV"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignBottom="@+id/logoIV"
+                    android:layout_alignTop="@+id/logoIV"
+                    android:layout_toRightOf="@id/logoIV"
+                    android:src="@drawable/sos_logotype_purple"
+                    android:tint="@color/retro_brown" />
+
+            </RelativeLayout>
+
+            <android.support.design.widget.FloatingActionButton
+                android:id="@+id/prompt_fab"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentTop="true"
+                android:layout_marginEnd="21dp"
+                android:layout_marginRight="21dp"
+                android:cropToPadding="true"
+                android:padding="1dp"
+                android:src="@drawable/ic_question_mark"
+                app:fabSize="mini"
+                app:backgroundTint="@color/testingGry"/>
 
         </RelativeLayout>
 
         <android.support.v7.widget.CardView
-            android:backgroundTint="@color/retro_teal"
             android:id="@+id/video_card_view"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -63,6 +84,7 @@
             android:layout_marginLeft="40dp"
             android:layout_marginRight="40dp"
             android:layout_marginTop="20dp"
+            android:backgroundTint="@color/retro_teal"
             app:cardCornerRadius="3dp">
 
             <RelativeLayout
@@ -70,13 +92,13 @@
                 android:layout_height="wrap_content">
 
                 <ImageView
-                    android:layout_marginBottom="6dp"
-                    android:layout_marginTop="6dp"
                     android:id="@+id/video_button_create"
                     android:layout_width="@dimen/button_size"
                     android:layout_height="@dimen/button_size"
+                    android:layout_marginBottom="6dp"
                     android:layout_marginLeft="20dp"
                     android:layout_marginStart="20dp"
+                    android:layout_marginTop="6dp"
                     android:background="@drawable/round_button_cream"
                     android:padding="@dimen/img_bttn_padding"
                     android:scaleType="fitCenter"
@@ -95,10 +117,10 @@
                     android:textSize="@dimen/share_text_size" />
 
             </RelativeLayout>
+
         </android.support.v7.widget.CardView>
 
         <android.support.v7.widget.CardView
-            android:backgroundTint="@color/retro_teal"
             android:id="@+id/picture_card_view"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -106,6 +128,7 @@
             android:layout_marginLeft="40dp"
             android:layout_marginRight="40dp"
             android:layout_marginTop="10dp"
+            android:backgroundTint="@color/retro_teal"
             app:cardCornerRadius="3dp">
 
             <RelativeLayout
@@ -113,13 +136,13 @@
                 android:layout_height="wrap_content">
 
                 <ImageView
-                    android:layout_marginBottom="6dp"
-                    android:layout_marginTop="6dp"
                     android:id="@+id/camera_button_create"
                     android:layout_width="@dimen/button_size"
                     android:layout_height="@dimen/button_size"
+                    android:layout_marginBottom="6dp"
                     android:layout_marginLeft="20dp"
                     android:layout_marginStart="20dp"
+                    android:layout_marginTop="6dp"
                     android:background="@drawable/round_button_cream"
                     android:padding="@dimen/img_bttn_padding"
                     android:scaleType="fitCenter"
@@ -141,7 +164,6 @@
         </android.support.v7.widget.CardView>
 
         <android.support.v7.widget.CardView
-            android:backgroundTint="@color/retro_teal"
             android:id="@+id/upload_card_view"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -149,6 +171,7 @@
             android:layout_marginLeft="40dp"
             android:layout_marginRight="40dp"
             android:layout_marginTop="10dp"
+            android:backgroundTint="@color/retro_teal"
             app:cardCornerRadius="3dp">
 
             <RelativeLayout
@@ -156,13 +179,13 @@
                 android:layout_height="wrap_content">
 
                 <ImageView
-                    android:layout_marginTop="6dp"
-                    android:layout_marginBottom="6dp"
                     android:id="@+id/pic_image_create"
                     android:layout_width="@dimen/button_size"
                     android:layout_height="@dimen/button_size"
+                    android:layout_marginBottom="6dp"
                     android:layout_marginLeft="20dp"
                     android:layout_marginStart="20dp"
+                    android:layout_marginTop="6dp"
                     android:background="@drawable/round_button_cream"
                     android:padding="@dimen/img_bttn_padding"
                     android:scaleType="fitCenter"
