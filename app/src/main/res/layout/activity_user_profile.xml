@@ -30,48 +30,26 @@
                     android:layout_height="@dimen/profile_img_wh"
                     android:layout_marginBottom="30dp"
                     android:background="@color/testingGry" />
-
-
+                
             </FrameLayout>
-
-            <TextView
-                android:id="@+id/user_num_photos"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/user_profile_margin_left"
-                android:layout_toRightOf="@id/profilePicLayout"
-                android:text="0"
-                android:textSize="18dp" />
-
-        <TextView
-            android:id="@+id/user_photos_taken"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/activity_vertical_margin"
-            android:layout_marginLeft="5dp"
-            android:layout_marginTop="5dp"
-            android:layout_toRightOf="@id/user_num_photos"
-            android:text="photos"
-            android:textColor="@color/retro_brown"
-            android:textSize="12dp" />
 
         <TextView
             android:id="@+id/user_profile_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@id/user_num_photos"
             android:layout_marginBottom="4dp"
             android:layout_marginLeft="25dp"
             android:layout_toRightOf="@id/profilePicLayout"
             android:textAllCaps="true"
             android:textColor="@color/brightBlue"
             android:textSize="@dimen/profile_user_name"
+            android:text="USERNAME"
             android:textStyle="bold" />
 
         <FrameLayout
+            android:id="@+id/profile_bio_container"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_alignBottom="@id/profilePicLayout"
+            android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:layout_below="@+id/user_profile_name"
             android:layout_marginLeft="@dimen/user_profile_margin_left"
@@ -83,13 +61,14 @@
                 android:layout_height="match_parent"
                 android:ellipsize="end"
                 android:maxLines="4"
+                android:text="Bio here"
                 android:textColor="@color/retro_brown"
                 android:textSize="15sp" />
 
             <EditText
                 android:id="@+id/user_bio_edittext"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="70dp"
                 android:hint="@string/bio"
                 android:inputType="textCapSentences|textImeMultiLine"
                 android:visibility="invisible"
@@ -97,6 +76,32 @@
                 android:imeOptions="actionDone"/>
 
         </FrameLayout>
+
+            <TextView
+                android:id="@+id/user_num_photos"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/profile_bio_container"
+                android:layout_marginLeft="@dimen/user_profile_margin_left"
+                android:layout_toRightOf="@id/profilePicLayout"
+                android:text="0"
+                android:layout_alignBottom="@id/profilePicLayout"
+                android:textSize="18dp" />
+
+            <TextView
+                android:id="@+id/user_photos_taken"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+                android:layout_marginTop="5dp"
+                android:layout_below="@id/profile_bio_container"
+                android:layout_toRightOf="@id/user_num_photos"
+                android:text="photos"
+                android:textColor="@color/retro_brown"
+                android:textSize="12dp"
+                android:layout_alignBottom="@+id/user_num_photos"
+                android:layout_alignRight="@+id/user_profile_name"
+                android:layout_alignEnd="@+id/user_profile_name"/>
 
         </RelativeLayout>
 
