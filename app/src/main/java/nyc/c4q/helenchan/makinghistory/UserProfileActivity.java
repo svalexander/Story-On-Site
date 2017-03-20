@@ -299,7 +299,7 @@ public class UserProfileActivity extends AppCompatActivity implements UserPicsFr
 
     @Override
     public void updatePhotoCount(int count) {
-        userPhotoCountTv.setText(String.valueOf(count));
+        userPhotoCountTv.setText(String.valueOf(count) + " photos");
     }
 
     private void whereToGetPicFromDialogueBox() {

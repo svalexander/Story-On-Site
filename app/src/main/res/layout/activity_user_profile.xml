@@ -30,7 +30,7 @@
                     android:layout_height="@dimen/profile_img_wh"
                     android:layout_marginBottom="30dp"
                     android:background="@color/testingGry" />
-                
+
             </FrameLayout>
 
         <TextView
@@ -88,20 +88,19 @@
                 android:layout_alignBottom="@id/profilePicLayout"
                 android:textSize="18dp" />
 
-            <TextView
-                android:id="@+id/user_photos_taken"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="5dp"
-                android:layout_marginTop="5dp"
-                android:layout_below="@id/profile_bio_container"
-                android:layout_toRightOf="@id/user_num_photos"
-                android:text="photos"
-                android:textColor="@color/retro_brown"
-                android:textSize="12dp"
-                android:layout_alignBottom="@+id/user_num_photos"
-                android:layout_alignRight="@+id/user_profile_name"
-                android:layout_alignEnd="@+id/user_profile_name"/>
+            <!--<TextView-->
+                <!--android:id="@+id/user_photos_taken"-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_marginLeft="5dp"-->
+                <!--android:layout_marginTop="5dp"-->
+                <!--android:layout_below="@id/profile_bio_container"-->
+                <!--android:layout_toRightOf="@id/user_num_photos"-->
+                <!--android:text="photos"-->
+                <!--android:textColor="@color/retro_brown"-->
+                <!--android:textSize="12dp"-->
+                <!--android:layout_alignRight="@+id/user_profile_name"-->
+                <!--android:layout_alignEnd="@+id/user_profile_name"/>-->
 
         </RelativeLayout>
 
