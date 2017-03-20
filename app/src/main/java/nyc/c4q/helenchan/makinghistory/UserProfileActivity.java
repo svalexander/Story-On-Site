@@ -315,11 +315,11 @@ public class UserProfileActivity extends AppCompatActivity implements UserPicsFr
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case user_profile_photo:
+            case R.id.user_profile_photo:
                 whereToGetPicFromDialogueBox();
                 break;
 
-            case user_profile_bio:
+            case R.id.user_profile_bio:
                 userProfileBio.setVisibility(View.INVISIBLE);
                 if (userProfileBio.length() != 0) {
                     userBio = userProfileBio.getText().toString();
@@ -328,7 +328,7 @@ public class UserProfileActivity extends AppCompatActivity implements UserPicsFr
                 userProfileEdittext.setVisibility(View.VISIBLE);
                 break;
 
-            case user_bio_edittext:
+            case R.id.user_bio_edittext:
                 userProfileEdittext.setVisibility(View.INVISIBLE);
                 userProfileBio.setVisibility(View.VISIBLE);
                 if (userProfileEdittext.length() != 0) {
