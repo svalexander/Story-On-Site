@@ -10,34 +10,6 @@
 
     tools:context="nyc.c4q.helenchan.makinghistory.MainActivity">
 
-    <!--<android.support.v7.widget.CardView-->
-    <!--android:id="@+id/main_card"-->
-    <!--android:layout_width="300dp"-->
-    <!--android:layout_height="400dp"-->
-    <!--app:cardPreventCornerOverlap="false"-->
-    <!--android:layout_gravity="center">-->
-
-    <!--<ImageView-->
-    <!--android:id="@+id/main_pic_iv"-->
-    <!--android:layout_width="match_parent"-->
-    <!--android:layout_height="match_parent"-->
-    <!--android:layout_gravity="center_horizontal"-->
-    <!--android:paddingTop="@dimen/main_pic_margin" />-->
-
-    <!--<TextView-->
-    <!--android:id="@+id/main_pic_tv"-->
-    <!--android:layout_width="wrap_content"-->
-    <!--android:layout_height="wrap_content"-->
-    <!--android:layout_gravity="bottom"-->
-    <!--android:layout_marginTop="@dimen/main_pic_margin"-->
-    <!--android:ellipsize="end"-->
-    <!--android:maxLines="6"-->
-    <!--android:text="@string/samuel_ipsum" />-->
-    <!--</android.support.v7.widget.CardView>-->
-
-
-
-
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
@@ -56,6 +28,7 @@
             android:visibility="gone" />
 
         <RelativeLayout
+            android:id="@+id/sliding_logo"
             android:paddingRight="16dp"
             android:paddingLeft="16dp"
             android:layout_width="wrap_content"
