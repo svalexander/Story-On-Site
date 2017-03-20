@@ -17,6 +17,7 @@ import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -45,10 +46,10 @@ import com.google.firebase.storage.UploadTask;
 import java.io.ByteArrayOutputStream;
 
 import me.anwarshahriar.calligrapher.Calligrapher;
-import nyc.c4q.helenchan.makinghistory.models.Profile;
-import nyc.c4q.helenchan.makinghistory.usercontentrecyclerview.UserContentAdapter;
 import nyc.c4q.helenchan.makinghistory.userprofileviewpager.UserPicsFragment;
 import nyc.c4q.helenchan.makinghistory.userprofileviewpager.UserViewPagerAdapter;
+import nyc.c4q.helenchan.makinghistory.models.Profile;
+import nyc.c4q.helenchan.makinghistory.usercontentrecyclerview.UserContentAdapter;
 
 import static nyc.c4q.helenchan.makinghistory.R.id.user_bio_edittext;
 import static nyc.c4q.helenchan.makinghistory.R.id.user_profile_bio;
@@ -145,7 +146,6 @@ public class UserProfileActivity extends AppCompatActivity implements UserPicsFr
                 AuthUI.getInstance().signOut(this);
                 Intent intent = new Intent(UserProfileActivity.this, SignInActivity.class);
                 startActivity(intent);
-                Log.i(TAG, "signing you out!");
                 return true;
             case android.R.id.home:
                 NavUtils.navigateUpFromSameTask(this);
@@ -298,7 +298,7 @@ public class UserProfileActivity extends AppCompatActivity implements UserPicsFr
 
     @Override
     public void updatePhotoCount(int count) {
-        userPhotoCountTv.setText(String.valueOf(count));
+        userPhotoCountTv.setText(String.valueOf(count) + " photos");
     }
 
     private void whereToGetPicFromDialogueBox() {
