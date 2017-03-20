@@ -98,7 +98,7 @@ public class UserProfileActivity extends AppCompatActivity implements UserPicsFr
         initViews();
         loadSavedPicAndText();
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setTitle("Your Profile");
+        getSupportActionBar().setTitle("My Profile");
 
         String userName = SignInActivity.mUsername;
         userNameTv.setText(userName);
@@ -199,11 +199,10 @@ public class UserProfileActivity extends AppCompatActivity implements UserPicsFr
 
     private void uploadingCamPicToStorage(final ProgressDialog picuploadProgress, ByteArrayOutputStream byteArrayOutputStream) {
         String randomID = java.util.UUID.randomUUID().toString();
-        storageProfilePicRef.child(randomID);
         picuploadProgress.setMessage("Setting Picture");
         picuploadProgress.show();
         byte[] photoByteArray = byteArrayOutputStream.toByteArray();
-        final UploadTask uploadTask = storageProfilePicRef.putBytes(photoByteArray);
+        final UploadTask uploadTask = storageProfilePicRef.child(randomID).putBytes(photoByteArray);
         uploadTask.addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
             @Override
             public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
@@ -316,10 +315,11 @@ public class UserProfileActivity extends AppCompatActivity implements UserPicsFr
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case user_profile_photo:
+            case R.id.user_profile_photo:
                 whereToGetPicFromDialogueBox();
                 break;
-            case user_profile_bio:
+
+            case R.id.user_profile_bio:
                 userProfileBio.setVisibility(View.INVISIBLE);
                 if (userProfileBio.length() != 0) {
                     userBio = userProfileBio.getText().toString();
@@ -327,7 +327,8 @@ public class UserProfileActivity extends AppCompatActivity implements UserPicsFr
                 }
                 userProfileEdittext.setVisibility(View.VISIBLE);
                 break;
-            case user_bio_edittext:
+
+            case R.id.user_bio_edittext:
                 userProfileEdittext.setVisibility(View.INVISIBLE);
                 userProfileBio.setVisibility(View.VISIBLE);
                 if (userProfileEdittext.length() != 0) {

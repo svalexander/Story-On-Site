@@ -61,7 +61,7 @@ public class UserPhotoDetailActivity extends AppCompatActivity {
 
         setFontType();
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setTitle("Your Photo");
+        getSupportActionBar().setTitle("My Photo");
 
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
@@ -76,6 +76,19 @@ public class UserPhotoDetailActivity extends AppCompatActivity {
                         .into(userPhotoDetailImageView);
             }
         }
+
+        userSharePhotoBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(Intent.ACTION_SEND);
+                String title = getResources().getString(R.string.chooser_title);
+                Intent chooser = Intent.createChooser(intent, title);
+                if (intent.resolveActivity(getPackageManager()) != null) {
+                    startActivity(chooser);
+                }
+            }
+        });
+
 
         userDeletePhotoBtn.setOnClickListener(new View.OnClickListener() {
             @Override
