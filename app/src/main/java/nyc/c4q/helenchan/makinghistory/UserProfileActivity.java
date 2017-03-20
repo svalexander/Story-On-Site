@@ -17,7 +17,9 @@ import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.RecyclerView;
+import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
@@ -27,6 +29,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.firebase.ui.auth.AuthUI;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
@@ -42,10 +45,10 @@ import com.google.firebase.storage.UploadTask;
 import java.io.ByteArrayOutputStream;
 
 import me.anwarshahriar.calligrapher.Calligrapher;
-import nyc.c4q.helenchan.makinghistory.userprofileviewpager.UserPicsFragment;
-import nyc.c4q.helenchan.makinghistory.userprofileviewpager.UserViewPagerAdapter;
 import nyc.c4q.helenchan.makinghistory.models.Profile;
 import nyc.c4q.helenchan.makinghistory.usercontentrecyclerview.UserContentAdapter;
+import nyc.c4q.helenchan.makinghistory.userprofileviewpager.UserPicsFragment;
+import nyc.c4q.helenchan.makinghistory.userprofileviewpager.UserViewPagerAdapter;
 
 import static nyc.c4q.helenchan.makinghistory.R.id.user_bio_edittext;
 import static nyc.c4q.helenchan.makinghistory.R.id.user_profile_bio;
@@ -129,14 +132,27 @@ public class UserProfileActivity extends AppCompatActivity implements UserPicsFr
     }
 
     @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.profile_signout_menu, menu);
+        return true;
+    }
+
+    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
+            case R.id.user_profile_signout:
+                AuthUI.getInstance().signOut(this);
+                Intent intent = new Intent(UserProfileActivity.this, SignInActivity.class);
+                startActivity(intent);
+                Log.i(TAG, "signing you out!");
+                return true;
             case android.R.id.home:
-
                 NavUtils.navigateUpFromSameTask(this);
                 return true;
+            default:
+                return super.onOptionsItemSelected(item);
         }
-        return super.onOptionsItemSelected(item);
     }
 
 
