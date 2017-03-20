@@ -86,7 +86,7 @@ public class FindLocation implements GoogleApiClient.ConnectionCallbacks, Google
                     MapPoint mp = ds.getValue(MapPoint.class);
                     mapLocation.setLatitude(mp.getLatitude());
                     mapLocation.setLongitude(mp.getLongitude());
-                    if(userLocation.distanceTo(mapLocation)<2600.0){
+                    if(userLocation.distanceTo(mapLocation)<322){
                         locationKey = String.valueOf(ds.getKey());
                         temp = true;
                         break;

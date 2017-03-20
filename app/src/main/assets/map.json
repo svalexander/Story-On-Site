@@ -2598,6 +2598,222 @@
           40.741356
         ]
       }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "C4Q",
+        "type": "st:Photo",
+        "name": " 31-00 47th Ave, Long Island City",
+        "data": {
+          "uuid": "falchi-id",
+          "imageId": "falchi-id2",
+          "text": "C4Q HQ, Falchi Building",
+          "folder": "47th Ave between 31st Pl and 31st Street",
+          "url": "",
+          "imageUrl": "",
+          "nyplUrl": ""
+        }
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -73.935531,
+          40.741943
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "CUNY Law School",
+        "type": "st:Photo",
+        "name": "217 51st Ave, Long Island City, NY",
+        "data": {
+          "uuid": "CUNYlaw-id",
+          "imageId": "CUNYlaw-id2",
+          "text": "CUNY Law Building",
+          "folder": " ",
+          "url": "",
+          "imageUrl": "",
+          "nyplUrl": ""
+        }
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -73.943721,
+          40.747710
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "High Line",
+        "type": "st:Photo",
+        "name": "The High Line in Chelsea",
+        "data": {
+          "uuid": "highline-id",
+          "imageId": "highline-id2",
+          "text": "High Line near Google HQ",
+          "folder": " ",
+          "url": "",
+          "imageUrl": "",
+          "nyplUrl": ""
+        }
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -74.007036,
+          40.743801
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "Bedford Stuyvesant Restoration Corporation",
+        "type": "st:Photo",
+        "name": "Bedford Stuyvesant Restoration Corporation",
+        "data": {
+          "uuid": "restoration-id",
+          "imageId": "restoration-id2",
+          "text": "Restoration Corporation",
+          "folder": " ",
+          "url": "",
+          "imageUrl": "",
+          "nyplUrl": ""
+        }
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -73.945721,
+          40.680007
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "High Line",
+        "type": "st:Photo",
+        "name": "The High Line in Chelsea",
+        "data": {
+          "uuid": "highline-id",
+          "imageId": "highline-id2",
+          "text": "High Line near Google HQ",
+          "folder": " ",
+          "url": "",
+          "imageUrl": "",
+          "nyplUrl": ""
+        }
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -74.007036,
+          40.743801
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "The Avalon",
+        "type": "st:Photo",
+        "name": "The Avalon",
+        "data": {
+          "uuid": "avalon-id",
+          "imageId": "avalon-id2",
+          "text": "The Avalon",
+          "folder": " ",
+          "url": "",
+          "imageUrl": "",
+          "nyplUrl": ""
+        }
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -73.993822,
+          40.741117
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "House1",
+        "type": "st:Photo",
+        "name": "House1",
+        "data": {
+          "uuid": "house1-id",
+          "imageId": "house1-id2",
+          "text": "House1",
+          "folder": " ",
+          "url": "",
+          "imageUrl": "",
+          "nyplUrl": ""
+        }
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -73.780011,
+          40.714530
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "Google2",
+        "type": "st:Photo",
+        "name": "Google2",
+        "data": {
+          "uuid": "google2-id",
+          "imageId": "google2-id2",
+          "text": "google2",
+          "folder": " ",
+          "url": "",
+          "imageUrl": "",
+          "nyplUrl": ""
+        }
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -74.002125,
+          40.740971
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "Google3",
+        "type": "st:Photo",
+        "name": "Google3",
+        "data": {
+          "uuid": "google3-id",
+          "imageId": "google3-id2",
+          "text": "google3",
+          "folder": " ",
+          "url": "",
+          "imageUrl": "",
+          "nyplUrl": ""
+        }
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -74.004281,
+          40.741833
+        ]
+      }
     }
   ]
 }
