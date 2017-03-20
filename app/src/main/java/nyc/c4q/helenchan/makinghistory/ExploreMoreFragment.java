@@ -50,6 +50,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.List;
 
+import nyc.c4q.helenchan.makinghistory.models.Content;
 import nyc.c4q.helenchan.makinghistory.models.nypl.Feature;
 import nyc.c4q.helenchan.makinghistory.models.nypl.FeatureResponse;
 
@@ -285,9 +286,6 @@ public class ExploreMoreFragment extends Fragment implements OnMapReadyCallback,
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-
-
-        //        mFirebaseDatabase.child("MapPoint").child("Location3").child("ContentList").push().setValue(new Content("Highline", "Historical", "This was the highline a long time ago", "HighLine", "http://oldnyc-assets.nypl.org/600px/712105f-a.jpg", "1920"));
     }
 
     @Override
