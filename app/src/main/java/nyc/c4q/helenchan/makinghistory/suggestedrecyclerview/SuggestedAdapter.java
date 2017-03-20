@@ -24,9 +24,9 @@ import nyc.c4q.helenchan.makinghistory.suggestedrecyclerview.models.SuggestedIte
 public class SuggestedAdapter extends RecyclerView.Adapter<SuggestedViewholder> {
     private List<SuggestedItem> suggestedBttnList =
             new ArrayList<>(Arrays.asList(
-                    new SuggestedItem(R.drawable.coneyisland_suggested, "Coney Island"),
+                    new SuggestedItem(R.drawable.highlinebackground, "The Highline"),
                     new SuggestedItem(R.drawable.avalon, "The Avalon"),
-                    new SuggestedItem(R.drawable.idp_button_background_facebook, "The Highline")));
+                    new SuggestedItem(R.drawable.coneyisland_suggested, "Coney Island")));
 
     @Override
     public SuggestedViewholder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -44,14 +44,24 @@ public class SuggestedAdapter extends RecyclerView.Adapter<SuggestedViewholder> 
                 switch (temp) {
                     case 0:
                         Log.d("Tag", "click registered");
-                        Intent i = new Intent(view.getContext(), ViewContentActivity.class);
-                        i.putExtra("Latitude", 40.574933);
-                        i.putExtra("Longitude", -73.98593);
-                        view.getContext().startActivity(i);
+                        Intent highline = new Intent(view.getContext(), ViewContentActivity.class);
+                        highline.putExtra("Latitude", 40.743801);
+                        highline.putExtra("Longitude", -74.007036);
+                        view.getContext().startActivity(highline);
                         break;
                     case 1:
+                        Log.d("Tag", "click registered");
+                        Intent avalon = new Intent(view.getContext(), ViewContentActivity.class);
+                        avalon.putExtra("Latitude",  40.741117);
+                        avalon.putExtra("Longitude", -74.007036);
+                        view.getContext().startActivity(avalon);
                         break;
                     case 2:
+                        Log.d("Tag", "click registered");
+                        Intent coney = new Intent(view.getContext(), ViewContentActivity.class);
+                        coney.putExtra("Latitude", 40.574933);
+                        coney.putExtra("Longitude", -73.98593);
+                        view.getContext().startActivity(coney);
                         break;
                     default:
                 }
