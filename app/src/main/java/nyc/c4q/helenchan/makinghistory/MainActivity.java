@@ -54,16 +54,16 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             }
         }, 1500);
 
-        intentHandler = new Handler();
-
-        intentHandler.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-
-                Intent intent = new Intent(MainActivity.this, SignInActivity.class);
-                startActivity(intent);
-            }
-        }, 3000);
+//        intentHandler = new Handler();
+//
+//        intentHandler.postDelayed(new Runnable() {
+//            @Override
+//            public void run() {
+//
+//                Intent intent = new Intent(MainActivity.this, SignInActivity.class);
+//                startActivity(intent);
+//            }
+//        }, 3000);
 
 
     }
