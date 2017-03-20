@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.v4.app.NavUtils;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -18,8 +17,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -27,8 +24,6 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
-import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.StorageReference;
 
 import me.anwarshahriar.calligrapher.Calligrapher;
 
@@ -94,7 +89,7 @@ public class UserPhotoDetailActivity extends AppCompatActivity {
                         new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialogInterface, int i) {
-                                deleteUserPhotoFromStorage(userPhotoDetailUrl);
+//                                deleteUserPhotoFromStorage(userPhotoDetailUrl);
                                 deleteUserPhoto();
                             }
                         });
@@ -160,27 +155,27 @@ public class UserPhotoDetailActivity extends AppCompatActivity {
     }
 
     // ******** DELETE PHOTO FROM STORAGE -- NEEDS FIXING!!!! // *******
-    public void deleteUserPhotoFromStorage(String userPhotoUrl) {
-
-        Log.i(TAG, "photo url in delete storage method: " + userPhotoDetailUrl);
-
-        FirebaseStorage photoStorage = FirebaseStorage.getInstance();
-        StorageReference storageRef = photoStorage.getReference();
-
-        StorageReference photoToDeleteRef = storageRef.child(userPhotoUrl);
-
-        photoToDeleteRef.delete().addOnSuccessListener(new OnSuccessListener<Void>() {
-            @Override
-            public void onSuccess(Void aVoid) {
-                Log.i("User Profile Activity: ", "photo deleted");
-            }
-
-        }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-                Log.i("User Profile Activity: ", "Error occurred");
-            }
-        });
-    }
+//    public void deleteUserPhotoFromStorage(String userPhotoUrl) {
+//
+//        Log.i(TAG, "photo url in delete storage method: " + userPhotoDetailUrl);
+//
+//        FirebaseStorage photoStorage = FirebaseStorage.getInstance();
+//        StorageReference storageRef = photoStorage.getReference();
+//
+//        StorageReference photoToDeleteRef = storageRef.child(userPhotoUrl);
+//
+//        photoToDeleteRef.delete().addOnSuccessListener(new OnSuccessListener<Void>() {
+//            @Override
+//            public void onSuccess(Void aVoid) {
+//                Log.i("User Profile Activity: ", "photo deleted");
+//            }
+//
+//        }).addOnFailureListener(new OnFailureListener() {
+//            @Override
+//            public void onFailure(@NonNull Exception e) {
+//                Log.i("User Profile Activity: ", "Error occurred");
+//            }
+//        });
+//    }
 
 }
