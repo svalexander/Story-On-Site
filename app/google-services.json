@@ -15,6 +15,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "692156944361-vebh1ldgnbpgdkuiev3q8cgusk051ek2.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "nyc.c4q.helenchan.makinghistory",
+            "certificate_hash": "4379fdd6f9284e5e04a8c26b3d40f5d9b9526e19"
+          }
+        },
+        {
           "client_id": "692156944361-93e5lfeneotmv1dumc1g8f9t41r1o0qg.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {

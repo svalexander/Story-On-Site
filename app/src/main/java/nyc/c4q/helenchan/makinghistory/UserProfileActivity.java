@@ -98,7 +98,7 @@ public class UserProfileActivity extends AppCompatActivity implements UserPicsFr
         initViews();
         loadSavedPicAndText();
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setTitle("Your Profile");
+        getSupportActionBar().setTitle("My Profile");
 
         String userName = SignInActivity.mUsername;
         userNameTv.setText(userName);

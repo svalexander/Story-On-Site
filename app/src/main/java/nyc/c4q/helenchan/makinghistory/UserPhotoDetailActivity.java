@@ -61,7 +61,7 @@ public class UserPhotoDetailActivity extends AppCompatActivity {
 
         setFontType();
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setTitle("Your Photo");
+        getSupportActionBar().setTitle("My Photo");
 
         Bundle extras = getIntent().getExtras();
         if (extras != null) {

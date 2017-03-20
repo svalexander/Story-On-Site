@@ -15,6 +15,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.MediaController;
 import android.widget.Toast;
 import android.widget.VideoView;
@@ -33,6 +34,7 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
+import me.anwarshahriar.calligrapher.Calligrapher;
 import nyc.c4q.helenchan.makinghistory.models.Content;
 
 /**
@@ -52,6 +54,7 @@ public class EditContentActivity extends AppCompatActivity {
     private String photoLocationName;
     private String uploadID;
     private String typeOfUpload;
+    private LinearLayout editLayout;
 
     private DatabaseReference mFirebaseDatabase;
     private FirebaseStorage mFirebaseStorage;
@@ -66,6 +69,8 @@ public class EditContentActivity extends AppCompatActivity {
         setContentView(R.layout.activity_edit_content);
         setActionBarTitle();
         initialize();
+        setFontType();
+        
         if(Build.VERSION.SDK_INT >= 21) {
             getWindow().setStatusBarColor(Color.parseColor("#5e454b"));
         }
@@ -108,10 +113,19 @@ public class EditContentActivity extends AppCompatActivity {
         storyEditText = (EditText) findViewById(R.id.user_story_edittext);
         locationEditText = (EditText) findViewById(R.id.location_name_edittext);
         mProgressDialog = new ProgressDialog(EditContentActivity.this);
+        editLayout = (LinearLayout) findViewById(R.id.edit_layout);
     }
 
     private void setActionBarTitle() {
         (EditContentActivity.this).getSupportActionBar().setTitle(R.string.new_post);
+    }
+
+    private void setFontType() {
+        Calligrapher calligrapher = new Calligrapher(this);
+        calligrapher.setFont(this, "ArimaMadurai-Bold.ttf", true);
+
+        calligrapher.setFont(findViewById(R.id.edit_layout), "Raleway-Regular.ttf");
+//        calligrapher.setFont(findViewById(R.id.base_frame_Layout), "Raleway-Regular.ttf");
     }
 
     @Override
