@@ -2766,6 +2766,54 @@
           40.714530
         ]
       }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "Google2",
+        "type": "st:Photo",
+        "name": "Google2",
+        "data": {
+          "uuid": "google2-id",
+          "imageId": "google2-id2",
+          "text": "google2",
+          "folder": " ",
+          "url": "",
+          "imageUrl": "",
+          "nyplUrl": ""
+        }
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -74.002125,
+          40.740971
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "Google3",
+        "type": "st:Photo",
+        "name": "Google3",
+        "data": {
+          "uuid": "google3-id",
+          "imageId": "google3-id2",
+          "text": "google3",
+          "folder": " ",
+          "url": "",
+          "imageUrl": "",
+          "nyplUrl": ""
+        }
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -74.004281,
+          40.741833
+        ]
+      }
     }
   ]
 }
