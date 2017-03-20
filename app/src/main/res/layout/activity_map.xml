@@ -7,60 +7,95 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <!--<RelativeLayout-->
-    <!--android:layout_width="fill_parent"-->
-    <!--android:layout_height="wrap_content"-->
-    <!--android:layout_marginBottom="6dp"-->
-    <!--android:gravity="center_vertical"-->
-    <!--android:orientation="horizontal">-->
-
-    <!--<TextView-->
-    <!--android:id="@+id/locationTV"-->
-    <!--android:layout_width="wrap_content"-->
-    <!--android:layout_height="wrap_content"-->
-    <!--android:text="@string/location_label"-->
-    <!--android:textSize="20sp" />-->
-
-    <!--<EditText-->
-    <!--android:id="@+id/location_search_input"-->
-    <!--android:layout_width="wrap_content"-->
-    <!--android:layout_height="wrap_content"-->
-    <!--android:layout_alignBaseline="@+id/locationTV"-->
-    <!--android:layout_toEndOf="@+id/locationTV"-->
-    <!--android:layout_toLeftOf="@+id/location_search_btn"-->
-    <!--android:layout_toRightOf="@+id/locationTV"-->
-    <!--android:layout_toStartOf="@+id/location_search_btn"-->
-    <!--android:ems="10"-->
-    <!--android:inputType="textCapWords">-->
-
-    <!--<requestFocus />-->
-    <!--</EditText>-->
-
-    <!--<Button-->
-    <!--android:background="@color/teal_accent"-->
-    <!--android:textColor="@color/white_text"-->
-    <!--android:id="@+id/location_search_btn"-->
-    <!--android:layout_width="wrap_content"-->
-    <!--android:layout_height="wrap_content"-->
-    <!--android:layout_alignBaseline="@+id/locationTV"-->
-    <!--android:layout_alignParentEnd="true"-->
-    <!--android:layout_alignParentRight="true"-->
-    <!--android:text="Search" />-->
-    <!--</RelativeLayout>-->
-    <android.support.design.widget.FloatingActionButton
-        android:id="@+id/search_fab"
-        android:layout_width="wrap_content"
+    <RelativeLayout
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="bottom|end"
-        android:layout_marginBottom="16dp"
-        android:layout_marginRight="16dp"
-        android:src="@drawable/search"
-        android:tint="@color/white_text"
-        app:backgroundTint="@color/retro_brown" />
-    <fragment
-        android:id="@+id/map"
-        android:name="com.google.android.gms.maps.SupportMapFragment"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:gravity="center_vertical">
+
+        <fragment
+            android:id="@+id/map"
+            android:name="com.google.android.gms.maps.SupportMapFragment"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/search_fab"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentRight="true"
+            android:layout_marginBottom="6dp"
+            android:layout_marginRight="6dp"
+            android:src="@drawable/search"
+            android:tint="@color/white_text"
+            app:backgroundTint="@color/retro_brown"
+            app:fabSize="normal" />
+
+        <io.codetail.widget.RevealFrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true">
+
+            <!-- Transform view -->
+            <android.support.v7.widget.Toolbar
+                android:id="@+id/toolbar_fab"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:background="@color/retro_brown"
+                android:visibility="invisible">
+                <!-- Put view you like -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal">
+
+                    <EditText
+                        android:id="@+id/location_search_input"
+                        android:layout_width="wrap_content"
+                        android:layout_height="40dp"
+                        android:layout_gravity="center_vertical|center_horizontal"
+                        android:layout_weight="3"
+                        android:background="@color/retro_white"
+                        android:ems="10"
+                        android:hint="@string/Enter_search_loc"
+                        android:imeOptions="actionDone"
+                        android:inputType="textCapSentences|textImeMultiLine">
+
+                        <requestFocus />
+                    </EditText>
+
+                    <TextView
+                        android:id="@+id/search_location_map"
+                        android:layout_width="wrap_content"
+                        android:layout_height="40dp"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginTop="6dp"
+                        android:layout_weight="1"
+                        android:clickable="true"
+                        android:padding="@dimen/main_pic_margin"
+                        android:text="@string/search"
+                        android:textAlignment="center"
+                        android:textColor="@color/white_text" />
+
+                    <TextView
+                        android:id="@+id/cancel_search_map"
+                        android:layout_width="wrap_content"
+                        android:layout_height="40dp"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginTop="6dp"
+                        android:layout_weight="1"
+                        android:clickable="true"
+                        android:padding="@dimen/main_pic_margin"
+                        android:text="@string/cancel"
+                        android:textColor="@color/white_text" />
+
+                </LinearLayout>
+
+            </android.support.v7.widget.Toolbar>
+
+        </io.codetail.widget.RevealFrameLayout>
+
+    </RelativeLayout>
 
 </android.support.design.widget.CoordinatorLayout>

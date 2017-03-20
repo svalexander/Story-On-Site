@@ -58,6 +58,8 @@ dependencies {
     compile 'com.google.android.gms:play-services-places:10.2.0'
     compile 'me.relex:circleindicator:1.2.2@aar'
     compile 'com.github.2359media:EasyAndroidAnimations:0.8'
+    compile 'konifar:fab-transformation:1.0.0'
+
 
 }
 apply plugin: 'com.google.gms.google-services'

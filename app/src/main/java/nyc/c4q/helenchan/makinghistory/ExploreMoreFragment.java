@@ -6,20 +6,24 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.res.AssetFileDescriptor;
 import android.content.res.Resources;
+import android.location.Address;
+import android.location.Geocoder;
 import android.location.Location;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
-import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.Button;
+import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.Toolbar;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
@@ -31,7 +35,6 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
-import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MapStyleOptions;
@@ -40,6 +43,7 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.gson.Gson;
+import com.konifar.fab_transformation.FabTransformation;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -56,10 +60,17 @@ import static com.facebook.FacebookSdk.getApplicationContext;
  * Created by shannonalexander-navarro on 3/7/17.
  */
 
-public class ExploreMoreFragment extends Fragment implements OnMapReadyCallback, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, GoogleMap.OnMarkerClickListener, LocationListener, MapListener {
+public class ExploreMoreFragment extends Fragment implements OnMapReadyCallback, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, GoogleMap.OnMarkerClickListener, LocationListener, MapListener, View.OnClickListener {
 
     private DatabaseReference mFirebaseDatabase;
     private DatabaseReference mFirebaseDatabase2;
+
+    private FloatingActionButton searchFabBtn;
+    private android.support.v7.widget.Toolbar fabToolBar;
+
+    private EditText locationAddressSearch;
+    private TextView toolBarSearch;
+    private TextView toolBarCancel;
 
     private MapListener mapListener;
     private static final String TAG = "Main Activity";
@@ -67,7 +78,7 @@ public class ExploreMoreFragment extends Fragment implements OnMapReadyCallback,
     private GoogleApiClient mLocationClient;
     GoogleMap mMap;
     private float zoomLevel = 15;
-    private Button searchAddressBtn;
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -98,23 +109,43 @@ public class ExploreMoreFragment extends Fragment implements OnMapReadyCallback,
         }
         mFirebaseDatabase2 = FirebaseDatabase.getInstance().getReference();
 
-//        searchAddressBtn = (Button) root.findViewById(R.id.location_search_btn);
-//        searchAddressBtn.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                try {
-//                    locateFromAddress(view);
-//                } catch (IOException e) {
-//                    e.printStackTrace();
-//                }
-//            }
-//        });
+        toolBarSearch = (TextView) root.findViewById(R.id.search_location_map);
+        toolBarSearch.setOnClickListener(this);
+        toolBarCancel = (TextView) root.findViewById(R.id.cancel_search_map);
+        toolBarCancel.setOnClickListener(this);
+        locationAddressSearch = (EditText) root.findViewById(R.id.location_search_input);
+        searchFabBtn = (FloatingActionButton) root.findViewById(R.id.search_fab);
+        searchFabBtn.setOnClickListener(this);
+        fabToolBar = (android.support.v7.widget.Toolbar) root.findViewById(R.id.toolbar_fab);
+
 
         setActionBarTitle(root);
 
         setHasOptionsMenu(false);
 
         return root;
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()){
+            case R.id.search_fab:
+                FabTransformation.with(searchFabBtn)
+                        .transformTo(fabToolBar);
+                break;
+            case R.id.cancel_search_map:
+                FabTransformation.with(searchFabBtn)
+                        .transformFrom(fabToolBar);
+                break;
+            case R.id.search_location_map:
+                try {
+                    locateFromAddress(v);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                break;
+
+        }
     }
 
     private void setActionBarTitle(View v) {
@@ -178,25 +209,24 @@ public class ExploreMoreFragment extends Fragment implements OnMapReadyCallback,
         imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
     }
 
-//    public void locateFromAddress(View v) throws IOException {
-//        hideSoftKeyboard(v);
-//
-//        EditText locationInput = (EditText) v.findViewById(R.id.location_search_input);
-//        String searchString = locationInput.getText().toString();
-//
-//        Geocoder gc = new Geocoder(getActivity());
-//        List<Address> list = gc.getFromLocationName(searchString, 1);
-//
-//        if (list.size() > 0) {
-//            Address add = list.get(0);
-//            String locality = add.getLocality();
-//            Toast.makeText(getActivity(), "Found: " + locality, Toast.LENGTH_SHORT).show();
-//
-//            double lat = add.getLatitude();
-//            double lng = add.getLongitude();
-//            gotoLocation(lat, lng, zoomLevel);
-//        }
-//    }
+    public void locateFromAddress(View v) throws IOException {
+        hideSoftKeyboard(v);
+
+        String searchString = locationAddressSearch.getText().toString();
+
+        Geocoder gc = new Geocoder(getActivity());
+        List<Address> list = gc.getFromLocationName(searchString, 1);
+
+        if (list.size() > 0) {
+            Address add = list.get(0);
+            String locality = add.getLocality();
+
+            double lat = add.getLatitude();
+            double lng = add.getLongitude();
+            gotoLocation(lat, lng, zoomLevel);
+        }
+    }
+
 
     @Override
     public void onConnected(@Nullable Bundle bundle) {
@@ -290,5 +320,7 @@ public class ExploreMoreFragment extends Fragment implements OnMapReadyCallback,
     public void onLocationChanged(Location location) {
 
     }
+
+
 }
 
