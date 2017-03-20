@@ -18,6 +18,9 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
@@ -27,6 +30,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.firebase.ui.auth.AuthUI;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
@@ -129,14 +133,26 @@ public class UserProfileActivity extends AppCompatActivity implements UserPicsFr
     }
 
     @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.profile_signout_menu, menu);
+        return true;
+    }
+
+    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
+            case R.id.user_profile_signout:
+                AuthUI.getInstance().signOut(this);
+                Intent intent = new Intent(UserProfileActivity.this, SignInActivity.class);
+                startActivity(intent);
+                return true;
             case android.R.id.home:
-
                 NavUtils.navigateUpFromSameTask(this);
                 return true;
+            default:
+                return super.onOptionsItemSelected(item);
         }
-        return super.onOptionsItemSelected(item);
     }
 
 
@@ -282,7 +298,7 @@ public class UserProfileActivity extends AppCompatActivity implements UserPicsFr
 
     @Override
     public void updatePhotoCount(int count) {
-        userPhotoCountTv.setText(String.valueOf(count));
+        userPhotoCountTv.setText(String.valueOf(count) + " photos");
     }
 
     private void whereToGetPicFromDialogueBox() {
