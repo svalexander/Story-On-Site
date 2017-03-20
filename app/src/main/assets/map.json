@@ -2746,13 +2746,13 @@
     {
       "type": "Feature",
       "properties": {
-        "id": "House1",
+        "id": "aHouse1",
         "type": "st:Photo",
-        "name": "House1",
+        "name": "aHouse1",
         "data": {
-          "uuid": "house1-id",
-          "imageId": "house1-id2",
-          "text": "House1",
+          "uuid": "ahouse1-id",
+          "imageId": "ahouse1-id2",
+          "text": "aHouse1",
           "folder": " ",
           "url": "",
           "imageUrl": "",
@@ -2812,6 +2812,54 @@
         "coordinates": [
           -74.004281,
           40.741833
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "shouse2",
+        "type": "st:Photo",
+        "name": "shouse2",
+        "data": {
+          "uuid": "shouse2-id",
+          "imageId": "shouse2-id2",
+          "text": "shouse2",
+          "folder": " ",
+          "url": "",
+          "imageUrl": "",
+          "nyplUrl": ""
+        }
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -73.829175,
+          40.831707
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "hhouse3",
+        "type": "st:Photo",
+        "name": "hhouse3",
+        "data": {
+          "uuid": "hhouse3-id",
+          "imageId": "hhouse3-id2",
+          "text": "hhouse3",
+          "folder": " ",
+          "url": "",
+          "imageUrl": "",
+          "nyplUrl": ""
+        }
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -73.880519,
+          40.739820
         ]
       }
     }

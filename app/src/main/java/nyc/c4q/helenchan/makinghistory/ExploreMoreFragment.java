@@ -129,7 +129,7 @@ public class ExploreMoreFragment extends Fragment implements OnMapReadyCallback,
 
     @Override
     public void onClick(View v) {
-        switch (v.getId()){
+        switch (v.getId()) {
             case R.id.search_fab:
                 FabTransformation.with(searchFabBtn)
                         .transformTo(fabToolBar);
